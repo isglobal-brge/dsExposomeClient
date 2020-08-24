@@ -1,3 +1,21 @@
+#' @title Performs a non-disclosive EXposome-Wide Association Study
+#' 
+#' @description Takes as input an Exposome Set object on the study server and performs a 
+#' ExWAS association study with the provided model.
+#'
+#' @param model \code{character} Formula, not including exposures, to be tested.
+#' @param Set \code{character} Name of the Exposome Set object on the server side
+#' @param family \code{character} Nature of the health outcome
+#' @param datasources  a list of \code{\link{DSConnection-class}} objects obtained after login
+#'
+#' @return \code{list} with: \code{data.frame} With exposure name and p-value of the association,
+#' and \code{numeric} effective tests
+#' @export
+#'
+#' @examples 
+#' \dontrun{Refer to the package Vignette for examples.}
+#' 
+
 ds.exwas <- function(model, Set, family, datasources = NULL) {
 
   if (is.null(datasources)) {
