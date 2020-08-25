@@ -11,12 +11,12 @@ ds.exwas(model, Set, family, datasources = NULL)
 
 \item{Set}{\code{character} Name of the Exposome Set object on the server side}
 
-\item{family}{\code{character} Nature of the health outcome}
+\item{family}{\code{character} Nature of the health outcome (\code{gaussian}, \code{binomial} or \code{poisson})}
 
 \item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
 }
 \value{
-\code{list} with: \code{data.frame} With exposure name and p-value of the association,
+\code{list} with: \code{data.frame} With exposure name, coefficient and p-value of the association,
 and \code{numeric} effective tests
 }
 \description{

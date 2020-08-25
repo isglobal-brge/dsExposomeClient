@@ -2,7 +2,7 @@
 % Please edit documentation in R/ds.loadExposome.R
 \name{ds.loadExposome}
 \alias{ds.loadExposome}
-\title{Creation of an ExposomeSet from \code{data.frames}}
+\title{Create an ExposomeSet from \code{data.frames}}
 \usage{
 ds.loadExposome(
   exposures,
