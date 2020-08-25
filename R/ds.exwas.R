@@ -5,10 +5,10 @@
 #'
 #' @param model \code{character} Formula, not including exposures, to be tested.
 #' @param Set \code{character} Name of the Exposome Set object on the server side
-#' @param family \code{character} Nature of the health outcome
+#' @param family \code{character} Nature of the health outcome (\code{gaussian}, \code{binomial} or \code{poisson})
 #' @param datasources  a list of \code{\link{DSConnection-class}} objects obtained after login
 #'
-#' @return \code{list} with: \code{data.frame} With exposure name and p-value of the association,
+#' @return \code{list} with: \code{data.frame} With exposure name, coefficient and p-value of the association,
 #' and \code{numeric} effective tests
 #' @export
 #'
@@ -55,11 +55,11 @@ ds.exwas <- function(model, Set, family, datasources = NULL) {
     tryCatch({
       # Fit GLM using the non-disclosive function
       mod <- ds.glm(frm, family = family, data = 'dta', viewIter = FALSE)
-      items <- rbind(items, cbind(exposure, mod$coefficients[2]))
+      items <- rbind(items, cbind(exposure, mod$coefficients[2], mod$coefficients[5]))
     }, error = function(e){print("lesgo")})
 
   }
-
+colnames(items) <- c("exposure", "coefficient", "p-value")
 return(items)
 
 }
