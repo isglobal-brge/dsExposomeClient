@@ -1,0 +1,131 @@
+---
+title: "Non-disclosive federated exposome data analysis with DataSHIELD and Bioconductor"
+author:
+- name: Xavier Escribà Montagut
+  affiliation:
+  - &isglobal Bioinformatics Research Group in Epidemiolgy (BRGE), Barcelona Insitute for Global Health (ISGlobal)
+  email: xavier.escriba@isglobal.org
+- name: Juan R. Gonzalez
+  affiliation:
+  - &isglobal Bioinformatics Research Group in Epidemiolgy (BRGE), Barcelona Insitute for Global Health (ISGlobal)
+  email: juanr.gonzalez@isglobal.org
+date: "`r Sys.Date()`"
+package: "`r pkg_ver('dsExposome')`, `r pkg_ver('dsExposomeClient')`"
+output:
+  BiocStyle::html_document:
+    number_sections: true
+    toc: yes
+    fig_caption: yes
+    toc_float: true
+bibliography: dsExposome_Vignette.bib
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=FALSE)
+```
+
+# Purpose
+
+# Setup
+
+# Exposome analysis
+
+## Loading the Exposome Set
+
+An exposome dataset is made up from [three different tables](https://www.bioconductor.org/packages/release/bioc/vignettes/rexposome/inst/doc/exposome_data_analysis.html#data-format). In order to be studied, this three tables need to be coerced into a R object of class `ExposomeSet`, for that reason an exposome dataset can be available on a server as three tables or as a resource.
+
+### From tables to `ExposomeSet`
+
+To coerce the three tables that make the exposome dataset into an `ExposomeSet` R object, the tables have to be loaded inside the same study server.
+
+```{r}
+library(DSLite)
+library(dsBaseClient)
+library(dsExposome)
+
+exposures <- utils::read.table("../test_data/exposures.csv", header = TRUE,
+                         row.names = "idnum", sep = ",", na.strings = c("NA", "-", "?", " ", ""))
+phenotypes <- utils::read.table("../test_data/phenotypes.csv", header = TRUE,
+                         row.names = "idnum", sep = ",", na.strings = c("NA", "-", "?", " ", ""),
+                         stringsAsFactors = TRUE)
+description <- utils::read.table("../test_data/description.csv", header = TRUE,
+                          row.names = "Exposure", sep = ",", na.strings = c("NA", "-", "?", " ", ""))
+
+dslite.server <- newDSLiteServer(tables=list(exposures = exposures, description = description, phenotypes = phenotypes),
+                                 config = DSLite::defaultDSConfiguration(include=c("dsBase", "dsExposome")))
+
+log <- data.frame(server = c("sim1"),
+                  url = c("dslite.server"),
+                  table = list("exposures", "description", "phenotypes"),
+                  driver = c("DSLiteDriver"))
+conns <- datashield.login(log, assign = T)
+
+ds.ls()
+```
+
+To coerce the three tables, the `dsExposomeClient` library has the `ds.loadExposome()` function, which takes as input parameters the names of the tables on the study server among some further configuration options, refer to the function documentation for more information.
+
+```{r}
+library(dsExposomeClient)
+
+ds.loadExposome("exposures", "description", "phenotypes", "Family", 5, FALSE, "exposome_set")
+ds.class("exposome_set")
+
+datashield.logout(conns)
+```
+
+### From resource to `ExposomeSet`
+
+When there's an `ExposomeSet` resource available, it just needs to be loaded into the study server
+
+```{r}
+library(DSLite)
+library(dsBaseClient)
+library(dsExposome)
+library(resourcer)
+library(rexposome)
+
+exposome <- newResourceClient(
+  resourcer::newResource(
+    name = "exposome",
+    url = "https://github.com/isglobal-brge/dsExposomeClient/raw/master/test_data/exposome_resource.Rdata",
+    format = "ExposomeSet"
+  )
+) 
+
+dslite.server <- newDSLiteServer(resources=list(exposome),
+                                 config = DSLite::defaultDSConfiguration(include=c("dsBase", "dsExposome", "resourcer", "rexposome")))
+
+log <- DSI::newDSLoginBuilder()
+log$append(server = "sim1", url = "dslite.server", resource = "exposome", driver = "DSLiteDriver")
+log <- log$build()
+
+conns <- datashield.login(log, assign = T)
+
+ds.ls()
+ds.class("exposome")
+```
+
+Once on the study server, the resource has to be coerced into an R object
+
+```{r}
+datashield.assign.expr(conns, symbol = "exposome_object",
+                       expr = quote(as.resource.object(exposome)))
+ds.class("exposome_object")
+```
+
+## Performing an ExWAS
+
+When the `ExposomeSet` object is on the study the server, the function `ds.exwas` is in charge of performing the ExWAS. As an example let's present a situation where each exposition has to be associated to the `blood_pre` phenotype using the phenotype `sex` as a covariate. This study would be done as follows
+
+```{r}
+library(dsExposomeClient)
+
+exwas_results <- ds.exwas("blood_pre ~ sex", "exposome_object", "gaussian")
+head(exwas_results)
+```
+
+The model is inputed as a string, where the left side term is the objective phenotype, and the right term are the covariates, in the case of wanting more covariates proceed as: `objective ~ cov1 + cov2 + ... + covN`. It's important noting that if the output family (third argument) does not match the objective family, the ExWAS will fail (Example: The objective family is `binomial` and the user sets it to `gaussian`).
