@@ -1,13 +1,12 @@
 library(DSLite)
-library(data.table)
 library(dsBaseClient)
 library(rexposome)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 # install development versions of dsExposome and dsExposomeClient
   # P
-devtools::install("../dsExposome")
-devtools::install("../dsExposomeClient")
+devtools::install("../dsExposome-BRGE")
+devtools::install("../dsExposomeClient-BRGE")
 
 # source development packages
 library(dsExposome)
@@ -28,15 +27,14 @@ dslite.server <- newDSLiteServer(tables=list(exposures = exposures, description 
 dslite.server$config()
 
 # datashield logins and assignments
-log <- data.frame(server = c("sim1", "sim2", "sim3"),
+log <- data.frame(server = c("sim1"),
                   url = c("dslite.server"),
-                  table = c("exposures", "description", "phenotypes"),
+                  table = list("exposures", "description", "phenotypes"),
                   driver = c("DSLiteDriver"))
 conns <- datashield.login(log, assign = T)
 
-ds.loadExposome("exposome_set")
-ds.exwas("blood_pre ~ age", "exposome_set", "gaussian")
+ds.loadExposome("exposures", "description", "phenotypes", "Family", 5, FALSE, "exposome_set")
+a = ds.exwas("blood_pre ~ sex", "exposome_set", "gaussian")
 
 # logout of dslite
 datashield.logout(conns)
-
