@@ -26,6 +26,13 @@ ds.exwas <- function(model, Set, family, tef = TRUE, datasources = NULL) {
   if(is.null(model)){
     stop(" Please provide a valid model formula", call.=FALSE)
   }
+  
+  if(as.logical(ds.exists("dta", datasources)) | 
+     as.logical(ds.exists("dta_all", datasources)) | 
+     as.logical(ds.exists("dta_exposures", datasources))){
+    warning("The variable(s) 'dta', 'dta_all' or 'dta_exposures' already exist on the study server. ds.exwas uses
+         this variables during it's execution so they will be overwritten", call. = FALSE)
+  }
 
   # Extract table with exposures and phenotypes and save it on the server (assign)
   cally <- paste0("exposures_pData(", Set, ")")
