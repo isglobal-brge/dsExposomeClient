@@ -83,8 +83,7 @@ ds.exwas <- function(model, Set, family, tef = TRUE, datasources = NULL) {
       alpha_corrected <- 0
     }
     else{
-      cormat <- extract(corr)
-      M <- ncol(cormat)
+      M <- ncol(corr$`Correlation Matrix`)
       lambdas <- base::eigen(cormat)$values
       Vobs <- sum(((lambdas - 1)^2)) / (M - 1)
       Meff <- M - sum((lambdas>1)*(lambdas-1))
