@@ -4,7 +4,7 @@
 \alias{ds.exwas}
 \title{Performs a non-disclosive EXposome-Wide Association Study}
 \usage{
-ds.exwas(model, Set, family, datasources = NULL)
+ds.exwas(model, Set, family, tef = TRUE, datasources = NULL)
 }
 \arguments{
 \item{model}{\code{character} Formula, not including exposures, to be tested.}
@@ -12,6 +12,8 @@ ds.exwas(model, Set, family, datasources = NULL)
 \item{Set}{\code{character} Name of the Exposome Set object on the server side}
 
 \item{family}{\code{character} Nature of the health outcome (\code{gaussian}, \code{binomial} or \code{poisson})}
+
+\item{tef}{\code{bool} If \code{TRUE} computes the threshold for effective tests.}
 
 \item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
 }

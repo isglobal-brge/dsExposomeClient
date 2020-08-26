@@ -7,16 +7,16 @@
 #' @param Set \code{character} Name of the Exposome Set object on the server side
 #' @param family \code{character} Nature of the health outcome (\code{gaussian}, \code{binomial} or \code{poisson})
 #' @param datasources  a list of \code{\link{DSConnection-class}} objects obtained after login
+#' @param tef \code{bool} If \code{TRUE} computes the threshold for effective tests.
 #'
 #' @return \code{list} with: \code{data.frame} With exposure name, coefficient and p-value of the association,
 #' and \code{numeric} effective tests
-#' @export
 #'
 #' @examples 
 #' \dontrun{Refer to the package Vignette for examples.}
 #' 
 
-ds.exwas <- function(model, Set, family, datasources = NULL) {
+ds.exwas <- function(model, Set, family, tef = TRUE, datasources = NULL) {
 
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
@@ -59,7 +59,35 @@ ds.exwas <- function(model, Set, family, datasources = NULL) {
     }, error = function(e){print("lesgo")})
 
   }
-colnames(items) <- c("exposure", "coefficient", "p-value")
-return(items)
+
+  colnames(items) <- c("exposure", "coefficient", "p-value")
+  
+  if(tef){
+    # Extract table with exposures and save it on the server (assign)
+    cally <- paste0("exposures_pData(", Set, ", 'exposures')")
+    DSI::datashield.assign.expr(datasources, "dta_exposures", as.symbol(cally))
+    # Extract correlation matrix
+    corr <- ds.cor(x = "dta_exposures", naAction = "casewise.complete", type = "combine")
+    # If it's potentially disclosive it will be full of NA
+    if(all(is.na(corr$`Correlation Matrix`))){
+      # If potentially disclosive display warning and return alpha_corrected = 0
+      warning("Can't compute number of effective tests as it may be disclosive", call. = FALSE)
+      alpha_corrected <- 0
+    }
+    else{
+      cormat <- extract(corr)
+      M <- ncol(cormat)
+      lambdas <- base::eigen(cormat)$values
+      Vobs <- sum(((lambdas - 1)^2)) / (M - 1)
+      Meff <- M - sum((lambdas>1)*(lambdas-1))
+      alpha_corrected <- 1 - (1 - 0.05)^(1 / Meff)
+    }
+  }
+  else{
+    alpha_corrected <- 0
+  }
+  
+  
+  return(list(items, alpha_corrected))
 
 }
