@@ -18,8 +18,9 @@ ds.exwas(model, Set, family, tef = TRUE, datasources = NULL)
 \item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
 }
 \value{
-\code{list} with: \code{data.frame} With exposure name, coefficient and p-value of the association,
-and \code{numeric} effective tests
+\code{list} that contains: \cr
+- \code{data.frame} with exposure name, coefficient and p-value of the association \cr
+- \code{numeric} effective tests
 }
 \description{
 Takes as input an Exposome Set object on the study server and performs a 
