@@ -117,6 +117,24 @@ datashield.assign.expr(conns, symbol = "exposome_object",
 ds.class("exposome_object")
 ```
 
+## Descriptive statistics of the exposome dataset
+
+Non-disclosive descriptive statistics can be obtained from the exposome dataset, the function `ds.exposome_summary` is in charge of that. It can obtain descriptive statistics from numeric and factor variables of the exposome dataset (both from exposures and phenotypes). To obtain all the exposure and phenotypes of the exposome set
+
+```{r}
+ds.exposome_variables("exposome_object" , "exposures", conns)
+ds.exposome_variables("exposome_object" , "phenotypes", conns)
+```
+
+To get the descriptive statistics of the variable of interest 
+
+```{r}
+# Numerical variable
+ds.exposome_summary("exposome_object", "PM25", conns)
+# Factor variable
+ds.exposome_summary("exposome_object", "flu", conns)
+```
+
 ## Performing an ExWAS
 
 When the `ExposomeSet` object is on the study the server, the function `ds.exwas` is in charge of performing the ExWAS. As an example let's present a situation where each exposition has to be associated to the `blood_pre` phenotype using the phenotype `sex` as a covariate. This study would be done as follows
@@ -124,8 +142,8 @@ When the `ExposomeSet` object is on the study the server, the function `ds.exwas
 ```{r}
 library(dsExposomeClient)
 
-exwas_results <- ds.exwas("blood_pre ~ sex", "exposome_object", "gaussian")
-head(exwas_results)
+exwas_results <- ds.exwas("blood_pre ~ sex", "exposome_object", "gaussian", FALSE, conns)
+head(exwas_results$exwas_results)
 ```
 
 The model is inputed as a string, where the left side term is the objective phenotype, and the right term are the covariates, in the case of wanting more covariates proceed as: `objective ~ cov1 + cov2 + ... + covN`. It's important noting that if the output family (third argument) does not match the objective family, the ExWAS will fail (Example: The objective family is `binomial` and the user sets it to `gaussian`).

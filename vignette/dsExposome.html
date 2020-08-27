@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2020-08-25" />
+<meta name="date" content="2020-08-27" />
 
 <title>Non-disclosive federated exposome data analysis with DataSHIELD and Bioconductor</title>
 
@@ -1775,7 +1775,7 @@ div.tocify {
 <p class="author-name">Xavier Escribà Montagut<span class="affil-mark">1*</span> and Juan R. Gonzalez<span class="affil-mark">1**</span></p>
 <p class="author-affiliation"><span class="affil-mark">1</span>Bioinformatics Research Group in Epidemiolgy (BRGE), Barcelona Insitute for Global Health (ISGlobal)</p>
 <p class="author-email"><span class="affil-mark">*</span><a href="mailto:xavier.escriba@isglobal.org">xavier.escriba@isglobal.org</a><br><span class="affil-mark">**</span><a href="mailto:juanr.gonzalez@isglobal.org">juanr.gonzalez@isglobal.org</a></p>
-<h4 class="date">2020-08-25</h4>
+<h4 class="date">2020-08-27</h4>
 <h4 class="package">Package</h4>
 <p>dsExposome 0.1.0, dsExposomeClient 0.1.0</p>
 
@@ -1884,13 +1884,72 @@ attr(,&quot;package&quot;)
 [1] &quot;rexposome&quot;</code></pre>
 </div>
 </div>
+<div id="descriptive-statistics-of-the-exposome-dataset" class="section level2">
+<h2><span class="header-section-number">3.2</span> Descriptive statistics of the exposome dataset</h2>
+<p>Non-disclosive descriptive statistics can be obtained from the exposome dataset, the function <code>ds.exposome_summary</code> is in charge of that. It can obtain descriptive statistics from numeric and factor variables of the exposome dataset (both from exposures and phenotypes). To obtain all the exposure and phenotypes of the exposome set</p>
+<pre class="r"><code>ds.exposome_variables(&quot;exposome_object&quot; , &quot;exposures&quot;, conns)</code></pre>
+<pre><code>$sim1
+ [1] &quot;AbsPM25&quot;      &quot;As&quot;           &quot;BDE100&quot;       &quot;BDE138&quot;       &quot;BDE153&quot;      
+ [6] &quot;BDE154&quot;       &quot;BDE17&quot;        &quot;BDE183&quot;       &quot;BDE190&quot;       &quot;BDE209&quot;      
+[11] &quot;BDE28&quot;        &quot;BDE47&quot;        &quot;BDE66&quot;        &quot;BDE71&quot;        &quot;BDE85&quot;       
+[16] &quot;BDE99&quot;        &quot;Benzene&quot;      &quot;bHCH&quot;         &quot;BPA&quot;          &quot;BTHM&quot;        
+[21] &quot;Cd&quot;           &quot;CHCl3&quot;        &quot;Co&quot;           &quot;Conn&quot;         &quot;Cotinine&quot;    
+[26] &quot;Cs&quot;           &quot;Cu&quot;           &quot;DDE&quot;          &quot;DDT&quot;          &quot;Dens&quot;        
+[31] &quot;ETS&quot;          &quot;G_pesticides&quot; &quot;Gas&quot;          &quot;Green&quot;        &quot;H_pesticides&quot;
+[36] &quot;HCB&quot;          &quot;Hg&quot;           &quot;MBzP&quot;         &quot;MEHHP&quot;        &quot;MEHP&quot;        
+[41] &quot;MEOHP&quot;        &quot;MEP&quot;          &quot;MiBP&quot;         &quot;MnBP&quot;         &quot;Mo&quot;          
+[46] &quot;Ni&quot;           &quot;NO&quot;           &quot;NO2&quot;          &quot;Noise_d&quot;      &quot;Noise_n&quot;     
+[51] &quot;NOx&quot;          &quot;Pb&quot;           &quot;PCB118&quot;       &quot;PCB138&quot;       &quot;PCB153&quot;      
+[56] &quot;PCB180&quot;       &quot;PFHxS&quot;        &quot;PFNA&quot;         &quot;PFOA&quot;         &quot;PFOS&quot;        
+[61] &quot;PM10&quot;         &quot;PM10Cu&quot;       &quot;PM10Fe&quot;       &quot;PM10K&quot;        &quot;PM10Ni&quot;      
+[66] &quot;PM10S&quot;        &quot;PM10SI&quot;       &quot;PM10V&quot;        &quot;PM10Zn&quot;       &quot;PM25&quot;        
+[71] &quot;PM25CU&quot;       &quot;PM25FE&quot;       &quot;PM25K&quot;        &quot;PM25Ni&quot;       &quot;PM25S&quot;       
+[76] &quot;PM25Sl&quot;       &quot;PM25V&quot;        &quot;PM25Zn&quot;       &quot;PMcoarse&quot;     &quot;Sb&quot;          
+[81] &quot;Se&quot;           &quot;Temp&quot;         &quot;THM&quot;          &quot;Tl&quot;           &quot;X2cxMMHP&quot;    
+[86] &quot;X5cxMEPP&quot;     &quot;X7OHMMeOP&quot;    &quot;Zn&quot;          </code></pre>
+<pre class="r"><code>ds.exposome_variables(&quot;exposome_object&quot; , &quot;phenotypes&quot;, conns)</code></pre>
+<pre><code>$sim1
+[1] &quot;whistling_chest&quot; &quot;flu&quot;             &quot;rhinitis&quot;        &quot;wheezing&quot;       
+[5] &quot;birthdate&quot;       &quot;sex&quot;             &quot;age&quot;             &quot;cbmi&quot;           
+[9] &quot;blood_pre&quot;      </code></pre>
+<p>To get the descriptive statistics of the variable of interest</p>
+<pre class="r"><code># Numerical variable
+ds.exposome_summary(&quot;exposome_object&quot;, &quot;PM25&quot;, conns)</code></pre>
+<pre><code>$sim1
+$sim1$class
+[1] &quot;numeric&quot;
+
+$sim1$length
+[1] 109
+
+$sim1$`quantiles &amp; mean`
+      5%      10%      25%      50%      75%      90%      95%     Mean 
+1.093217 1.132021 1.146654 1.171904 1.181451 1.202192 1.216758 1.165488 </code></pre>
+<pre class="r"><code># Factor variable
+ds.exposome_summary(&quot;exposome_object&quot;, &quot;flu&quot;, conns)</code></pre>
+<pre><code>$sim1
+$sim1$class
+[1] &quot;factor&quot;
+
+$sim1$length
+[1] 109
+
+$sim1$categories
+[1] &quot;no&quot;  &quot;yes&quot;
+
+$sim1$`count of &#39;no&#39;`
+[1] 94
+
+$sim1$`count of &#39;yes&#39;`
+[1] 15</code></pre>
+</div>
 <div id="performing-an-exwas" class="section level2">
-<h2><span class="header-section-number">3.2</span> Performing an ExWAS</h2>
+<h2><span class="header-section-number">3.3</span> Performing an ExWAS</h2>
 <p>When the <code>ExposomeSet</code> object is on the study the server, the function <code>ds.exwas</code> is in charge of performing the ExWAS. As an example let’s present a situation where each exposition has to be associated to the <code>blood_pre</code> phenotype using the phenotype <code>sex</code> as a covariate. This study would be done as follows</p>
 <pre class="r"><code>library(dsExposomeClient)
 
-exwas_results &lt;- ds.exwas(&quot;blood_pre ~ sex&quot;, &quot;exposome_object&quot;, &quot;gaussian&quot;)
-head(exwas_results)</code></pre>
+exwas_results &lt;- ds.exwas(&quot;blood_pre ~ sex&quot;, &quot;exposome_object&quot;, &quot;gaussian&quot;, FALSE, conns)
+head(exwas_results$exwas_results)</code></pre>
 <pre><code>     exposure  coefficient         p-value           
 [1,] &quot;AbsPM25&quot; &quot;20.2567443067107&quot;  &quot;4.45122690944345&quot;
 [2,] &quot;As&quot;      &quot;0.504932865298639&quot; &quot;1.09288918239132&quot;
@@ -1898,6 +1957,8 @@ head(exwas_results)</code></pre>
 [4,] &quot;BDE138&quot;  &quot;1.28193392434311&quot;  &quot;3.14002450948812&quot;
 [5,] &quot;BDE153&quot;  &quot;2.8699182613289&quot;   &quot;2.1034507179356&quot; 
 [6,] &quot;BDE154&quot;  &quot;0.131778078664524&quot; &quot;2.81310922762936&quot;</code></pre>
+<pre class="r"><code>exwas_results$alpha_corrected</code></pre>
+<pre><code>[1] 0</code></pre>
 <p>The model is inputed as a string, where the left side term is the objective phenotype, and the right term are the covariates, in the case of wanting more covariates proceed as: <code>objective ~ cov1 + cov2 + ... + covN</code>. It’s important noting that if the output family (third argument) does not match the objective family, the ExWAS will fail (Example: The objective family is <code>binomial</code> and the user sets it to <code>gaussian</code>).</p>
 </div>
 </div>
