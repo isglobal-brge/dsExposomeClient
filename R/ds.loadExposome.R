@@ -1,4 +1,4 @@
-#' @title Creation of an ExposomeSet from \code{data.frames}
+#' @title Create an ExposomeSet from \code{data.frames}
 #' 
 #' @description Takes the three tables of an exposome dataset and coerces them into a Exposome Set object
 #' on the study server
@@ -27,13 +27,21 @@
 ds.loadExposome <- function(exposures, description, phenotypes, description.famCol = "family", 
                             exposures.asFactor = 5, warnings = FALSE, object_name = "exposome_set", 
                             datasources = NULL) {
+  
+  if(is.null(exposures) | class(exposures) != "character"){
+    stop("Input variable 'exposures' must have a value which is a character string")
+  }
+  
+  if(is.null(description) | class(description) != "character"){
+    stop("Input variable 'description' must have a value which is a character string")
+  }
+  
+  if(is.null(phenotypes) | class(phenotypes) != "character"){
+    stop("Input variable 'phenotypes' must have a value which is a character string")
+  }
 
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
-  }
-
-  if(is.null(object_name)){
-    stop("Please provide a name for the Exposome Set", call.=FALSE)
   }
   
   if(class(description.famCol) == "character") {

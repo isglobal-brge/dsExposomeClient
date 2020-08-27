@@ -18,13 +18,21 @@
 #' 
 
 ds.exwas <- function(model, Set, family, tef = TRUE, datasources = NULL) {
+  
+  if(is.null(model) | class(model) != "character"){
+    stop("Input variable 'model' must have a value which is a character string")
+  }
+  
+  if(is.null(Set) | class(Set) != "character"){
+    stop("Input variable 'Set' must have a value which is a character string")
+  }
+  
+  if(is.null(family) | class(family) != "character"){
+    stop("Input variable 'family' must have a value which is a character string")
+  }
 
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
-  }
-
-  if(is.null(model)){
-    stop(" Please provide a valid model formula", call.=FALSE)
   }
   
   if(as.logical(ds.exists("dta", datasources)) | 
@@ -32,6 +40,14 @@ ds.exwas <- function(model, Set, family, tef = TRUE, datasources = NULL) {
      as.logical(ds.exists("dta_exposures", datasources))){
     warning("The variable(s) 'dta', 'dta_all' or 'dta_exposures' already exist on the study server. ds.exwas uses
          this variables during it's execution so they will be overwritten", call. = FALSE)
+  }
+  
+  if(!unlist(ds.exists(Set))){
+    stop("The exposome set ('" , Set, "') does not exist on the study server")
+  }
+  
+  if(!(ds.class(Set) == "ExposomeSet")){
+    stop("The study server variable ('" , Set, "') is not of class 'ExposomeSet'")
   }
 
   # Extract table with exposures and phenotypes and save it on the server (assign)
@@ -84,7 +100,7 @@ ds.exwas <- function(model, Set, family, tef = TRUE, datasources = NULL) {
     }
     else{
       M <- ncol(corr$`Correlation Matrix`)
-      lambdas <- base::eigen(cormat)$values
+      lambdas <- base::eigen(corr$`Correlation Matrix`)$values
       Vobs <- sum(((lambdas - 1)^2)) / (M - 1)
       Meff <- M - sum((lambdas>1)*(lambdas-1))
       alpha_corrected <- 1 - (1 - 0.05)^(1 / Meff)
@@ -94,6 +110,10 @@ ds.exwas <- function(model, Set, family, tef = TRUE, datasources = NULL) {
     alpha_corrected <- 0
   }
   
+  # Remove created variables on the study server
+  datashield.rm(datasources, "dta")
+  datashield.rm(datasources, "dta_all")
+  datashield.rm(datasources, "dta_exposures")
   
   return(list(items, alpha_corrected))
 
