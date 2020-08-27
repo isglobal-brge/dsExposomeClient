@@ -115,6 +115,6 @@ ds.exwas <- function(model, Set, family, tef = TRUE, datasources = NULL) {
   datashield.rm(datasources, "dta_all")
   datashield.rm(datasources, "dta_exposures")
   
-  return(list(items, alpha_corrected))
+  return(list(exwas_results = items, alpha_corrected = alpha_corrected))
 
 }
