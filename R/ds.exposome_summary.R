@@ -1,3 +1,26 @@
+#' @title Generate the summary of a variable of an exposome dataset
+#' 
+#' @description Generates the summary of a variable (phenotype or exposure) of a server side 'ExposomeSet' object
+#'
+#' @param Set \code{character} Name of the Exposome Set object on the server side
+#' @param variable \code{character} Name of the variable to obtain it's summary (numeric or factor variable)
+#' @param datasources a list of \code{\link{DSConnection-class}} (default \code{NULL}) objects obtained after login
+#'
+#' @return The function returns a \code{list}, the contents of it depend on the variable nature, for numeric variables: \cr
+#' - \code{$class} Class of the variable \cr
+#' - \code{$length} Number of observations of the variable \cr
+#' - \code{$quantiles & mean} Quantiles and mean of the variable \cr
+#' 
+#' Categorical variable: \cr
+#' - \code{$class} Class of the variable \cr
+#' - \code{$length} Number of observations of the variable \cr
+#' - \code{$categories} Levels of the categorical variable \cr
+#' - \code{$counts of each level} Counts for each of the levels
+#'
+#' @examples
+#' \dontrun{Refer to the package Vignette for examples.}
+#' 
+
 ds.exposome_summary <- function(Set, variable, datasources = NULL){
   
   if(is.null(Set) | class(Set) != "character"){
