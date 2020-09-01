@@ -31,6 +31,13 @@ ds.pca <- function(tab, standar = TRUE, datasources = NULL){
   var_cov <- ds.cov(x = "pca", type = "combine", datasources = datasources)$`Variance-Covariance Matrix`
   # Base svd function is good enough for exposome tables, for larger tables fast.svd from the corpcor 
   # library may be a good upgrade
+  if(all(is.na(var_cov))){
+    # Remove created variables on the study server
+    datashield.rm(datasources, "pca")
+    # Stop execution of function and return error message
+    stop("The required operations to perform the PCA have disclosure risks, can't perform PCA", call.=FALSE)
+  }
+  
   var_cov_svd <- svd(var_cov)
   
   pca <- data.frame(var_cov_svd$u)
