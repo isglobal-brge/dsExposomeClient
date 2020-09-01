@@ -22,8 +22,12 @@ description <- utils::read.table("test_data/description.csv", header = TRUE,
                           row.names = "Exposure", sep = ",", na.strings = c("NA", "-", "?", " ", ""))
 
 
-dslite.server <- newDSLiteServer(tables=list(exposures = exposures, description = description, phenotypes = phenotypes),
+dslite.server <- newDSLiteServer(tables=list(exposures = exposures, 
+                                             description = description, 
+                                             phenotypes = phenotypes),
                                  config = DSLite::defaultDSConfiguration(include=c("dsBase", "dsExposome")))
+dslite.server$assignMethod("loadExposomeDS", "dsExposome::loadExposomeDS")
+
 dslite.server$config()
 
 # datashield logins and assignments
@@ -33,8 +37,14 @@ log <- data.frame(server = c("sim1"),
                   driver = c("DSLiteDriver"))
 conns <- datashield.login(log, assign = T)
 
+<<<<<<< Updated upstream
 ds.loadExposome("exposures", "description", "phenotypes", "Family", 5, FALSE, "exposome_set")
 a = ds.exwas("blood_pre ~ sex", "exposome_set", "gaussian")
+=======
+
+ds.loadExposome("exposome_set")
+ds.exwas("blood_pre ~ age", "exposome_set", "gaussian")
+>>>>>>> Stashed changes
 
 # logout of dslite
 datashield.logout(conns)
