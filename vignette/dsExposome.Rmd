@@ -147,3 +147,39 @@ head(exwas_results$exwas_results)
 ```
 
 The model is inputed as a string, where the left side term is the objective phenotype, and the right term are the covariates, in the case of wanting more covariates proceed as: `objective ~ cov1 + cov2 + ... + covN`. It's important noting that if the output family (third argument) does not match the objective family, the ExWAS will fail (Example: The objective family is `binomial` and the user sets it to `gaussian`).
+
+## Exposures PCA
+
+A PCA can be performed on the exposures of the exposome dataset. To do so, there's the `ds.exposome_pca`. The function offers the functionality of standarizing the input data with the argument `standar`. It is important noting that this function is sensitive to be disclosive, specially for very rectangular data frames (similar number of variables as individuals). To illustrate this problem, let's try to perform a PCA on the whole exposures test data.
+
+```{r error = TRUE}
+ds.exposome_pca("exposome_object", TRUE)
+```
+
+If that is the case, one option is to reduce the families of exposures of the Exposome Set. There's an already subsetted Exposome Set object available on the `test_data` folder of `dsExposomeClient` for demostration purposes.
+
+```{r}
+exposome_pca <- newResourceClient(
+  resourcer::newResource(
+    name = "exposome",
+    url = "https://github.com/isglobal-brge/dsExposomeClient/raw/master/test_data/exposome_resource_pca.Rdata",
+    format = "ExposomeSet"
+  )
+) 
+
+dslite.server <- newDSLiteServer(resources=list(exposome_pca),
+                                 config = DSLite::defaultDSConfiguration(include=c("dsBase", "dsExposome", "resourcer", "rexposome")))
+
+log <- DSI::newDSLoginBuilder()
+log$append(server = "sim1", url = "dslite.server", resource = "exposome_pca", driver = "DSLiteDriver")
+log <- log$build()
+
+conns <- datashield.login(log, assign = T)
+
+datashield.assign.expr(conns, symbol = "exposome_object_pca",
+                       expr = quote(as.resource.object(exposome_pca)))
+
+pca <- ds.exposome_pca("exposome_object_pca")
+head(pca[,1:4])
+```
+

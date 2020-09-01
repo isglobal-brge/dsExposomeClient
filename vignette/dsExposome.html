@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2020-08-27" />
+<meta name="date" content="2020-09-01" />
 
 <title>Non-disclosive federated exposome data analysis with DataSHIELD and Bioconductor</title>
 
@@ -1775,7 +1775,7 @@ div.tocify {
 <p class="author-name">Xavier Escribà Montagut<span class="affil-mark">1*</span> and Juan R. Gonzalez<span class="affil-mark">1**</span></p>
 <p class="author-affiliation"><span class="affil-mark">1</span>Bioinformatics Research Group in Epidemiolgy (BRGE), Barcelona Insitute for Global Health (ISGlobal)</p>
 <p class="author-email"><span class="affil-mark">*</span><a href="mailto:xavier.escriba@isglobal.org">xavier.escriba@isglobal.org</a><br><span class="affil-mark">**</span><a href="mailto:juanr.gonzalez@isglobal.org">juanr.gonzalez@isglobal.org</a></p>
-<h4 class="date">2020-08-27</h4>
+<h4 class="date">2020-09-01</h4>
 <h4 class="package">Package</h4>
 <p>dsExposome 0.1.0, dsExposomeClient 0.1.0</p>
 
@@ -1957,9 +1957,43 @@ head(exwas_results$exwas_results)</code></pre>
 [4,] &quot;BDE138&quot;  &quot;1.28193392434311&quot;  &quot;3.14002450948812&quot;
 [5,] &quot;BDE153&quot;  &quot;2.8699182613289&quot;   &quot;2.1034507179356&quot; 
 [6,] &quot;BDE154&quot;  &quot;0.131778078664524&quot; &quot;2.81310922762936&quot;</code></pre>
-<pre class="r"><code>exwas_results$alpha_corrected</code></pre>
-<pre><code>[1] 0</code></pre>
 <p>The model is inputed as a string, where the left side term is the objective phenotype, and the right term are the covariates, in the case of wanting more covariates proceed as: <code>objective ~ cov1 + cov2 + ... + covN</code>. It’s important noting that if the output family (third argument) does not match the objective family, the ExWAS will fail (Example: The objective family is <code>binomial</code> and the user sets it to <code>gaussian</code>).</p>
+</div>
+<div id="exposures-pca" class="section level2">
+<h2><span class="header-section-number">3.4</span> Exposures PCA</h2>
+<p>A PCA can be performed on the exposures of the exposome dataset. To do so, there’s the <code>ds.exposome_pca</code>. The function offers the functionality of standarizing the input data with the argument <code>standar</code>. It is important noting that this function is sensitive to be disclosive, specially for very rectangular data frames (similar number of variables as individuals). To illustrate this problem, let’s try to perform a PCA on the whole exposures test data.</p>
+<pre class="r"><code>ds.exposome_pca(&quot;exposome_object&quot;, TRUE)</code></pre>
+<pre><code>Error: The required operations to perform the PCA have disclosure risks, can&#39;t perform PCA</code></pre>
+<p>If that is the case, one option is to reduce the families of exposures of the Exposome Set. There’s an already subsetted Exposome Set object available on the <code>test_data</code> folder of <code>dsExposomeClient</code> for demostration purposes.</p>
+<pre class="r"><code>exposome_pca &lt;- newResourceClient(
+  resourcer::newResource(
+    name = &quot;exposome&quot;,
+    url = &quot;https://github.com/isglobal-brge/dsExposomeClient/raw/master/test_data/exposome_resource_pca.Rdata&quot;,
+    format = &quot;ExposomeSet&quot;
+  )
+) 
+
+dslite.server &lt;- newDSLiteServer(resources=list(exposome_pca),
+                                 config = DSLite::defaultDSConfiguration(include=c(&quot;dsBase&quot;, &quot;dsExposome&quot;, &quot;resourcer&quot;, &quot;rexposome&quot;)))
+
+log &lt;- DSI::newDSLoginBuilder()
+log$append(server = &quot;sim1&quot;, url = &quot;dslite.server&quot;, resource = &quot;exposome_pca&quot;, driver = &quot;DSLiteDriver&quot;)
+log &lt;- log$build()
+
+conns &lt;- datashield.login(log, assign = T)
+
+datashield.assign.expr(conns, symbol = &quot;exposome_object_pca&quot;,
+                       expr = quote(as.resource.object(exposome_pca)))
+
+pca &lt;- ds.exposome_pca(&quot;exposome_object_pca&quot;)
+head(pca[,1:5])</code></pre>
+<pre><code>              PC1         PC2         PC3         PC4         PC5
+As     -0.2029978  0.08436880  0.10927713  0.07700059 -0.36346620
+BDE100  0.2257612 -0.10828308 -0.04730372 -0.23573356  0.24881628
+BDE138  0.1100641  0.13988056  0.06453518 -0.14464015 -0.41546339
+BDE153  0.2681086 -0.06133915 -0.16723285 -0.13612954 -0.15521067
+BDE154  0.2415519 -0.11502922  0.01423106 -0.16188903 -0.07728014
+BDE17   0.1968478  0.17433288  0.25341202  0.09907962 -0.08482643</code></pre>
 </div>
 </div>
 
