@@ -42,26 +42,25 @@ An exposome dataset is made up from [three different tables](https://www.biocond
 To coerce the three tables that make the exposome dataset into an `ExposomeSet` R object, the tables have to be loaded inside the same study server.
 
 ```{r}
-library(DSLite)
 library(dsBaseClient)
-library(dsExposome)
+library(dsExposomeClient)
+library(DSOpal)
 
-exposures <- utils::read.table("../test_data/exposures.csv", header = TRUE,
-                         row.names = "idnum", sep = ",", na.strings = c("NA", "-", "?", " ", ""))
-phenotypes <- utils::read.table("../test_data/phenotypes.csv", header = TRUE,
-                         row.names = "idnum", sep = ",", na.strings = c("NA", "-", "?", " ", ""),
-                         stringsAsFactors = TRUE)
-description <- utils::read.table("../test_data/description.csv", header = TRUE,
-                          row.names = "Exposure", sep = ",", na.strings = c("NA", "-", "?", " ", ""))
+builder <- newDSLoginBuilder()
+builder$append(server = "server1", url = "https://opal-demo.obiba.org/",
+               user = "administrator", password = "password",
+               driver = "OpalDriver")
+logindata <- builder$build()
+conns <- datashield.login(logins = logindata)
 
-dslite.server <- newDSLiteServer(tables=list(exposures = exposures, description = description, phenotypes = phenotypes),
-                                 config = DSLite::defaultDSConfiguration(include=c("dsBase", "dsExposome")))
+datashield.assign.resource(conns, symbol = 'description', resource = list(server1 = 'EXPOSOME.description'))
+datashield.assign.expr(conns, symbol = "description", expr = quote(as.resource.data.frame(description)))
 
-log <- data.frame(server = c("sim1"),
-                  url = c("dslite.server"),
-                  table = list("exposures", "description", "phenotypes"),
-                  driver = c("DSLiteDriver"))
-conns <- datashield.login(log, assign = T)
+datashield.assign.resource(conns, symbol = 'exposures', resource = list(server1 = 'EXPOSOME.exposures'))
+datashield.assign.expr(conns, symbol = "exposures", expr = quote(as.resource.data.frame(exposures)))
+
+datashield.assign.resource(conns, symbol = 'phenotypes', resource = list(server1 = 'EXPOSOME.phenotypes'))
+datashield.assign.expr(conns, symbol = "phenotypes", expr = quote(as.resource.data.frame(phenotypes)))
 
 ds.ls()
 ```
@@ -69,12 +68,8 @@ ds.ls()
 To coerce the three tables, the `dsExposomeClient` library has the `ds.loadExposome()` function, which takes as input parameters the names of the tables on the study server among some further configuration options, refer to the function documentation for more information.
 
 ```{r}
-library(dsExposomeClient)
-
-ds.loadExposome("exposures", "description", "phenotypes", "Family", 5, FALSE, "exposome_set")
-ds.class("exposome_set")
-
-datashield.logout(conns)
+ds.loadExposome("exposures", "description", "phenotypes", "idnum", "idnum", "Exposure", "Family", 5, FALSE, "exposome_object")
+ds.class("exposome_object")
 ```
 
 ### From resource to `ExposomeSet`
@@ -82,39 +77,17 @@ datashield.logout(conns)
 When there's an `ExposomeSet` resource available, it just needs to be loaded into the study server
 
 ```{r}
-library(DSLite)
-library(dsBaseClient)
-library(dsExposome)
-library(resourcer)
-library(rexposome)
-
-exposome <- newResourceClient(
-  resourcer::newResource(
-    name = "exposome",
-    url = "https://github.com/isglobal-brge/dsExposomeClient/raw/master/test_data/exposome_resource.Rdata",
-    format = "ExposomeSet"
-  )
-) 
-
-dslite.server <- newDSLiteServer(resources=list(exposome),
-                                 config = DSLite::defaultDSConfiguration(include=c("dsBase", "dsExposome", "resourcer", "rexposome")))
-
-log <- DSI::newDSLoginBuilder()
-log$append(server = "sim1", url = "dslite.server", resource = "exposome", driver = "DSLiteDriver")
-log <- log$build()
-
-conns <- datashield.login(log, assign = T)
+datashield.assign.resource(conns, symbol = 'exposome_resource', resource = list(server1 = 'EXPOSOME.exposomeSet'))
 
 ds.ls()
-ds.class("exposome")
+ds.class("exposome_resource")
 ```
 
 Once on the study server, the resource has to be coerced into an R object
 
 ```{r}
-datashield.assign.expr(conns, symbol = "exposome_object",
-                       expr = quote(as.resource.object(exposome)))
-ds.class("exposome_object")
+datashield.assign.expr(conns, symbol = "exposome_resource", expr = quote(as.resource.object(exposome_resource)))
+ds.class("exposome_resource")
 ```
 
 ## Descriptive statistics of the exposome dataset
@@ -159,27 +132,14 @@ ds.exposome_pca("exposome_object", TRUE)
 If that is the case, one option is to reduce the families of exposures of the Exposome Set. There's an already subsetted Exposome Set object available on the `test_data` folder of `dsExposomeClient` for demostration purposes.
 
 ```{r}
-exposome_pca <- newResourceClient(
-  resourcer::newResource(
-    name = "exposome",
-    url = "https://github.com/isglobal-brge/dsExposomeClient/raw/master/test_data/exposome_resource_pca.Rdata",
-    format = "ExposomeSet"
-  )
-) 
+datashield.assign.resource(conns, symbol = 'exposome_pca', resource = list(server1 = 'EXPOSOME.exposomeSet_PCA'))
+datashield.assign.expr(conns, symbol = "exposome_pca", expr = quote(as.resource.object(exposome_pca)))
 
-dslite.server <- newDSLiteServer(resources=list(exposome_pca),
-                                 config = DSLite::defaultDSConfiguration(include=c("dsBase", "dsExposome", "resourcer", "rexposome")))
-
-log <- DSI::newDSLoginBuilder()
-log$append(server = "sim1", url = "dslite.server", resource = "exposome_pca", driver = "DSLiteDriver")
-log <- log$build()
-
-conns <- datashield.login(log, assign = T)
-
-datashield.assign.expr(conns, symbol = "exposome_object_pca",
-                       expr = quote(as.resource.object(exposome_pca)))
-
-pca <- ds.exposome_pca("exposome_object_pca")
+pca <- ds.exposome_pca("exposome_pca")
 head(pca[,1:4])
+```
+
+```{r}
+datashield.logout(conns)
 ```
 
