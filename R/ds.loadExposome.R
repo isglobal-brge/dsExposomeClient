@@ -6,9 +6,12 @@
 #' @param exposures \code{character} Name of the exposures variable on the study server
 #' @param description \code{character} Name of the description variable on the study server
 #' @param phenotypes \code{character} Name of the phenotypes variable on the study server
-#' @param exposures.idcol 
-#' @param phenotypes.idcol 
-#' @param description.expCol 
+#' @param exposures.idcol \code{character} (default \code{"idcol"}) Name of the column in the Exposures file
+#' that contains the individuals ID
+#' @param phenotypes.idcol \code{character} (default \code{"idcol"}) Name of the column in the Phenotypes file
+#' that contains the individuals ID
+#' @param description.expCol \code{character} (default \code{"exposure"}) Name of the column in the Description file
+#' that contains the Exposure names
 #' @param description.famCol \code{character} (default \code{"family"}) Name of column where the family's
 #' name (per exposures) if found in file "description". 
 #' @param exposures.asFactor \code{numeric} (default \code{5}) The exposures with more

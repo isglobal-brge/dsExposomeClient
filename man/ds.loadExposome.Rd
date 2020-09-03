@@ -8,6 +8,9 @@ ds.loadExposome(
   exposures,
   description,
   phenotypes,
+  exposures.idcol = "idcol",
+  phenotypes.idcol = "idcol",
+  description.expCol = "exposure",
   description.famCol = "family",
   exposures.asFactor = 5,
   warnings = FALSE,
@@ -22,9 +25,17 @@ ds.loadExposome(
 
 \item{phenotypes}{\code{character} Name of the phenotypes variable on the study server}
 
-\item{description.famCol}{(default \code{"family"}) Index where the family's
-name (per exposures) if found in file "description". It can be both numeric
-or character.}
+\item{exposures.idcol}{\code{character} (default \code{"idcol"}) Name of the column in the Exposures file
+that contains the individuals ID}
+
+\item{phenotypes.idcol}{\code{character} (default \code{"idcol"}) Name of the column in the Phenotypes file
+that contains the individuals ID}
+
+\item{description.expCol}{\code{character} (default \code{"exposure"}) Name of the column in the Description file
+that contains the Exposure names}
+
+\item{description.famCol}{\code{character} (default \code{"family"}) Name of column where the family's
+name (per exposures) if found in file "description".}
 
 \item{exposures.asFactor}{\code{numeric} (default \code{5}) The exposures with more
 than this number of unique items will be considered as "continuous" while
