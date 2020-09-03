@@ -19,6 +19,14 @@ ds.tableMissings <- function(exp, set = "exposures", output = "n", datasources =
     datasources <- DSI::datashield.connections_find()
   }
   
+  if(ds.exists(exp, datasources) == FALSE){
+    stop(paste0("ExposomeSet, ", exp, ", not defined on the study servers"))
+  }
+  
+  if(ds.class(exp, datasources) != "ExposomeSet"){
+    stop(paste0(exp, ", is not of class ExposomeSet"))
+  }
+  
   cally <- paste0("tableMissingsDS(", exp, ", '", set, "', '", output, "')")
   missings <- DSI::datashield.aggregate(datasources, as.symbol(cally))
   

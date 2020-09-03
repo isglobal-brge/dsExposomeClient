@@ -4,17 +4,27 @@
 \alias{ds.plotMissings}
 \title{Draw plot with percentage of missings}
 \usage{
-ds.plotMissings(exp, set = "exposures", datasources = NULL)
+ds.plotMissings(
+  exp,
+  set = "exposures",
+  output = "n",
+  x.max = 100,
+  datasources = NULL
+)
 }
 \arguments{
 \item{exp}{\code{character} Name of the Exposome Set on the server side}
 
 \item{set}{\code{character} (default \code{"exposures"}) Set to get the missings plot: \code{"exposures"} or \code{"phenotypes"}}
 
+\item{output}{\code{character} (default \code{"n"}) Get missing number (\code{"n"}) or percentage (\code{"p"})}
+
+\item{x.max}{\code{numeric} (default \code{100})  Fix the maxium value of the X-axis for the percentage plot.}
+
 \item{datasources}{a list of \code{\link{DSConnection-class}} (default \code{NULL}) objects obtained after login}
 }
 \value{
-Object of class \code{ggplot}, calling it will render the actual plot
+List of objects of class \code{ggplot}, calling it will render the actual plot
 }
 \description{
 Create a plot with the percentage of missings for the exposures and phenotypes of an 
