@@ -2,7 +2,7 @@
 #' 
 #' @description Obtain the number (or percentage) of missings of for the exposures or phenotypes of an ExposomeSet object
 #'
-#' @param exp \code{character} 
+#' @param exp \code{character} Name of the Exposome Set on the server side
 #' @param set \code{character} (default \code{"exposures"}) Set to get the missings: \code{"exposures"} or \code{"phenotypes"}
 #' @param output \code{character} (default \code{"n"}) Get missing number (\code{"n"}) or percentage (\code{"p"})
 #' @param datasources a list of \code{\link{DSConnection-class}} (default \code{NULL}) objects obtained after login

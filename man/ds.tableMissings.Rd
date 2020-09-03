@@ -7,7 +7,7 @@
 ds.tableMissings(exp, set = "exposures", output = "n", datasources = NULL)
 }
 \arguments{
-\item{exp}{\code{character}}
+\item{exp}{\code{character} Name of the Exposome Set on the server side}
 
 \item{set}{\code{character} (default \code{"exposures"}) Set to get the missings: \code{"exposures"} or \code{"phenotypes"}}
 
