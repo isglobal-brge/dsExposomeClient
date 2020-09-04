@@ -39,7 +39,7 @@ An exposome dataset is made up from [three different tables](https://www.biocond
 
 ### From tables to `ExposomeSet`
 
-To coerce the three tables that make the exposome dataset into an `ExposomeSet` R object, the tables have to be loaded inside the same study server.
+To coerce the three tables that make the exposome dataset into an `ExposomeSet` R object, the tables have to be loaded inside the same study server. On this example, the tables are on the demo Opal server as resources, which means they have to be loaded on the study server and be coerced as data frames; for more information read the [resourcer](https://cran.r-project.org/web/packages/resourcer/index.html) package documentation. 
 
 ```{r}
 library(dsBaseClient)
@@ -54,7 +54,9 @@ logindata <- builder$build()
 conns <- datashield.login(logins = logindata)
 
 datashield.assign.resource(conns, symbol = 'description', resource = list(server1 = 'EXPOSOME.description'))
+ds.class('description')
 datashield.assign.expr(conns, symbol = "description", expr = quote(as.resource.data.frame(description)))
+ds.class('description')
 
 datashield.assign.resource(conns, symbol = 'exposures', resource = list(server1 = 'EXPOSOME.exposures'))
 datashield.assign.expr(conns, symbol = "exposures", expr = quote(as.resource.data.frame(exposures)))
@@ -65,7 +67,18 @@ datashield.assign.expr(conns, symbol = "phenotypes", expr = quote(as.resource.da
 ds.ls()
 ```
 
-To coerce the three tables, the `dsExposomeClient` library has the `ds.loadExposome()` function, which takes as input parameters the names of the tables on the study server among some further configuration options, refer to the function documentation for more information.
+If the tables are on the Opal server as tables instead of resources, the lines after the `datashield.login` would look like this
+
+```{r eval = FALSE}
+# Don't run this code, the tables are not on the demo Opal server, it's just for demostration purposes
+datashield.assign.table(conns, symbol = 'description', table = list(server1 = 'EXPOSOME.description_table'))
+
+  # Repeat for the other two tables
+```
+
+When there are tables on the Opal server they can be directly loaded to the study server as data frames, there is no need to perform the `as.data.frame` assignation.
+
+To coerce the three tables to the `ExposomeSet` object, the `dsExposomeClient` library has the `ds.loadExposome()` function, which takes as input parameters the names of the tables on the study server among some further configuration options, refer to the function documentation for more information.
 
 ```{r}
 ds.loadExposome("exposures", "description", "phenotypes", "idnum", "idnum", "Exposure", "Family", 5, FALSE, "exposome_object")
@@ -92,14 +105,18 @@ ds.class("exposome_resource")
 
 ## Descriptive statistics of the exposome dataset
 
-Non-disclosive descriptive statistics can be obtained from the exposome dataset, the function `ds.exposome_summary` is in charge of that. It can obtain descriptive statistics from numeric and factor variables of the exposome dataset (both from exposures and phenotypes). To obtain all the exposure and phenotypes of the exposome set
+### Information about the loaded dataset
+
+To check on the general details of the loaded dataset, the name of the exposures and phenotypes present can be retrieved with the `ds.exposome_variables`. This function has the option of retrieving them separately or all together, check the function documentation for the details.
 
 ```{r}
 ds.exposome_variables("exposome_object" , "exposures", conns)
 ds.exposome_variables("exposome_object" , "phenotypes", conns)
 ```
 
-To get the descriptive statistics of the variable of interest 
+### Summary of a variable of interest
+
+Non-disclosive descriptive statistics can be obtained from the exposome dataset, the function `ds.exposome_summary` is in charge of that. It can obtain descriptive statistics from numeric and factor variables of the exposome dataset (both from exposures and phenotypes). 
 
 ```{r}
 # Numerical variable
@@ -108,13 +125,46 @@ ds.exposome_summary("exposome_object", "PM25", conns)
 ds.exposome_summary("exposome_object", "flu", conns)
 ```
 
+### Missing data
+
+The number of missing data on each exposure and on each phenotype can be found by using the function `ds.tableMissings`. This function returns a vector with the amount of missing data in each exposure or phenotype. The argument `set` indicates if the number of missing values is counted on exposures or phenotypes. The argument `output` indicates if it is shown as counts (`output="n"`) or as percentage (`output="p"`).
+
+```{r}
+ds.tableMissings("exposome_object", set = "exposures")
+ds.tableMissings("exposome_object", set = "phenotypes")
+```
+
+Optionally, there's also the `ds.plotMissings` function which returns a `ggplot` object with a barplot of missings for exposures or phenotypes, there's the option of displaying the percentage of missings as well as total counts, check the function documentation for further information.
+
+```{r}
+ds.plotMissings("exposome_object", "exposures", "p")
+```
+
+Please note that since this function call returns a `ggplot` object, it can be plotted properly to avoid squished Y axis when there are lots of exposures, read the [official documentation](https://ggplot2.tidyverse.org/reference/ggsave.html) for information on how to do that.
+
+### Exposures Normality
+
+Most of the test done in *exposome* analysis requires that the exposures must follow a normal distribution. The function `ds.normalityTest` performs a test on each exposure for normality behaviour. The result is a `data.frame` with the exposures’ names, a flag `TRUE`/`FALSE` for normality and the p-value obtained from the *Shapiro-Wilk* Normality Test (if the p-value is under the threshold, then the exposure is not normal).
+
+```{r}
+nm <- ds.normalityTest("exposome_object")
+table(nm$server1$normality)
+```
+
+So, the exposures that do not follow a normal distribution are:
+
+```{r}
+nm$server1$exposure[!nm$server1$normality]
+```
+
+The `ds.normalityTest` function has some extra input arguments to tune the normality test, check the function documentation for further information.
+
+
 ## Performing an ExWAS
 
 When the `ExposomeSet` object is on the study the server, the function `ds.exwas` is in charge of performing the ExWAS. As an example let's present a situation where each exposition has to be associated to the `blood_pre` phenotype using the phenotype `sex` as a covariate. This study would be done as follows
 
 ```{r}
-library(dsExposomeClient)
-
 exwas_results <- ds.exwas("blood_pre ~ sex", "exposome_object", "gaussian", FALSE, conns)
 head(exwas_results$exwas_results)
 ```
