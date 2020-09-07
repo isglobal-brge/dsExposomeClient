@@ -28,10 +28,18 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
     ds.make(paste0("log(dta$", exposure, ")"), "dta_log", datasources)
     ds.make(paste0("(dta$", exposure, ")^(0.5)"), "dta_sqrt", datasources)
     
+    pdf(NULL)
     hist1 <- ds.histogram(x = paste0("dta$", exposure), ...)
+    dev.off()
+    pdf(NULL)
     hist2 <- ds.histogram(x = "dta_exp", ...)
+    dev.off()
+    pdf(NULL)
     hist3 <- ds.histogram(x = "dta_log", ...)
+    dev.off()
+    pdf(NULL)
     hist4 <- ds.histogram(x = "dta_sqrt", ...)
+    dev.off()
     
     hist1_pval <- ds.shapiro.test(paste0("dta$", exposure))[[1]]$p.value
     hist2_pval <- ds.shapiro.test("dta_exp")[[1]]$p.value
@@ -52,6 +60,7 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
   }
   else{
     hist <- ds.histogram(x = paste0("dta$", exposure), ...)
+    dev.off()
     hist_pval <- ds.shapiro.test(paste0("dta$", exposure))[[1]]$p.value
     par(mfrow=c(1,1))
     plot(hist, main = paste0(exposure, " (pval: ", format(hist_pval, scientific=TRUE, digits=5), ")"), xlab = "")
