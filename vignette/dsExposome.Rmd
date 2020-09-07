@@ -159,6 +159,26 @@ nm$server1$exposure[!nm$server1$normality]
 
 The `ds.normalityTest` function has some extra input arguments to tune the normality test, check the function documentation for further information.
 
+The exposures can be visualized using non-disclosive histograms to see their distribution.
+
+```{r results = FALSE}
+ds.exposure_histogram("exposome_object", "BDE209")
+```
+
+If the selected exposure is not following a normal distribution, the function `ds.exposure_histogram` accepts the argument `show.trans` to visualize the raw data histogram plus three typical transformations (`exp`, `log` and `sqrt`).
+
+```{r results = FALSE}
+ds.exposure_histogram("exposome_object", "BDE209", TRUE)
+```
+
+### Exposures Imputation
+
+The missings of an exposome dataset can be imputed using the `ds.imputation` function, which calls the rexposome function `imputation` on the study server. Refer to the documentation of rexposome for details about the imputation procedures.
+
+```{r}
+ds.imputation("exposome_object", "exposome_object_imputed")
+```
+
 
 ## Performing an ExWAS
 
