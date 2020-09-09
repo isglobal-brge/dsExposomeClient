@@ -12,18 +12,17 @@ author:
 date: "`r Sys.Date()`"
 package: "`r pkg_ver('dsExposome')`, `r pkg_ver('dsExposomeClient')`"
 output:
-  BiocStyle::html_document:
-    number_sections: true
-    toc: yes
-    fig_caption: yes
-    toc_float: true
+  BiocStyle::html_document
 bibliography: dsExposome_Vignette.bib
 vignette: >
+  %\VignetteIndexEntry{Non-disclosive federated exposome data analysis with DataSHIELD and Bioconductor}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
+BiocStyle::markdown()
+options(width=80)
 knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=FALSE)
 ```
 
@@ -32,6 +31,10 @@ knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=FALSE)
 # Setup
 
 # Exposome analysis
+
+## Connecting to the Opal server
+
+
 
 ## Loading the Exposome Set
 
@@ -103,18 +106,32 @@ datashield.assign.expr(conns, symbol = "exposome_resource", expr = quote(as.reso
 ds.class("exposome_resource")
 ```
 
-## Descriptive statistics of the exposome dataset
+## Exploring the loaded dataset
 
-### Information about the loaded dataset
+Once the Exposome datasets are loaded on the study servers, some simple functions can be used to have some understanding of what the dataset contains. Those correspond to the name of the exposures, the names of the families of the exposures and the name of the phenotypes.
 
-To check on the general details of the loaded dataset, the name of the exposures and phenotypes present can be retrieved with the `ds.exposome_variables`. This function has the option of retrieving them separately or all together, check the function documentation for the details.
+### Family names
+
+To get the names of the families of exposures present on the exposome set, there's the `ds.familyNames` function, it can take the parameter `by.exposure = TRUE` to list the family names and the exposures that contain each family.
 
 ```{r}
-ds.exposome_variables("exposome_object" , "exposures", conns)
+ds.familyNames("exposome_object")
+head(ds.familyNames("exposome_object", TRUE)$server1)
+```
+
+### Exposures and phenotypes names
+
+To get the names of the exposures or phenotypes (or both combined) there's the function `ds.exposome_variables`, it takes as argument `exposures`, `phenotypes` or `all` to retrieve the desired names.
+
+```{r}
+head(ds.exposome_variables("exposome_object" , "exposures", conns)$server1)
 ds.exposome_variables("exposome_object" , "phenotypes", conns)
 ```
 
-### Summary of a variable of interest
+
+
+
+### Summary of variables
 
 Non-disclosive descriptive statistics can be obtained from the exposome dataset, the function `ds.exposome_summary` is in charge of that. It can obtain descriptive statistics from numeric and factor variables of the exposome dataset (both from exposures and phenotypes). 
 
@@ -171,7 +188,18 @@ If the selected exposure is not following a normal distribution, the function `d
 ds.exposure_histogram("exposome_object", "BDE209", TRUE)
 ```
 
-### Exposures Imputation
+### Exposures Behaviour
+
+We can get a snapshot of the behaviour of the full exposome using the `ds.plotFamily` fuction. This function draws a mosaic of boxplots with all the numeric families of exposures, it can also plot single families and perform grouping inside of them. This function makes use of the `gplot2` library to generate the plots, the plot objects that generates this library have a disadvantage for the goal of DataSHIELD, which is that they contain the dataset used to produce the plot, for that reason the dataset is passed thorugh the `scatterDS` function of `dsBase`, by doing so the data is protected and the actual `ggplot` object contains the same information that would be found when trying to plot a Scatter plot of a variable against itself. Since this process can't be applied to a factor variable, they can't be plotted using this function, as it would disclose the values of it.
+
+```{r}
+ds.plotFamily("exposome_object", family = "all", method = 1, k = 4, noise = 0.25)
+ds.plotFamily("exposome_object", family = "Phthalates", group = "sex", method = 1, k = 4, noise = 0.25)
+ds.plotFamily("exposome_object", family = "Phthalates", group = "sex", group2 = "rhinitis", method = 1, k = 4, noise = 0.25)
+```
+
+
+## Exposures Imputation
 
 The missings of an exposome dataset can be imputed using the `ds.imputation` function, which calls the rexposome function `imputation` on the study server. Refer to the documentation of rexposome for details about the imputation procedures.
 
