@@ -20,6 +20,8 @@ ds.familyNames <- function(object, by.exposure = FALSE, datasources = NULL){
     datasources <- DSI::datashield.connections_find()
   }
   
+  checkForExposomeSet(object, datasources)
+  
   cally <- paste0("familyNamesDS(", object, ", ", by.exposure, ")")
   f_names <- DSI::datashield.aggregate(datasources, as.symbol(cally))
   

@@ -24,6 +24,8 @@ ds.imputation <- function(object, name = NULL, select = NULL, datasources = NULL
     name <- object
   }
   
+  checkForExposomeSet(object, datasources)
+  
   if(is.null(select)){
     cally <- paste0("imputationDS(", object, ")")
   }

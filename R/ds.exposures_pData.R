@@ -24,6 +24,8 @@ ds.exposures_pData <- function(set, type = "", name = NULL, datasources = NULL){
     name <- paste0(set, "_table")
   }
   
+  checkForExposomeSet(set, datasources)
+  
   cally <- paste0("exposures_pData(", set, ", '", type, "')")
   DSI::datashield.assign.expr(datasources, name, as.symbol(cally))
   

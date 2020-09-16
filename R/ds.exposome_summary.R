@@ -23,30 +23,11 @@
 
 ds.exposome_summary <- function(Set, variable, datasources = NULL){
   
-  if(is.null(Set) | class(Set) != "character"){
-    stop("Input variable 'Set' must have a value which is a character string")
-  }
-  
-  if(is.null(variable) | class(variable) != "character"){
-    stop("Input variable 'variable' must have a value which is a character string")
-  }
-  
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
   }
   
-  if(as.logical(ds.exists("dta_all", datasources))){
-    warning("The variable 'dta_all' already exists on the study server. ds.exposome_summary uses
-         this variable during it's execution so it will be overwritten", call. = FALSE)
-  }
-  
-  if(!unlist(ds.exists(Set))){
-    stop("The exposome set ('" , Set, "') does not exist on the study server")
-  }
-  
-  if(!(ds.class(Set) == "ExposomeSet")){
-    stop("The study server variable ('" , Set, "') is not of class 'ExposomeSet'")
-  }
+  checkForExposomeSet(Set, datasources)
   
   # Extract table with exposures and phenotypes and save it on the server (assign)
   cally <- paste0("exposures_pData(", Set, ")")

@@ -24,6 +24,8 @@ ds.normalityTest <- function(object, th = 0.05, min.val = 5, na.rm = TRUE,
     datasources <- DSI::datashield.connections_find()
   }
   
+  checkForExposomeSet(object, datasources)
+  
   cally <- paste0("normalityTestDS(", object, ", ", th, ", ", min.val, ", ", na.rm, ", ", warnings, ")")
   norm <- DSI::datashield.aggregate(datasources, as.symbol(cally))
   

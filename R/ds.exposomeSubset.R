@@ -22,6 +22,8 @@ ds.exposomeSubset <- function(set, fam, name = NULL, datasources = NULL){
     name <- paste0(set, "_subsetted")
   }
   
+  checkForExposomeSet(set, datasources)
+  
   cally <- paste0("exposomeSubsetDS(", set, ", c('", 
                   paste0(stringr::str_replace_all(fam, " ", ""), collapse = "','"), "'))")
   

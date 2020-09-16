@@ -28,6 +28,8 @@ ds.correlation <- function(set, fam = NULL, datasources = NULL){
     set <- "exposomeSetSubsetted"
   }
   
+  checkForExposomeSet(set, datasources)
+  
   ds.exposures_pData(set, "exposures", "ds.correlationExposures", datasources)
   
   data <- ds.cor(x = "ds.correlationExposures", naAction = "casewise.complete", type = "split" , datasources)

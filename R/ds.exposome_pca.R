@@ -30,6 +30,8 @@ ds.exposome_pca <- function(Set, fam = NULL, standar = TRUE, datasources = NULL)
     Set <- paste0(Set, "_subsetted")
   }
   
+  checkForExposomeSet(Set, datasources)
+  
   cally <- paste0("exposures_pData(", Set, ", 'exposures')")
   DSI::datashield.assign.expr(conns, "dta", as.symbol(cally))
   

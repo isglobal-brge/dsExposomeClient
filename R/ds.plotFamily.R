@@ -30,6 +30,8 @@ ds.plotFamily <- function(x, family, group = NULL, group2 = NULL, scatter = FALS
     datasources <- DSI::datashield.connections_find()
   }
   
+  checkForExposomeSet(x, datasources)
+  
   if(family == "all"){
     
     vplayout <- function(x, y) {

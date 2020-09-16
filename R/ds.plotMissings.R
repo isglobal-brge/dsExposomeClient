@@ -20,13 +20,7 @@ ds.plotMissings <- function(exp, set = "exposures", output = "n", x.max = 100, d
     datasources <- DSI::datashield.connections_find()
   }
   
-  if(ds.exists(exp, datasources) == FALSE){
-    stop(paste0("ExposomeSet, ", exp, ", not defined on the study servers"))
-  }
-  
-  if(ds.class(exp, datasources) != "ExposomeSet"){
-    stop(paste0(exp, ", is not of class ExposomeSet"))
-  }
+  checkForExposomeSet(exp, datasources)
   
   missings <- ds.tableMissings(exp, set, output, datasources)
 

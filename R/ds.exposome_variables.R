@@ -16,17 +16,11 @@
 
 ds.exposome_variables <- function(Set, target = "exposures", datasources = NULL){
   
-  if(!unlist(ds.exists(Set))){
-    stop("The exposome set ('" , Set, "') does not exist on the study server")
-  }
-  
-  if(!(ds.class(Set) == "ExposomeSet")){
-    stop("The study server variable ('" , Set, "') is not of class 'ExposomeSet'")
-  }
-  
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
   }
+  
+  checkForExposomeSet(Set, datasources)
   
   if(target == "exposures"){
     cally <- paste0("exposureNamesDS(", Set, ")")
