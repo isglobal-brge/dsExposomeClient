@@ -193,9 +193,9 @@ ds.exposure_histogram("exposome_object", "BDE209", TRUE)
 We can get a snapshot of the behaviour of the full exposome using the `ds.plotFamily` fuction. This function draws a mosaic of boxplots with all the numeric families of exposures, it can also plot single families and perform grouping inside of them. This function makes use of the `gplot2` library to generate the plots, the plot objects that generates this library have a disadvantage for the goal of DataSHIELD, which is that they contain the dataset used to produce the plot, for that reason the dataset is passed thorugh the `scatterDS` function of `dsBase`, by doing so the data is protected and the actual `ggplot` object contains the same information that would be found when trying to plot a Scatter plot of a variable against itself. Since this process can't be applied to a factor variable, they can't be plotted using this function, as it would disclose the values of it.
 
 ```{r}
-ds.plotFamily("exposome_object", family = "all", method = 1, k = 4, noise = 0.25)
-ds.plotFamily("exposome_object", family = "Phthalates", group = "sex", method = 1, k = 4, noise = 0.25)
-ds.plotFamily("exposome_object", family = "Phthalates", group = "sex", group2 = "rhinitis", method = 1, k = 4, noise = 0.25)
+ds.plotFamily("exposome_object", family = "all")
+ds.plotFamily("exposome_object", family = "Phthalates", group = "sex")
+ds.plotFamily("exposome_object", family = "Phthalates", group = "sex", group2 = "rhinitis")
 ```
 
 
@@ -237,7 +237,40 @@ pca <- ds.exposome_pca("exposome_pca")
 head(pca[,1:4])
 ```
 
+## Exposures Correlation
+
+The correlation between exposures, in terms of intra-family and inter-family exposures, is interesting to take into account. The correlation of the exposome can be computed using `ds.correlation`. The correlation could be disclosive, for that reason there's the argument `fam` to select the families to compute the correlation subsetting the exposome dataset by families, typical complete exposome datasets will fail as the correlation matrix could be disclosive.
+
+```{r}
+ds.correlation("exposome_object")[[1]][[1]]$`Correlation Matrix`[1:5,1:5]
+ds.correlation("exposome_object")[[1]][[1]]$`Error message`
+```
+
+When subsetting the exposome set by families the correlation succeeds.
+
+```{r}
+ds.correlation("exposome_object", c("Metals", "Noise"))[[1]][[1]]$`Correlation Matrix`[1:5,1:5]
+```
+
+The output from the `ds.correlation` consists of the correlation matrix and a vector that contains the names of exposures and families on the correlation table, this second item is used by the `corPlot` function to display the results of the correlation study.
+
+```{r}
+corr_data <- ds.correlation("exposome_object", c("Air Pollutants", "Noise"))
+corPlot(corr_data)
+```
+
+The best option to see the inter-family correlations is the *circos of correlations* while the *matrix of correlations* is a better way for studying the intra-family correlations.
+
+```{r}
+corPlot(corr_data, type = "circos")
+```
+
+
+
+
+
+
+
 ```{r}
 datashield.logout(conns)
 ```
-
