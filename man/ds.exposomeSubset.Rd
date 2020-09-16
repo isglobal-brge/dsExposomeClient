@@ -9,7 +9,7 @@ ds.exposomeSubset(set, fam, name = NULL, datasources = NULL)
 \arguments{
 \item{set}{\code{character} Name of the Exposome Set object on the server side}
 
-\item{fam}{\code{character vector} (default \code{NULL}) Families to subset the exposome dataset}
+\item{fam}{\code{character vector} Families to subset the exposome set}
 
 \item{name}{\code{character} (default \code{NULL}) Name of the new Exposome Set, if null the name 
 will be \code{"set_subsetted"} where \code{"set"} is the inputted argument}

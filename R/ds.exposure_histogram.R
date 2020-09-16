@@ -21,6 +21,10 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
     datasources <- DSI::datashield.connections_find()
   }
   
+  checkForExposomeSet(exp, datasources)
+  
+  checkForExposure(exp, exposure, datasources)
+  
   ds.exposures_pData(exp, "exposures", "dta", datasources)
   
   if(ds.class(paste0("dta$", exposure), datasources) == "numeric"){
@@ -70,7 +74,8 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
     }
   }
   else{ # Factor
-    data <- ds.summary("dta$G_pesticides", datasources)[[1]]
+    warning(paste0("ds.exposure_histogram can't take a non-numeric exposure: ", exposure))
+    plot_h <- NULL
   }
   
   

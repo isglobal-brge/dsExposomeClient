@@ -4,10 +4,12 @@
 \alias{ds.exposome_pca}
 \title{Principal components analysis of an Exposome Set}
 \usage{
-ds.exposome_pca(Set, standar = TRUE, datasources = NULL)
+ds.exposome_pca(Set, fam = NULL, standar = TRUE, datasources = NULL)
 }
 \arguments{
 \item{Set}{\code{character} Name of the exposome set on the study server}
+
+\item{fam}{\code{character vector} (default \code{NULL}) Families to subset the exposome set}
 
 \item{standar}{\code{bool} Whether the values will be normalized prior the analysis (\code{TRUE}) or not (\code{FALSE})
 Default \code{TRUE}}
@@ -18,7 +20,8 @@ Default \code{TRUE}}
 A \code{data.frame} with principal components and variables
 }
 \description{
-Performs a non-disclosive PCA given an Exposome Set
+Performs a non-disclosive PCA given an Exposome Set, the Exposome Set can be subsetted by families to 
+perform the PCA
 }
 \examples{
 \dontrun{Refer to the package Vignette for examples.}

@@ -4,7 +4,7 @@
 #' the new Exposome Set object will be named \code{"set_subsettted"} where \code{"set"} is the inputted argument
 #'
 #' @param set \code{character} Name of the Exposome Set object on the server side
-#' @param fam \code{character vector} (default \code{NULL}) Families to subset the exposome dataset
+#' @param fam \code{character vector} Families to subset the exposome set
 #' @param name \code{character} (default \code{NULL}) Name of the new Exposome Set, if null the name 
 #' will be \code{"set_subsetted"} where \code{"set"} is the inputted argument
 #' @param datasources a list of \code{\link{DSConnection-class}} (default \code{NULL}) objects obtained after login

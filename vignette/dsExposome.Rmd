@@ -190,7 +190,7 @@ ds.exposure_histogram("exposome_object", "BDE209", TRUE)
 
 ### Exposures Behaviour
 
-We can get a snapshot of the behaviour of the full exposome using the `ds.plotFamily` fuction. This function draws a mosaic of boxplots with all the numeric families of exposures, it can also plot single families and perform grouping inside of them. This function makes use of the `gplot2` library to generate the plots, the plot objects that generates this library have a disadvantage for the goal of DataSHIELD, which is that they contain the dataset used to produce the plot, for that reason the dataset is passed thorugh the `scatterDS` function of `dsBase`, by doing so the data is protected and the actual `ggplot` object contains the same information that would be found when trying to plot a Scatter plot of a variable against itself. Since this process can't be applied to a factor variable, they can't be plotted using this function, as it would disclose the values of it.
+We can get a snapshot of the behaviour of the full exposome using the `ds.plotFamily` function. This function draws a mosaic of boxplots with all the numeric families of exposures, it can also plot single families and perform grouping inside of them. This function makes use of the `ggplot2` library to generate the plots. Future plans include displaying non-disclosive plots for non-numeric families.
 
 ```{r}
 ds.plotFamily("exposome_object", family = "all")
@@ -227,13 +227,10 @@ A PCA can be performed on the exposures of the exposome dataset. To do so, there
 ds.exposome_pca("exposome_object", TRUE)
 ```
 
-If that is the case, one option is to reduce the families of exposures of the Exposome Set. There's an already subsetted Exposome Set object available on the `test_data` folder of `dsExposomeClient` for demostration purposes.
+If that is the case, one option is to reduce the families of exposures of the Exposome Set. The `ds.exposome_pca` function has the argument `fam` to select the families to subset the Exposome Set to perform the PCA.
 
 ```{r}
-datashield.assign.resource(conns, symbol = 'exposome_pca', resource = list(server1 = 'EXPOSOME.exposomeSet_PCA'))
-datashield.assign.expr(conns, symbol = "exposome_pca", expr = quote(as.resource.object(exposome_pca)))
-
-pca <- ds.exposome_pca("exposome_pca")
+pca <- ds.exposome_pca("exposome_pca", fam = c("Metals", "Noise"))
 head(pca[,1:4])
 ```
 
