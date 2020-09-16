@@ -30,5 +30,4 @@ Generates the summary of a variable (phenotype or exposure) of a server side 'Ex
 }
 \examples{
 \dontrun{Refer to the package Vignette for examples.}
-
 }

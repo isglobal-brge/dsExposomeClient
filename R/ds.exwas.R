@@ -15,7 +15,7 @@
 #'
 #' @examples 
 #' \dontrun{Refer to the package Vignette for examples.}
-#' 
+#' @export
 
 ds.exwas <- function(model, Set, family, tef = TRUE, datasources = NULL) {
   

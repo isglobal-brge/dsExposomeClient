@@ -19,7 +19,7 @@
 #'
 #' @examples
 #' \dontrun{Refer to the package Vignette for examples.}
-#' 
+#' @export
 
 ds.exposome_summary <- function(Set, variable, datasources = NULL){
   

@@ -24,5 +24,4 @@ Perform a imputation of an Exposome Set on the server side using rexposome base 
 }
 \examples{
 \dontrun{Refer to the package Vignette for examples.}
-
 }

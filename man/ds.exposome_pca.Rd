@@ -22,5 +22,4 @@ Performs a non-disclosive PCA given an Exposome Set
 }
 \examples{
 \dontrun{Refer to the package Vignette for examples.}
-
 }

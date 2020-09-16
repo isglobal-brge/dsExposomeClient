@@ -16,6 +16,7 @@
 #' 
 #' @examples
 #' \dontrun{Refer to the package Vignette for examples.}
+#' @export
 
 ds.normalityTest <- function(object, th = 0.05, min.val = 5, na.rm = TRUE,
                              warnings = TRUE, datasources = NULL){

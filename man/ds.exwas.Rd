@@ -28,5 +28,4 @@ ExWAS association study with the provided model.
 }
 \examples{
 \dontrun{Refer to the package Vignette for examples.}
-
 }

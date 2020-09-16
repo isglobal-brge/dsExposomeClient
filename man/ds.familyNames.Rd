@@ -23,5 +23,4 @@ Get family names from Exposome Set on the server side
 }
 \examples{
 \dontrun{Refer to the package Vignette for examples.}
-
 }

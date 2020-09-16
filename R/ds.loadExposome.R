@@ -28,7 +28,7 @@
 #'
 #' @examples 
 #' \dontrun{Refer to the package Vignette for examples.}
-#' 
+#' @export
 
 ds.loadExposome <- function(exposures, description, phenotypes, 
                             exposures.idcol = "idcol", phenotypes.idcol = "idcol",

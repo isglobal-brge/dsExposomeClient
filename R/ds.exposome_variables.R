@@ -12,6 +12,7 @@
 #'
 #' @examples
 #' \dontrun{Refer to the package Vignette for examples.}
+#' @export
 
 ds.exposome_variables <- function(Set, target = "exposures", datasources = NULL){
   

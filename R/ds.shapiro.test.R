@@ -6,7 +6,7 @@
 #' @param datasources a list of \code{\link{DSConnection-class}} (default \code{NULL}) objects obtained after login
 #'
 #' @return Results of the Shapiro-Wilk Normality Test
-#'
+#' @export
 
 ds.shapiro.test <- function(x, datasources = NULL){
   

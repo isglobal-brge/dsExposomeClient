@@ -28,9 +28,8 @@ the exposure histogram would look like if \code{log/exp/sqrt} transformed}
 List with plot parameters
 }
 \description{
-Get an histogram plot for a selected exposure of a server side Exposome Set
+Get a non-disclosive histogram plot for a selected exposure of a server side Exposome Set
 }
 \examples{
 \dontrun{Refer to the package Vignette for examples.}
-
 }

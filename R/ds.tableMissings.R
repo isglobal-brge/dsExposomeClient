@@ -12,6 +12,7 @@
 #'
 #' @examples
 #' \dontrun{Refer to the package Vignette for examples.}
+#' @export
 
 ds.tableMissings <- function(exp, set = "exposures", output = "n", datasources = NULL){
   

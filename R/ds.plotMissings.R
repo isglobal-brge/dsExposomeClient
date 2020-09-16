@@ -13,6 +13,7 @@
 #'
 #' @examples
 #' \dontrun{Refer to the package Vignette for examples.}
+#' @export
 
 ds.plotMissings <- function(exp, set = "exposures", output = "n", x.max = 100, datasources = NULL){
   if (is.null(datasources)) {

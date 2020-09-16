@@ -9,7 +9,7 @@
 #' @param datasources  a list of \code{\link{DSConnection-class}} objects obtained after login 
 #'
 #' @return This function does not have an output. It creates an Exposome Set object on the study server.
-#' 
+#' @export
 
 ds.subset_type <- function(data, type = "numeric", newobj = NULL, datasources = NULL){
   

@@ -21,10 +21,10 @@
 #'
 #' @examples
 #' \dontrun{Refer to the package Vignette for examples.}
-#' 
+#' @export
 
 ds.plotFamily <- function(x, family, group = NULL, group2 = NULL, scatter = FALSE, 
-                          na.omit=TRUE, method, k, noise, datasources = NULL){
+                          na.omit=TRUE, datasources = NULL){
   
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
@@ -52,12 +52,13 @@ ds.plotFamily <- function(x, family, group = NULL, group2 = NULL, scatter = FALS
     for(ii in 1:nr) {
       for(jj in 1:nc) {
         if(idx < length(ff) + 1) {
-          plt <- ds.plotFamily(x, stringr::str_replace_all(ff[idx], " ", ""), datasources = datasources,
-                               method = method, k = k, noise = noise)[[1]]
-          if(plt[[1]] == FALSE){
-            idx <- idx + 1
-            next
-            }
+          plt <- ds.plotFamily(x, stringr::str_replace_all(ff[idx], " ", ""), datasources = datasources)
+          
+          # if(plt[[1]] == FALSE){
+          #   idx <- idx + 1
+          #   next
+          #   }
+          
           plt <- plt + ggplot2::ggtitle(ff[idx])
           if(jj != 1) {
             plt <- plt + ggplot2::ylab("")
@@ -74,9 +75,16 @@ ds.plotFamily <- function(x, family, group = NULL, group2 = NULL, scatter = FALS
   }
   else{
     cally <- paste0("plotFamilyDS(", x, ", '", stringr::str_replace_all(family, " ", ""), "', ", if(is.null(group)){NA}else{paste0("'",group,"'")}, ", ",
-                    if(is.null(group2)){NA}else{paste0("'",group2,"'")}, ", FALSE, ", na.omit, ", ", method, ", ", k, ", ", noise, ")")
-    pt <- DSI::datashield.aggregate(datasources, as.symbol(cally))
-
-    return(pt)
+                    if(is.null(group2)){NA}else{paste0("'",group2,"'")}, ", FALSE, ", na.omit, ")")
+    DSI::datashield.assign.expr(datasources, "exposomeFamilyPlotData", as.symbol(cally))
+    
+    plt <- tryCatch({
+      ds.boxPlotGG("exposomeFamilyPlotData", group, group2, xlabel = "Exposure", ylabel = "Measure", type = "pooled", datasources)
+    }, error = function(w){
+      ggplot2::ggplot() + ggplot2::geom_blank()
+    })
+      
+    
+    return(plt)
   }
 }

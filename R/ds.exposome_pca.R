@@ -11,7 +11,7 @@
 #' 
 #' @examples
 #' \dontrun{Refer to the package Vignette for examples.}
-#' 
+#' @export
 
 ds.exposome_pca <- function(Set, standar = TRUE, datasources = NULL){
   

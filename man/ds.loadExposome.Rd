@@ -58,5 +58,4 @@ on the study server
 }
 \examples{
 \dontrun{Refer to the package Vignette for examples.}
-
 }

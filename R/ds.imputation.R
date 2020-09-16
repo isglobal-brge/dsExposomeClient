@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' \dontrun{Refer to the package Vignette for examples.}
-#' 
+#' @export
 
 ds.imputation <- function(object, name = NULL, select = NULL, datasources = NULL){
   

@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' \dontrun{Refer to the package Vignette for examples.}
-#' 
+#' @export
 
 ds.familyNames <- function(object, by.exposure = FALSE, datasources = NULL){
   

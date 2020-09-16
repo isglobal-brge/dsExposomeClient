@@ -11,6 +11,7 @@
 #'
 #' @examples
 #' \dontrun{Refer to the package Vignette for examples.}
+#' @export
 
 ds.pca <- function(tab, standar = TRUE, datasources = NULL){
   

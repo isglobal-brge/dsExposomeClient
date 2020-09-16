@@ -11,9 +11,6 @@ ds.plotFamily(
   group2 = NULL,
   scatter = FALSE,
   na.omit = TRUE,
-  method,
-  k,
-  noise,
   datasources = NULL
 )
 }
@@ -31,14 +28,14 @@ on a single mosaic (no grouping is used for the mosaic plot).}
 
 \item{na.omit}{\code{bool} (default \code{TRUE}) Do not show NA values}
 
+\item{datasources}{a list of \code{\link{DSConnection-class}} (default \code{NULL}) objects obtained after login}
+
 \item{method}{\code{numeric} either 1 or 2. If the user selects the deterministic method in the 
 client side function the method.inticator is set to 1 while if the user selects the probabilistic method this argument is set to 2.}
 
 \item{k}{\code{numeric} the number of the nearest neghbours for which their centroid is calculated}
 
 \item{noise}{\code{numeric} the percentage of the initial variance that is used as the variance of}
-
-\item{datasources}{a list of \code{\link{DSConnection-class}} (default \code{NULL}) objects obtained after login}
 }
 \value{
 The function returns a ggplot object when a single family is selected and returns NULL for the mosaic (it renders
@@ -49,5 +46,4 @@ Draw a boxplot for a single family or a mosaic of boxplots for all the families 
 }
 \examples{
 \dontrun{Refer to the package Vignette for examples.}
-
 }
