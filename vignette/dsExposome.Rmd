@@ -230,7 +230,7 @@ ds.exposome_pca("exposome_object", TRUE)
 If that is the case, one option is to reduce the families of exposures of the Exposome Set. The `ds.exposome_pca` function has the argument `fam` to select the families to subset the Exposome Set to perform the PCA.
 
 ```{r}
-pca <- ds.exposome_pca("exposome_pca", fam = c("Metals", "Noise"))
+pca <- ds.exposome_pca("exposome_object", fam = c("Metals", "Noise"))
 head(pca[,1:4])
 ```
 
