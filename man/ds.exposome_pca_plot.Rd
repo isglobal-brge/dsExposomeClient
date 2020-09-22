@@ -9,9 +9,9 @@ ds.exposome_pca_plot(
   set = "all",
   labels = FALSE,
   phenotype = NA,
-  method,
-  k,
-  noise,
+  method = 1,
+  k = 5,
+  noise = 10,
   datasources = NULL
 )
 }

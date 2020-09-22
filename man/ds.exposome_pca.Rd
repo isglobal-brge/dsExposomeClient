@@ -4,7 +4,13 @@
 \alias{ds.exposome_pca}
 \title{Principal components analysis of an Exposome Set}
 \usage{
-ds.exposome_pca(Set, fam = NULL, standar = TRUE, datasources = NULL)
+ds.exposome_pca(
+  Set,
+  fam = NULL,
+  standar = TRUE,
+  method = "normal",
+  datasources = NULL
+)
 }
 \arguments{
 \item{Set}{\code{character} Name of the exposome set on the study server}
