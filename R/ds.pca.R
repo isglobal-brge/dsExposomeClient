@@ -13,46 +13,15 @@
 #' \dontrun{Refer to the package Vignette for examples.}
 #' @export
 
-ds.pca <- function(tab, standar = TRUE, datasources = NULL){
-  
-  if(is.null(tab) | class(tab) != "character"){
-    stop("Input variable 'tab' must have a value which is a character string")
-  }
+# ds.pca <- function(tab, standar = TRUE, datasources = NULL){
+ds.pca <- function(x=NULL, datasources=NULL){
   
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
   }
   
-  DSI::datashield.assign.expr(datasources, symbol = "pca", as.symbol(tab))
-  
-  if(standar){
-    DSI::datashield.assign.expr(datasources, "pca", quote(scaleDS(pca)))
-  }
-  
-  var_cov <- ds.cov(x = "pca", type = "combine", datasources = datasources)$`Variance-Covariance Matrix`
-  # Base svd function is good enough for exposome tables, for larger tables fast.svd from the corpcor 
-  # library may be a good upgrade
-  if(all(is.na(var_cov))){
-    # Remove created variables on the study server
-    datashield.rm(datasources, "pca")
-    # Stop execution of function and return error message
-    stop("The required operations to perform the PCA have disclosure risks, can't perform PCA", call.=FALSE)
-  }
-  
-  var_cov_svd <- svd(var_cov)
-  
-  pca <- data.frame(var_cov_svd$u)
-  
-  rownames_pca <- ds.colnames("pca")
-  rownames(pca) <- rownames_pca[[1]]
-  colnames(pca) <- paste0(rep("PC", length(rownames_pca[[1]])),
-                          seq(from = 1, by = 1, length.out = length(rownames_pca[[1]])))
-
-  # Remove created variables on the study server
-  datashield.rm(datasources, "pca")
-  
-  return(pca)
-
+  cally <- paste0("pcaDS(", x, ")")
+  DSI::datashield.assign.expr(datasources, "ds.pcaResults", as.symbol(cally))
   
 }
 

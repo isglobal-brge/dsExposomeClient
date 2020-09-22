@@ -4,15 +4,15 @@
 \alias{ds.pca}
 \title{Principal components analysis}
 \usage{
-ds.pca(tab, standar = TRUE, datasources = NULL)
+ds.pca(x = NULL, datasources = NULL)
 }
 \arguments{
+\item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
+
 \item{tab}{\code{character} Name of the data frame on the study server (can be of the form \code{table[, 1:10]})}
 
 \item{standar}{\code{bool} Whether the values will be normalized prior the analysis (\code{TRUE}) or not (\code{FALSE})
 Default \code{TRUE}}
-
-\item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
 }
 \value{
 A \code{data.frame} with principal components and variables
