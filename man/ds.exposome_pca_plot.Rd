@@ -2,31 +2,50 @@
 % Please edit documentation in R/ds.exposome_pca_plot.R
 \name{ds.exposome_pca_plot}
 \alias{ds.exposome_pca_plot}
-\title{Title}
+\title{Plot an ExposomeSet PCA}
 \usage{
 ds.exposome_pca_plot(
-  pca_object,
+  pca_object = "ds.exposome_pca.Results",
   set = "all",
   labels = FALSE,
   phenotype = NA,
   method = 1,
-  k = 5,
-  noise = 10,
+  k = 3,
+  noise = 1,
   datasources = NULL
 )
 }
 \arguments{
-\item{pca_object}{}
+\item{pca_object}{\code{character} (default \code{"ds.exposome_pca"}) Name of the PCA ExposomeSet on the study server 
+to visualize. Created by the \code{\link{ds.exposome_pca}} function.}
 
-\item{set}{}
+\item{set}{\code{character} (default \code{"all"}) Argument to specify the type of plot to visualize. Options: \cr
 
-\item{phenotype}{}
+-\code{"all"}: Mosaic plot with the samples, exposures and variance plots. \cr
+-\code{"exposures"}: Plot of the exposures space on the first two principal components, color coded by family. \cr
+-\code{"samples"}: Plot of the individuals space on the first two principal components, this plot can take the
+ `phenotype` argument to color code the individuals by phenotypes. \cr
+-\code{"variance"}: Plot of the variance explained by each principal component. \cr
+-\code{"variance_explained"}: Plot of the accumulated variance explained by each principal component. \cr}
 
-\item{datasources}{}
-}
-\value{
+\item{labels}{\code{bool} (default \code(FALSE)) Show labels of the exposures, only applies to \code{set = "exposures"}.}
 
+\item{phenotype}{\code{character} (default \code{NA}) Phenotype to color code the \code{"exposures"} plot.}
+
+\item{method}{\code{numeric} (default \code{1}) (1) deterministic method to anonimize the scatter plot (uses \code{k}). 
+(2) probabilistic method to anonimize the scatter plot (uses \code{noise}).}
+
+\item{k}{\code{numeric} (default \code{3}) The number of the nearest neighbors for which their centroid is calculated,
+applied for \code{method = 1}}
+
+\item{noise}{\code{numeric} (default \code{1}) The percentage of the initial variance that is used as the variance
+of the embedded noise.}
+
+\item{datasources}{a list of \code{\link{DSConnection-class}} (default \code{NULL}) objects obtained after login}
 }
 \description{
-Title
+Plots the results of a PCA of an ExposomeSet on the server side.
+}
+\examples{
+\dontrun{Refer to the package Vignette for examples.}
 }

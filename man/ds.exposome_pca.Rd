@@ -20,10 +20,17 @@ ds.exposome_pca(
 \item{standar}{\code{bool} Whether the values will be normalized prior the analysis (\code{TRUE}) or not (\code{FALSE})
 Default \code{TRUE}}
 
+\item{method}{\code{character} (default \code("normal")) Method of standarization, only applies when \code{standar}
+is set to \code{TRUE}. Options are \code("normal") which scales the exposures using the mean as the center 
+and the standard variation as dispersion, \code{"robust"} which uses the median and median absolute deviation respectively
+and \code{"interquartile range"} which uses the median as the center and the coeficient between the 
+interquartile range of the exposure and the normal range between the percentile 75 and 25 as variance.}
+
 \item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
 }
 \value{
-A \code{data.frame} with principal components and variables
+This function does not have an output. It creates a object on the study server named \code{ds.exposome_pca.Results},
+this object can be passed to the \code{\link{ds.exposome_pca_plot}} to visualize the results of the PCA.
 }
 \description{
 Performs a non-disclosive PCA given an Exposome Set, the Exposome Set can be subsetted by families to 

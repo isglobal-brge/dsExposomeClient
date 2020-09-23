@@ -2,22 +2,32 @@
 % Please edit documentation in R/ds.standardize.R
 \name{ds.standardize}
 \alias{ds.standardize}
-\title{Title}
+\title{Standardize ExposomeSet}
 \usage{
 ds.standardize(set, method = "normal", name = NULL, datasources = NULL)
 }
 \arguments{
-\item{set}{}
+\item{set}{\code{character} Name of the exposome set on the study server}
 
-\item{method}{}
+\item{method}{\code{character} (default \code("normal")) Method of standarization. 
+Options are \code("normal") which scales the exposures using the mean as the center 
+and the standard variation as dispersion, \code{"robust"} which uses the median and median absolute deviation respectively
+and \code{"interquartile range"} which uses the median as the center and the coeficient between the 
+interquartile range of the exposure and the normal range between the percentile 75 and 25 as variance.}
 
-\item{name}{}
+\item{name}{\code{chraracter} (default \code{NULL}) If \code{NULL}, the standardized ExposomeSet will over-writte
+the input \code{set}, otherwise the standardized ExposomeSet will be saved on the study-server with the name
+specified on this argument.}
 
-\item{datasources}{}
+\item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
 }
 \value{
-
+This function does not have an output. It creates a object on the study server with the standardized
+ExposomeSet, the name of this object depends on the \code{name} input argument.
 }
 \description{
-Title
+Standardize ExposomeSet on the study server
+}
+\examples{
+\dontrun{Refer to the package Vignette for examples.}
 }
