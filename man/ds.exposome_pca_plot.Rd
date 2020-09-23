@@ -26,7 +26,9 @@ to visualize. Created by the \code{\link{ds.exposome_pca}} function.}
 -\code{"samples"}: Plot of the individuals space on the first two principal components, this plot can take the
  `phenotype` argument to color code the individuals by phenotypes. \cr
 -\code{"variance"}: Plot of the variance explained by each principal component. \cr
--\code{"variance_explained"}: Plot of the accumulated variance explained by each principal component. \cr}
+-\code{"variance_explained"}: Plot of the accumulated variance explained by each principal component. \cr
+-\code{"exposures_correlation"}: Correlation between principal components and exposures \cr
+-\code{"phenotypes_correlation"}: Association between principal components and phenotypes \cr}
 
 \item{labels}{\code{bool} (default \code(FALSE)) Show labels of the exposures, only applies to \code{set = "exposures"}.}
 

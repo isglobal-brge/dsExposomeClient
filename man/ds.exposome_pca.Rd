@@ -33,8 +33,8 @@ This function does not have an output. It creates a object on the study server n
 this object can be passed to the \code{\link{ds.exposome_pca_plot}} to visualize the results of the PCA.
 }
 \description{
-Performs a non-disclosive PCA given an Exposome Set, the Exposome Set can be subsetted by families to 
-perform the PCA
+Performs a non-disclosive PCA given an Exposome Set on the study server, 
+the Exposome Set can be subsetted by families to perform the PCA
 }
 \examples{
 \dontrun{Refer to the package Vignette for examples.}

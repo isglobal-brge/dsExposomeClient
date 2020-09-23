@@ -9,7 +9,7 @@ ds.standardize(set, method = "normal", name = NULL, datasources = NULL)
 \arguments{
 \item{set}{\code{character} Name of the exposome set on the study server}
 
-\item{method}{\code{character} (default \code("normal")) Method of standarization. 
+\item{method}{\code{character} (default \code{"normal"}) Method of standarization. 
 Options are \code("normal") which scales the exposures using the mean as the center 
 and the standard variation as dispersion, \code{"robust"} which uses the median and median absolute deviation respectively
 and \code{"interquartile range"} which uses the median as the center and the coeficient between the 

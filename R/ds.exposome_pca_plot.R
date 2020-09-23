@@ -12,6 +12,8 @@
 #'  `phenotype` argument to color code the individuals by phenotypes. \cr
 #' -\code{"variance"}: Plot of the variance explained by each principal component. \cr
 #' -\code{"variance_explained"}: Plot of the accumulated variance explained by each principal component. \cr
+#' -\code{"exposures_correlation"}: Correlation between principal components and exposures \cr
+#' -\code{"phenotypes_correlation"}: Association between principal components and phenotypes \cr
 #' 
 #' @param labels \code{bool} (default \code(FALSE)) Show labels of the exposures, only applies to \code{set = "exposures"}.
 #' @param phenotype \code{character} (default \code{NA}) Phenotype to color code the \code{"exposures"} plot.

@@ -1,7 +1,7 @@
 #' @title Principal components analysis of an Exposome Set
 #' 
-#' @description Performs a non-disclosive PCA given an Exposome Set, the Exposome Set can be subsetted by families to 
-#' perform the PCA
+#' @description Performs a non-disclosive PCA given an Exposome Set on the study server, 
+#' the Exposome Set can be subsetted by families to perform the PCA
 #'
 #' @param Set \code{character} Name of the exposome set on the study server
 #' @param fam \code{character vector} (default \code{NULL}) Families to subset the exposome set
@@ -43,9 +43,7 @@ ds.exposome_pca <- function(Set, fam = NULL, standar = TRUE, method = "normal", 
   
   checkForExposomeSet(Set, datasources)
   
-  ds.exposures_pData(Set, "all", "ds.exposome_pca.dataset", datasources)
-  
-  cally <- paste0("exposome_pcaDS(", Set, ", ", "ds.exposome_pca.dataset", ")")
+  cally <- paste0("exposome_pcaDS(", Set, ")")
   DSI::datashield.assign.expr(datasources, "ds.exposome_pca.Results", as.symbol(cally))
   
   if(standar){
