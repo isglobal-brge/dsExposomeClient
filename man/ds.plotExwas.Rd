@@ -2,18 +2,22 @@
 % Please edit documentation in R/ds.plotExwas.R
 \name{ds.plotExwas}
 \alias{ds.plotExwas}
-\title{Title}
+\title{Plot ExWAS results}
 \usage{
 ds.plotExwas(exwas, type)
 }
 \arguments{
-\item{exwas}{}
+\item{exwas}{\code{list} Output of \code{\link{ds.exwas}}}
 
-\item{type}{}
+\item{type}{\code{character} Type of plot \code{"manhattan"} for a manhattan plot (p-values),
+\code{"effect"} for a plot of the exposures effects.}
 }
 \value{
-
+\code{ggplot} object
 }
 \description{
-Title
+Two different plots for the results of \code{\link{ds.exwas}}.
+}
+\examples{
+\dontrun{Refer to the package Vignette for examples.}
 }

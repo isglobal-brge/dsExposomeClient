@@ -19,8 +19,8 @@ ds.exwas(model, Set, family, tef = TRUE, datasources = NULL)
 }
 \value{
 \code{list} that contains: \cr
-- \code{data.frame} with exposure name, coefficient and p-value of the association \cr
-- \code{numeric} effective tests
+- exwas_results: \code{data.frame} with exposure name, coefficient and p-value of the association \cr
+- alpha_corrected: \code{numeric} effective tests
 }
 \description{
 Takes as input an Exposome Set object on the study server and performs a 

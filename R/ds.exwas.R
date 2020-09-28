@@ -10,8 +10,8 @@
 #' @param tef \code{bool} If \code{TRUE} computes the threshold for effective tests.
 #'
 #' @return \code{list} that contains: \cr
-#' - \code{data.frame} with exposure name, coefficient and p-value of the association \cr
-#' - \code{numeric} effective tests
+#' - exwas_results: \code{data.frame} with exposure name, coefficient and p-value of the association \cr
+#' - alpha_corrected: \code{numeric} effective tests
 #'
 #' @examples 
 #' \dontrun{Refer to the package Vignette for examples.}
