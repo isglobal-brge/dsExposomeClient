@@ -54,32 +54,34 @@ ds.exwas <- function(model, Set, family, tef = TRUE, datasources = NULL) {
     tryCatch({
       # Fit GLM using the non-disclosive function
       mod <- ds.glm(frm, family = family, data = 'dta', viewIter = FALSE)
-      items <- rbind(items, cbind(exposure, mod$coefficients[2], mod$coefficients[5]))
-    }, error = function(e){print("lesgo")})
+      items <- rbind(items, cbind(exposure, mod$coefficients[2, 1], mod$coefficients[2, 5], 
+                                  mod$coefficients[2, 6], mod$coefficients[2, 4]))
+      # return(mod$coefficients)
+    }, error = function(e){print("ds.GLM error")})
 
   }
 
-  colnames(items) <- c("exposure", "coefficient", "p-value")
+  colnames(items) <- c("exposure", "coefficient", "minE", "maxE", "p.value")
+  
+  items <- as.data.frame(items)
+  
+  # Add column with family
+    # Retrive association of family - exposures
+  assoc <- ds.familyNames(Set, TRUE)[[1]]
+  assoc <- data.frame(family = assoc, exposure = names(assoc))
+  
+  items <- merge(assoc, items)
+  
+  items$coefficient <- as.numeric(as.character(items$coefficient))
+  items$p.value <- as.numeric(as.character(items$p.value))
+  items$minE <- as.numeric(as.character(items$minE))
+  items$maxE <- as.numeric(as.character(items$maxE))
+  
   
   if(tef){
-    # Extract table with exposures and save it on the server (assign)
-    cally <- paste0("exposures_pData(", Set, ", 'exposures')")
-    DSI::datashield.assign.expr(datasources, "dta_exposures", as.symbol(cally))
-    # Extract correlation matrix
-    corr <- ds.cor(x = "dta_exposures", naAction = "casewise.complete", type = "combine")
-    # If it's potentially disclosive it will be full of NA
-    if(all(is.na(corr$`Correlation Matrix`))){
-      # If potentially disclosive display warning and return alpha_corrected = 0
-      warning("Can't compute number of effective tests as it may be disclosive", call. = FALSE)
-      alpha_corrected <- 0
-    }
-    else{
-      M <- ncol(corr$`Correlation Matrix`)
-      lambdas <- base::eigen(corr$`Correlation Matrix`)$values
-      Vobs <- sum(((lambdas - 1)^2)) / (M - 1)
-      Meff <- M - sum((lambdas>1)*(lambdas-1))
-      alpha_corrected <- 1 - (1 - 0.05)^(1 / Meff)
-    }
+    # Get threshold for effective tests from the study server
+    cally <- paste0("effective.testsDS(", Set, ")")
+    alpha_corrected <- DSI::datashield.aggregate(datasources, as.symbol(cally))[[1]]
   }
   else{
     alpha_corrected <- 0
