@@ -1,8 +1,0 @@
-Non-disclosive descriptive statistics can be obtained from the exposome dataset, the function `ds.exposome_summary` is in charge of that. It can obtain descriptive statistics from numeric and factor variables of the exposome dataset (both from exposures and phenotypes). 
-
-```{r}
-# Numerical variable
-ds.exposome_summary("exposome_object", "PM25", conns)
-# Factor variable
-ds.exposome_summary("exposome_object", "flu", conns)
-```

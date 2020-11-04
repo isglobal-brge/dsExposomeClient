@@ -1,1 +1,0 @@
-An exposome dataset is made up from [three different tables](https://www.bioconductor.org/packages/release/bioc/vignettes/rexposome/inst/doc/exposome_data_analysis.html#data-format). In order to be studied, this three tables need to be coerced into a R object of class `ExposomeSet`, for that reason an exposome dataset can be available on a server as three tables or as a resource.

@@ -1,5 +1,0 @@
-The missings of an exposome dataset can be imputed using the `ds.imputation` function, which calls the rexposome function `imputation` on the study server. Refer to the documentation of rexposome for details about the imputation procedures.
-
-```{r}
-ds.imputation("exposome_object", "exposome_object_imputed")
-```
