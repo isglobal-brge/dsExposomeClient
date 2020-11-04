@@ -3,5 +3,4 @@ We can get a snapshot of the behaviour of the full exposome using the `ds.plotFa
 ```{r}
 ds.plotFamily("exposome_object", family = "all")
 ds.plotFamily("exposome_object", family = "Phthalates", group = "sex")
-ds.plotFamily("exposome_object", family = "Phthalates", group = "sex", group2 = "rhinitis")
 ```

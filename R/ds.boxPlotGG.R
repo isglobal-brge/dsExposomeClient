@@ -34,38 +34,48 @@ ds.boxPlotGG <- function(x, group = NULL, group2 = NULL, xlabel = "x axis", ylab
                   if(is.null(group2)){paste0("NULL")}else{paste0("'",group2,"'")}, ")")
   
   pt <- DSI::datashield.aggregate(datasources, as.symbol(cally))
-
+  # return(pt)
   if(type == "pooled"){
     num_servers <- length(names(datasources))
-    lower <- matrix(0, nrow = nrow(pt[[1]][[1]]), ncol = 1)
-    upper <- matrix(0, nrow = nrow(pt[[1]][[1]]), ncol = 1)
-    ymin <- matrix(0, nrow = nrow(pt[[1]][[1]]), ncol = 1)
-    ymax <- matrix(0, nrow = nrow(pt[[1]][[1]]), ncol = 1)
-    middle <- matrix(0, nrow = nrow(pt[[1]][[1]]), ncol = 1)
-    n <- matrix(0, nrow = nrow(pt[[1]][[1]]), ncol = 1)
-    for(i in 1:num_servers){
-      lower <- lower + pt[[i]][[1]]$lower * pt[[i]]$counts$n
-      upper <- upper + pt[[i]][[1]]$upper * pt[[i]]$counts$n
-      ymin <- ymin + pt[[i]][[1]]$ymin * pt[[i]]$counts$n
-      ymax <- ymax + pt[[i]][[1]]$ymax * pt[[i]]$counts$n
-      middle <- middle + pt[[i]][[1]]$middle * pt[[i]]$counts$n
-      n <- n + pt[[i]]$counts$n
-    }
+    pt <- lapply(pt, function(x) {x$data$ymin <- x$data$ymin * x$counts$n;
+                                  x$data$lower <- x$data$lower * x$counts$n;
+                                  x$data$middle <- x$data$middle * x$counts$n;
+                                  x$data$upper <- x$data$upper * x$counts$n;
+                                  x$data$ymax <- x$data$ymax * x$counts$n;
+                                  x$data$PANEL <- as.numeric(x$data$PANEL) * x$counts$n;
+                                  x$data$n <- x$counts$n;
+                                  x$data$x_var <- rep(x[[2]], each = nrow(x$data)/length(x[[2]]));
+                                  x$data$group <- x$data$group * x$counts$n;
+                                  return(x)})
+
     
-    pt[[1]][[1]]$lower <- lower / n
-    pt[[1]][[1]]$upper <- upper / n
-    pt[[1]][[1]]$ymin <- ymin / n
-    pt[[1]][[1]]$ymax <- ymax / n
-    pt[[1]][[1]]$middle <- middle / n
+    # return(pt)
+    
+    pt_merged <- NULL
+    for(i in 1:num_servers){
+      pt_merged <- rbind(pt_merged, pt[[i]]$data)
+    }
+    pt_merged <- data.table::data.table(pt_merged)
+    if(!is.null(group)){
+      pt_merged <- aggregate(.~fill+x_var, pt_merged, sum)  
+    }
+    else{pt_merged <- aggregate(.~x_var, pt_merged, sum)  }
+    pt_merged$ymin <- pt_merged$ymin / pt_merged$n
+    pt_merged$lower <- pt_merged$lower / pt_merged$n
+    pt_merged$middle <- pt_merged$middle / pt_merged$n
+    pt_merged$upper <- pt_merged$upper / pt_merged$n
+    pt_merged$ymax <- pt_merged$ymax / pt_merged$n
+    pt_merged$PANEL <- as.numeric(pt_merged$PANEL) / pt_merged$n
+    
+    # return(pt_merged)
     
     if(pt[[1]][[length(pt[[1]])]] == "single_group"){
-      plt <- ggplot2::ggplot(pt[[1]][[1]]) +
-        ggplot2::geom_boxplot(stat = "identity", ggplot2::aes(x=x, lower=lower,
+      plt <- ggplot2::ggplot(pt_merged) +
+        ggplot2::geom_boxplot(stat = "identity", ggplot2::aes(x=x_var, lower=lower,
                                                               upper=upper, ymin=ymin,
                                                               ymax=ymax, middle=middle,
-                                                              group = group, fill = fill)) +
-        ggplot2::scale_x_discrete(limits = levels(pt[[1]][[2]])) +
-        ggplot2::scale_fill_brewer(name = "Group", labels = rev((levels(pt[[1]][[3]])))) +
+                                                              fill = fill)) +
+        ggplot2::scale_fill_brewer(name = "Group") +
         ggplot2::xlab(xlabel) +
         ggplot2::ylab(ylabel) +
         ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
@@ -75,26 +85,26 @@ ds.boxPlotGG <- function(x, group = NULL, group2 = NULL, xlabel = "x axis", ylab
       supp.labs <- as.character(levels(pt[[1]][[4]]))
       names(supp.labs) <- seq(from = 1, length.out = length(pt[[1]][[4]]))
       
-      plt <- ggplot2::ggplot(pt[[1]][[1]]) +
-        ggplot2::geom_boxplot(stat = "identity", ggplot2::aes(x=x, lower=lower,
+      plt <- ggplot2::ggplot(pt_merged) +
+        ggplot2::geom_boxplot(stat = "identity", ggplot2::aes(x=x_var, lower=lower,
                                                               upper=upper, ymin=ymin,
                                                               ymax=ymax, middle=middle,
-                                                              group = group, fill = fill)) +
+                                                              fill = fill, group = group)) +
         ggplot2::facet_wrap(~ PANEL, labeller = ggplot2::labeller(PANEL = supp.labs)) +
-        ggplot2::scale_x_discrete(limits = levels(pt[[1]][[2]])) +
-        ggplot2::scale_fill_brewer(name = "Group", labels = rev((as.character(levels(pt[[1]][[3]]))))) +
+        # ggplot2::scale_x_discrete(limits = levels(pt[[1]][[2]])) +
+        ggplot2::scale_fill_brewer(name = "Group") +
         ggplot2::xlab(xlabel) +
         ggplot2::ylab(ylabel) +
         ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
     }
     else{
-      plt <- ggplot2::ggplot(pt[[1]][[1]]) +
-        ggplot2::geom_boxplot(stat = "identity", ggplot2::aes(x=x, lower=lower,
+      # return(pt_merged)
+      plt <- ggplot2::ggplot(pt_merged) +
+        ggplot2::geom_boxplot(stat = "identity", ggplot2::aes(x=x_var, lower=lower,
                                                               upper=upper, ymin=ymin,
-                                                              ymax=ymax, middle=middle,
-                                                              group = group)) +
-        ggplot2::scale_x_discrete(limits = levels(pt[[1]][[2]])) +
-        ggplot2::scale_fill_brewer(name = "Group", labels = (pt[[1]][[3]])) +
+                                                              ymax=ymax, middle=middle)) +
+        # ggplot2::scale_x_discrete(limits = levels(pt[[1]][[2]])) +
+        ggplot2::scale_fill_brewer(name = "Group") +
         ggplot2::xlab(xlabel) +
         ggplot2::ylab(ylabel) +
         ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
@@ -102,17 +112,22 @@ ds.boxPlotGG <- function(x, group = NULL, group2 = NULL, xlabel = "x axis", ylab
     
   }
   else if(type == "split"){ 
+    pt <- lapply(pt, function(x) {
+                    x$data$n <- x$counts$n;
+                    x$data$x_var <- rep(x[[2]], each = nrow(x$data)/length(x[[2]]));
+    return(x)})
+    
     num_servers <- length(names(datasources))
     plt <- NULL
     for(i in 1:num_servers){
       if(pt[[i]][[length(pt[[i]])]] == "single_group"){
         plt[[i]] <- ggplot2::ggplot(pt[[i]][[1]]) +
-          ggplot2::geom_boxplot(stat = "identity", ggplot2::aes(x=x, lower=lower,
+          ggplot2::geom_boxplot(stat = "identity", ggplot2::aes(x=x_var, lower=lower,
                                                                 upper=upper, ymin=ymin,
                                                                 ymax=ymax, middle=middle,
-                                                                group = group, fill = fill)) +
-          ggplot2::scale_x_discrete(limits = levels(pt[[i]][[2]])) +
-          ggplot2::scale_fill_brewer(name = "Group", labels = rev((levels(pt[[i]][[3]])))) +
+                                                                fill = fill)) +
+          # ggplot2::scale_x_discrete(limits = levels(pt[[i]][[2]])) +
+          ggplot2::scale_fill_brewer(name = "Group") +
           ggplot2::xlab(xlabel) +
           ggplot2::ylab(ylabel) +
           ggplot2::ggtitle(paste0("Server: ", names(datasources[i]))) +
@@ -124,13 +139,13 @@ ds.boxPlotGG <- function(x, group = NULL, group2 = NULL, xlabel = "x axis", ylab
         names(supp.labs) <- seq(from = 1, length.out = length(pt[[i]][[4]]))
         
         plt[[i]] <- ggplot2::ggplot(pt[[i]][[1]]) +
-          ggplot2::geom_boxplot(stat = "identity", ggplot2::aes(x=x, lower=lower,
+          ggplot2::geom_boxplot(stat = "identity", ggplot2::aes(x=x_var, lower=lower,
                                                                 upper=upper, ymin=ymin,
                                                                 ymax=ymax, middle=middle,
-                                                                group = group, fill = fill)) +
+                                                                fill = fill)) +
           ggplot2::facet_wrap(~ PANEL, labeller = ggplot2::labeller(PANEL = supp.labs)) +
-          ggplot2::scale_x_discrete(limits = levels(pt[[i]][[2]])) +
-          ggplot2::scale_fill_brewer(name = "Group", labels = rev((as.character(levels(pt[[i]][[3]]))))) +
+          # ggplot2::scale_x_discrete(limits = levels(pt[[i]][[2]])) +
+          ggplot2::scale_fill_brewer(name = "Group") +
           ggplot2::xlab(xlabel) +
           ggplot2::ylab(ylabel) +
           ggplot2::ggtitle(paste0("Server: ", names(datasources[i]))) +
@@ -138,12 +153,11 @@ ds.boxPlotGG <- function(x, group = NULL, group2 = NULL, xlabel = "x axis", ylab
       }
       else{
         plt[[i]] <- ggplot2::ggplot(pt[[i]][[1]]) +
-          ggplot2::geom_boxplot(stat = "identity", ggplot2::aes(x=x, lower=lower,
+          ggplot2::geom_boxplot(stat = "identity", ggplot2::aes(x=x_var, lower=lower,
                                                                 upper=upper, ymin=ymin,
-                                                                ymax=ymax, middle=middle,
-                                                                group = group)) +
-          ggplot2::scale_x_discrete(limits = levels(pt[[i]][[2]])) +
-          ggplot2::scale_fill_brewer(name = "Group", labels = (pt[[i]][[3]])) +
+                                                                ymax=ymax, middle=middle)) +
+          # ggplot2::scale_x_discrete(limits = levels(pt[[i]][[2]])) +
+          # ggplot2::scale_fill_brewer(name = "Group", labels = (pt[[i]][[3]])) +
           ggplot2::xlab(xlabel) +
           ggplot2::ylab(ylabel) +
           ggplot2::ggtitle(paste0("Server: ", names(datasources[i]))) +
