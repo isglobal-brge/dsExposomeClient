@@ -64,6 +64,7 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
       datashield.rm(datasources, "dta_sqrt")
     }
     else{
+      pdf(NULL)
       hist <- ds.histogram(x = paste0("dta$", exposure), ...)
       dev.off()
       hist_pval <- ds.shapiro.test(paste0("dta$", exposure))[[1]]$p.value
