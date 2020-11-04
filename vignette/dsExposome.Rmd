@@ -38,267 +38,126 @@ knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=FALSE)
 
 ## Loading the Exposome Set
 
-An exposome dataset is made up from [three different tables](https://www.bioconductor.org/packages/release/bioc/vignettes/rexposome/inst/doc/exposome_data_analysis.html#data-format). In order to be studied, this three tables need to be coerced into a R object of class `ExposomeSet`, for that reason an exposome dataset can be available on a server as three tables or as a resource.
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/loading_data.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/loading_data.Rmd"))
+```
+
+```{r child='/chapter1/loading_data.Rmd', include=FALSE}
+```
 
 ### From tables to `ExposomeSet`
 
-To coerce the three tables that make the exposome dataset into an `ExposomeSet` R object, the tables have to be loaded inside the same study server. On this example, the tables are on the demo Opal server as resources, which means they have to be loaded on the study server and be coerced as data frames; for more information read the [resourcer](https://cran.r-project.org/web/packages/resourcer/index.html) package documentation. 
-
-```{r}
-library(dsBaseClient)
-library(dsExposomeClient)
-library(DSOpal)
-
-builder <- newDSLoginBuilder()
-builder$append(server = "server1", url = "https://opal-demo.obiba.org/",
-               user = "administrator", password = "password",
-               driver = "OpalDriver")
-logindata <- builder$build()
-conns <- datashield.login(logins = logindata)
-
-datashield.assign.resource(conns, symbol = 'description', resource = list(server1 = 'EXPOSOME.description'))
-ds.class('description')
-datashield.assign.expr(conns, symbol = "description", expr = quote(as.resource.data.frame(description)))
-ds.class('description')
-
-datashield.assign.resource(conns, symbol = 'exposures', resource = list(server1 = 'EXPOSOME.exposures'))
-datashield.assign.expr(conns, symbol = "exposures", expr = quote(as.resource.data.frame(exposures)))
-
-datashield.assign.resource(conns, symbol = 'phenotypes', resource = list(server1 = 'EXPOSOME.phenotypes'))
-datashield.assign.expr(conns, symbol = "phenotypes", expr = quote(as.resource.data.frame(phenotypes)))
-
-ds.ls()
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/tables_to_exposome.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/tables_to_exposome.Rmd"))
 ```
 
-If the tables are on the Opal server as tables instead of resources, the lines after the `datashield.login` would look like this
-
-```{r eval = FALSE}
-# Don't run this code, the tables are not on the demo Opal server, it's just for demostration purposes
-datashield.assign.table(conns, symbol = 'description', table = list(server1 = 'EXPOSOME.description_table'))
-
-  # Repeat for the other two tables
-```
-
-When there are tables on the Opal server they can be directly loaded to the study server as data frames, there is no need to perform the `as.data.frame` assignation.
-
-To coerce the three tables to the `ExposomeSet` object, the `dsExposomeClient` library has the `ds.loadExposome()` function, which takes as input parameters the names of the tables on the study server among some further configuration options, refer to the function documentation for more information.
-
-```{r}
-ds.loadExposome("exposures", "description", "phenotypes", "idnum", "idnum", "Exposure", "Family", 5, FALSE, "exposome_object")
-ds.class("exposome_object")
+```{r child='/chapter1/tables_to_exposome.Rmd', include=FALSE}
 ```
 
 ### From resource to `ExposomeSet`
 
-When there's an `ExposomeSet` resource available, it just needs to be loaded into the study server
-
-```{r}
-datashield.assign.resource(conns, symbol = 'exposome_resource', resource = list(server1 = 'EXPOSOME.exposomeSet'))
-
-ds.ls()
-ds.class("exposome_resource")
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/resource_to_exposome.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/resource_to_exposome.Rmd"))
 ```
 
-Once on the study server, the resource has to be coerced into an R object
-
-```{r}
-datashield.assign.expr(conns, symbol = "exposome_resource", expr = quote(as.resource.object(exposome_resource)))
-ds.class("exposome_resource")
+```{r child='/chapter1/resource_to_exposome.Rmd', include=FALSE}
 ```
 
 ## Exploring the loaded dataset
 
-Once the Exposome datasets are loaded on the study servers, some simple functions can be used to have some understanding of what the dataset contains. Those correspond to the name of the exposures, the names of the families of the exposures and the name of the phenotypes.
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/exploring_dataset.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/exploring_dataset.Rmd"))
+```
+
+```{r child='/chapter1/exploring_dataset.Rmd', include=FALSE}
+```
 
 ### Family names
 
-To get the names of the families of exposures present on the exposome set, there's the `ds.familyNames` function, it can take the parameter `by.exposure = TRUE` to list the family names and the exposures that contain each family.
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/family_names.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/family_names.Rmd"))
+```
 
-```{r}
-ds.familyNames("exposome_object")
-head(ds.familyNames("exposome_object", TRUE)$server1)
+```{r child='/chapter1/family_names.Rmd', include=FALSE}
 ```
 
 ### Exposures and phenotypes names
 
-To get the names of the exposures or phenotypes (or both combined) there's the function `ds.exposome_variables`, it takes as argument `exposures`, `phenotypes` or `all` to retrieve the desired names.
-
-```{r}
-head(ds.exposome_variables("exposome_object" , "exposures", conns)$server1)
-ds.exposome_variables("exposome_object" , "phenotypes", conns)
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/exp_pheno_names.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/exp_pheno_names.Rmd"))
 ```
 
-
-
+```{r child='/chapter1/exp_pheno_names.Rmd', include=FALSE}
+```
 
 ### Summary of variables
 
-Non-disclosive descriptive statistics can be obtained from the exposome dataset, the function `ds.exposome_summary` is in charge of that. It can obtain descriptive statistics from numeric and factor variables of the exposome dataset (both from exposures and phenotypes). 
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/summary_variables.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/summary_variables.Rmd"))
+```
 
-```{r}
-# Numerical variable
-ds.exposome_summary("exposome_object", "PM25", conns)
-# Factor variable
-ds.exposome_summary("exposome_object", "flu", conns)
+```{r child='/chapter1/summary_variables.Rmd', include=FALSE}
 ```
 
 ### Missing data
 
-The number of missing data on each exposure and on each phenotype can be found by using the function `ds.tableMissings`. This function returns a vector with the amount of missing data in each exposure or phenotype. The argument `set` indicates if the number of missing values is counted on exposures or phenotypes. The argument `output` indicates if it is shown as counts (`output="n"`) or as percentage (`output="p"`).
-
-```{r}
-ds.tableMissings("exposome_object", set = "exposures")
-ds.tableMissings("exposome_object", set = "phenotypes")
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/missing_data.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/missing_data.Rmd"))
 ```
 
-Optionally, there's also the `ds.plotMissings` function which returns a `ggplot` object with a barplot of missings for exposures or phenotypes, there's the option of displaying the percentage of missings as well as total counts, check the function documentation for further information.
-
-```{r}
-ds.plotMissings("exposome_object", "exposures", "p")
+```{r child='/chapter1/missing_data.Rmd', include=FALSE}
 ```
-
-Please note that since this function call returns a `ggplot` object, it can be plotted properly to avoid squished Y axis when there are lots of exposures, read the [official documentation](https://ggplot2.tidyverse.org/reference/ggsave.html) for information on how to do that.
 
 ### Exposures Normality
 
-Most of the test done in *exposome* analysis requires that the exposures must follow a normal distribution. The function `ds.normalityTest` performs a test on each exposure for normality behaviour. The result is a `data.frame` with the exposures’ names, a flag `TRUE`/`FALSE` for normality and the p-value obtained from the *Shapiro-Wilk* Normality Test (if the p-value is under the threshold, then the exposure is not normal).
-
-```{r}
-nm <- ds.normalityTest("exposome_object")
-table(nm$server1$normality)
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/exposures_normality.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/exposures_normality.Rmd"))
 ```
 
-So, the exposures that do not follow a normal distribution are:
-
-```{r}
-nm$server1$exposure[!nm$server1$normality]
-```
-
-The `ds.normalityTest` function has some extra input arguments to tune the normality test, check the function documentation for further information.
-
-The exposures can be visualized using non-disclosive histograms to see their distribution.
-
-```{r results = FALSE}
-ds.exposure_histogram("exposome_object", "BDE209")
-```
-
-If the selected exposure is not following a normal distribution, the function `ds.exposure_histogram` accepts the argument `show.trans` to visualize the raw data histogram plus three typical transformations (`exp`, `log` and `sqrt`).
-
-```{r results = FALSE}
-ds.exposure_histogram("exposome_object", "BDE209", TRUE)
+```{r child='/chapter1/exposures_normality.Rmd', include=FALSE}
 ```
 
 ### Exposures Behaviour
 
-We can get a snapshot of the behaviour of the full exposome using the `ds.plotFamily` function. This function draws a mosaic of boxplots with all the numeric families of exposures, it can also plot single families and perform grouping inside of them. This function makes use of the `ggplot2` library to generate the plots. Future plans include displaying non-disclosive plots for non-numeric families.
-
-```{r}
-ds.plotFamily("exposome_object", family = "all")
-ds.plotFamily("exposome_object", family = "Phthalates", group = "sex")
-ds.plotFamily("exposome_object", family = "Phthalates", group = "sex", group2 = "rhinitis")
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/exposures_behaviour.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/exposures_behaviour.Rmd"))
 ```
 
+```{r child='/chapter1/exposures_behaviour.Rmd', include=FALSE}
+```
 
 ## Exposures Imputation
 
-The missings of an exposome dataset can be imputed using the `ds.imputation` function, which calls the rexposome function `imputation` on the study server. Refer to the documentation of rexposome for details about the imputation procedures.
-
-```{r}
-ds.imputation("exposome_object", "exposome_object_imputed")
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/exposures_imputation.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/exposures_imputation.Rmd"))
 ```
 
+```{r child='/chapter1/exposures_imputation.Rmd', include=FALSE}
+```
 
 ## Performing an ExWAS
 
-When the `ExposomeSet` object is on the study the server, the function `ds.exwas` is in charge of performing the ExWAS. As an example let's present a situation where each exposition has to be associated to the `blood_pre` phenotype using the phenotype `sex` as a covariate. This study would be done as follows
-
-```{r}
-exwas_results <- ds.exwas("blood_pre ~ sex", "exposome_object", "gaussian")
-head(exwas_results$exwas_results)
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/exwas.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/exwas.Rmd"))
 ```
 
-The model is inputed as a string, where the left side term is the objective phenotype, and the right term are the covariates, in the case of wanting more covariates proceed as: `objective ~ cov1 + cov2 + ... + covN`. It's important noting that if the output family (third argument) does not match the objective family, the ExWAS will fail (Example: The objective family is `binomial` and the user sets it to `gaussian`).
-
-To visualize the results from the ExWAS, the function `ds.plotExwas` takes the output of `ds.exwas` and creates two different visualizations. A Manhattan-like plot with the p-values of the association between each exposure and asthma, coloured by families of exposures:
-
-```{r fig.width=10, fig.height=12}
-ds.plotExwas(exwas_results, "manhattan")
+```{r child='/chapter1/exwas.Rmd', include=FALSE}
 ```
-
-Also, a plot for the effects of a given model can be obtained with:
-
-```{r fig.width=10, fig.height=12}
-ds.plotExwas(exwas_results, "effect")
-```
-
-
-
 
 ## Exposures PCA
 
-A PCA can be performed on the exposures of the exposome dataset. To do so, there's the `ds.exposome_pca`. The exposures should be standardized in order to perform the PCA properly, to do so, there's the arguments `standar` and `method`, which standardize the Exposome Set before performing the PCA following the specified `method`. The available methods are `normal` (default method), which scales the exposures using the mean as the center and the standard variation as dispersion; the `robust` method, which uses the median and median absolute deviation respectively; and, `interquartile range`, which uses the median as the center and the coeficient between the interquartile range of the exposure and the normal range between the percentile 75 and 25 as variance. It is important noting that this function is sensitive to be disclosive, specially for very rectangular data frames (similar number of variables as individuals). To illustrate this problem, let's try to perform a PCA on the whole exposures test data.
-
-```{r error = TRUE}
-ds.exposome_pca("exposome_object", standar = TRUE)
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/pca.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/pca.Rmd"))
 ```
 
-If that is the case, one option is to reduce the families of exposures of the Exposome Set. The `ds.exposome_pca` function has the argument `fam` to select the families to subset the Exposome Set to perform the PCA.
-
-```{r}
-ds.exposome_pca("exposome_object", fam = c("Metals", "Noise"), standar = TRUE)
-```
-
-The PCA function saves the results on the study server to prevent any dislosures, the default variable they take is called `"ds.exposome_pca.Results"`, which has to be passed to the visualization function. To visualize the results of the PCA there is the function `ds.exposome_pca_plot`, this function relies on the visualization methods already implemented on `rexposome` for the PCA analysis, it does it however on a non-disclosive way, by passing the scatter plot points through an anonimization process, hence the arguments `k`, `method` and `noise`. The visualization is controlled with the `set` argument, which takes `"all"` (mosaic of plots of the PCA), `"exposures"` (plot of the exposures space on the first two principal components, color coded by family), `"samples"` (plot of the individuals space on the first two principal components, this plot can take the `phenotype` argument to color code the individuals by phenotypes), `"variance"` and `"variance_explained"`, the two variance plots are quite self explanatory, the color code on the `"variance"` highlights the first two principal components as they are the ones shown on the other drawings.
-
-```{r results = FALSE}
-ds.exposome_pca_plot("ds.exposome_pca.Results", set = "all", method = 1, k = 3, noise = 5)
-ds.exposome_pca_plot("ds.exposome_pca.Results", set = "samples", phenotype = "sex", method = 1, k = 3, noise = 5)
-ds.exposome_pca_plot("ds.exposome_pca.Results", set = "exposures", method = 1, k = 3, noise = 5)
-ds.exposome_pca_plot("ds.exposome_pca.Results", set = "variance", method = 1, k = 3, noise = 5)
-ds.exposome_pca_plot("ds.exposome_pca.Results", set = "variance_explained", method = 1, k = 3, noise = 5)
-```
-
-Furthermore, the `ds.exposome_pca_plot` function can plot the correlations betweeen the principal components and the exposures and the association of the phenotypes with the principal components. This two visualizations can be obtained by setting the `set` argument to `"exposures_correlation"` and `"phenotypes_correlation"` respectively.
-
-```{r}
-ds.exposome_pca_plot("ds.exposome_pca.Results", set = "exposures_correlation")
-ds.exposome_pca_plot("ds.exposome_pca.Results", set = "phenotypes_correlation")
+```{r child='/chapter1/pca.Rmd', include=FALSE}
 ```
 
 ## Exposures Correlation
 
-The correlation between exposures, in terms of intra-family and inter-family exposures, is interesting to take into account. The correlation of the exposome can be computed using `ds.correlation`. The correlation could be disclosive, for that reason there's the argument `fam` to select the families to compute the correlation subsetting the exposome dataset by families, typical complete exposome datasets will fail as the correlation matrix could be disclosive.
-
-```{r}
-ds.correlation("exposome_object")[[1]][[1]]$`Correlation Matrix`[1:5,1:5]
-ds.correlation("exposome_object")[[1]][[1]]$`Error message`
+```{r include = FALSE}
+download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/correlation.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/correlation.Rmd"))
 ```
 
-When subsetting the exposome set by families the correlation succeeds.
-
-```{r}
-ds.correlation("exposome_object", c("Metals", "Noise"))[[1]][[1]]$`Correlation Matrix`[1:5,1:5]
-```
-
-The output from the `ds.correlation` consists of the correlation matrix and a vector that contains the names of exposures and families on the correlation table, this second item is used by the `corPlot` function to display the results of the correlation study.
-
-```{r}
-corr_data <- ds.correlation("exposome_object", c("Metals", "Noise"))
-corPlot(corr_data)
-```
-
-The best option to see the inter-family correlations is the *circos of correlations* while the *matrix of correlations* is a better way for studying the intra-family correlations.
-
-```{r}
-corPlot(corr_data, type = "circos")
-```
-
-
-
-
-
-
-
-```{r}
-datashield.logout(conns)
+```{r child='/chapter1/correlation.Rmd', include=FALSE}
 ```

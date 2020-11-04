@@ -1,0 +1,45 @@
+To coerce the three tables that make the exposome dataset into an `ExposomeSet` R object, the tables have to be loaded inside the same study server. On this example, the tables are on the demo Opal server as resources, which means they have to be loaded on the study server and be coerced as data frames; for more information read the [resourcer](https://cran.r-project.org/web/packages/resourcer/index.html) package documentation. 
+
+```{r}
+library(dsBaseClient)
+library(dsExposomeClient)
+library(DSOpal)
+
+builder <- newDSLoginBuilder()
+builder$append(server = "server1", url = "https://opal-demo.obiba.org/",
+               user = "administrator", password = "password",
+               driver = "OpalDriver")
+logindata <- builder$build()
+conns <- datashield.login(logins = logindata)
+
+datashield.assign.resource(conns, symbol = 'description', resource = list(server1 = 'EXPOSOME.description'))
+ds.class('description')
+datashield.assign.expr(conns, symbol = "description", expr = quote(as.resource.data.frame(description)))
+ds.class('description')
+
+datashield.assign.resource(conns, symbol = 'exposures', resource = list(server1 = 'EXPOSOME.exposures'))
+datashield.assign.expr(conns, symbol = "exposures", expr = quote(as.resource.data.frame(exposures)))
+
+datashield.assign.resource(conns, symbol = 'phenotypes', resource = list(server1 = 'EXPOSOME.phenotypes'))
+datashield.assign.expr(conns, symbol = "phenotypes", expr = quote(as.resource.data.frame(phenotypes)))
+
+ds.ls()
+```
+
+If the tables are on the Opal server as tables instead of resources, the lines after the `datashield.login` would look like this
+
+```{r eval = FALSE}
+# Don't run this code, the tables are not on the demo Opal server, it's just for demostration purposes
+datashield.assign.table(conns, symbol = 'description', table = list(server1 = 'EXPOSOME.description_table'))
+
+# Repeat for the other two tables
+```
+
+When there are tables on the Opal server they can be directly loaded to the study server as data frames, there is no need to perform the `as.data.frame` assignation.
+
+To coerce the three tables to the `ExposomeSet` object, the `dsExposomeClient` library has the `ds.loadExposome()` function, which takes as input parameters the names of the tables on the study server among some further configuration options, refer to the function documentation for more information.
+
+```{r}
+ds.loadExposome("exposures", "description", "phenotypes", "idnum", "idnum", "Exposure", "Family", 5, FALSE, "exposome_object")
+ds.class("exposome_object")
+```
