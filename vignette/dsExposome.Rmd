@@ -42,7 +42,7 @@ knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=FALSE)
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/loading_data.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/loading_data.Rmd"))
 ```
 
-```{r child='/chapter1/loading_data.Rmd', include=FALSE}
+```{r child='/chapter1/loading_data.Rmd', include=TRUE}
 ```
 
 ### From tables to `ExposomeSet`
@@ -51,7 +51,7 @@ download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vign
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/tables_to_exposome.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/tables_to_exposome.Rmd"))
 ```
 
-```{r child='/chapter1/tables_to_exposome.Rmd', include=FALSE}
+```{r child='/chapter1/tables_to_exposome.Rmd', include=TRUE}
 ```
 
 ### From resource to `ExposomeSet`
@@ -60,7 +60,7 @@ download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vign
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/resource_to_exposome.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/resource_to_exposome.Rmd"))
 ```
 
-```{r child='/chapter1/resource_to_exposome.Rmd', include=FALSE}
+```{r child='/chapter1/resource_to_exposome.Rmd', include=TRUE}
 ```
 
 ## Exploring the loaded dataset
@@ -69,7 +69,7 @@ download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vign
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/exploring_dataset.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/exploring_dataset.Rmd"))
 ```
 
-```{r child='/chapter1/exploring_dataset.Rmd', include=FALSE}
+```{r child='/chapter1/exploring_dataset.Rmd', include=TRUE}
 ```
 
 ### Family names
@@ -78,7 +78,7 @@ download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vign
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/family_names.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/family_names.Rmd"))
 ```
 
-```{r child='/chapter1/family_names.Rmd', include=FALSE}
+```{r child='/chapter1/family_names.Rmd', include=TRUE}
 ```
 
 ### Exposures and phenotypes names
@@ -87,7 +87,7 @@ download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vign
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/exp_pheno_names.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/exp_pheno_names.Rmd"))
 ```
 
-```{r child='/chapter1/exp_pheno_names.Rmd', include=FALSE}
+```{r child='/chapter1/exp_pheno_names.Rmd', include=TRUE}
 ```
 
 ### Summary of variables
@@ -96,7 +96,7 @@ download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vign
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/summary_variables.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/summary_variables.Rmd"))
 ```
 
-```{r child='/chapter1/summary_variables.Rmd', include=FALSE}
+```{r child='/chapter1/summary_variables.Rmd', include=TRUE}
 ```
 
 ### Missing data
@@ -105,7 +105,7 @@ download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vign
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/missing_data.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/missing_data.Rmd"))
 ```
 
-```{r child='/chapter1/missing_data.Rmd', include=FALSE}
+```{r child='/chapter1/missing_data.Rmd', include=TRUE}
 ```
 
 ### Exposures Normality
@@ -114,7 +114,7 @@ download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vign
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/exposures_normality.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/exposures_normality.Rmd"))
 ```
 
-```{r child='/chapter1/exposures_normality.Rmd', include=FALSE}
+```{r child='/chapter1/exposures_normality.Rmd', include=TRUE}
 ```
 
 ### Exposures Behaviour
@@ -123,7 +123,7 @@ download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vign
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/exposures_behaviour.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/exposures_behaviour.Rmd"))
 ```
 
-```{r child='/chapter1/exposures_behaviour.Rmd', include=FALSE}
+```{r child='/chapter1/exposures_behaviour.Rmd', include=TRUE}
 ```
 
 ## Exposures Imputation
@@ -132,7 +132,7 @@ download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vign
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/exposures_imputation.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/exposures_imputation.Rmd"))
 ```
 
-```{r child='/chapter1/exposures_imputation.Rmd', include=FALSE}
+```{r child='/chapter1/exposures_imputation.Rmd', include=TRUE}
 ```
 
 ## Performing an ExWAS
@@ -141,7 +141,7 @@ download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vign
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/exwas.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/exwas.Rmd"))
 ```
 
-```{r child='/chapter1/exwas.Rmd', include=FALSE}
+```{r child='/chapter1/exwas.Rmd', include=TRUE}
 ```
 
 ## Exposures PCA
@@ -150,7 +150,7 @@ download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vign
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/pca.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/pca.Rmd"))
 ```
 
-```{r child='/chapter1/pca.Rmd', include=FALSE}
+```{r child='/chapter1/pca.Rmd', include=TRUE}
 ```
 
 ## Exposures Correlation
@@ -159,5 +159,5 @@ download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vign
 download.file("https://github.com/isglobal-brge/dsExposomeClient/raw/master/vignette/correlation.Rmd", paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/chapter1/correlation.Rmd"))
 ```
 
-```{r child='/chapter1/correlation.Rmd', include=FALSE}
+```{r child='/chapter1/correlation.Rmd', include=TRUE}
 ```

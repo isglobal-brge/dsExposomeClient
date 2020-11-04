@@ -1,0 +1,6 @@
+To get the names of the families of exposures present on the exposome set, there's the `ds.familyNames` function, it can take the parameter `by.exposure = TRUE` to list the family names and the exposures that contain each family.
+
+```{r}
+ds.familyNames("exposome_object")
+head(ds.familyNames("exposome_object", TRUE)$server1)
+```
