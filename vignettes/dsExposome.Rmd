@@ -23,7 +23,7 @@ vignette: >
 ```{r setup, include=FALSE}
 BiocStyle::markdown()
 options(width=80)
-knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=FALSE)
+knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=TRUE)
 ```
 
 # Introduction
@@ -69,93 +69,93 @@ Therefore, we will assume that the user will have either an `ExposomeSet` object
 
 
 
-```{r child='loading_data.Rmd', include=TRUE}
+```{r child='rmd/loading_data.Rmd', include=TRUE}
 ```
 
 ### From tables to `ExposomeSet`
 
 
 
-```{r child='tables_to_exposome.Rmd', include=TRUE}
+```{r child='rmd/tables_to_exposome.Rmd', include=TRUE}
 ```
 
 ### From resource to `ExposomeSet`
 
 
-```{r child='resource_to_exposome.Rmd', include=TRUE}
+```{r child='rmd/resource_to_exposome.Rmd', include=TRUE}
 ```
 
 ## Exploring the loaded dataset
 
 
 
-```{r child='exploring_dataset.Rmd', include=TRUE}
+```{r child='rmd/exploring_dataset.Rmd', include=TRUE}
 ```
 
 ### Family names
 
 
 
-```{r child='family_names.Rmd', include=TRUE}
+```{r child='rmd/family_names.Rmd', include=TRUE}
 ```
 
 ### Exposures and phenotypes names
 
 
 
-```{r child='exp_pheno_names.Rmd', include=TRUE}
+```{r child='rmd/exp_pheno_names.Rmd', include=TRUE}
 ```
 
 ### Summary of variables
 
 
 
-```{r child='summary_variables.Rmd', include=TRUE}
+```{r child='rmd/summary_variables.Rmd', include=TRUE}
 ```
 
 ### Missing data
 
 
 
-```{r child='missing_data.Rmd', include=TRUE}
+```{r child='rmd/missing_data.Rmd', include=TRUE}
 ```
 
 ### Exposures Normality
 
 
-```{r child='exposures_normality.Rmd', include=TRUE}
+```{r child='rmd/exposures_normality.Rmd', include=TRUE}
 ```
 
 ### Exposures Behaviour
 
 
 
-```{r child='exposures_behaviour.Rmd', include=TRUE}
+```{r child='rmd/exposures_behaviour.Rmd', include=TRUE}
 ```
 
 ## Exposures Imputation
 
 
 
-```{r child='exposures_imputation.Rmd', include=TRUE}
+```{r child='rmd/exposures_imputation.Rmd', include=TRUE}
 ```
 
 ## Performing an ExWAS
 
 
 
-```{r child='exwas.Rmd', include=TRUE}
+```{r child='rmd/exwas.Rmd', include=TRUE}
 ```
 
 ## Exposures PCA
 
 
 
-```{r child='pca.Rmd', include=TRUE}
+```{r child='rmd/pca.Rmd', include=TRUE}
 ```
 
 ## Exposures Correlation
 
 
-```{r child='correlation.Rmd', include=TRUE}
+```{r child='rmd/correlation.Rmd', include=TRUE}
 ```
