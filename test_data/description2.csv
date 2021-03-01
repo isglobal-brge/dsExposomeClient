@@ -1,0 +1,36 @@
+Family,Exposure,Name
+Organochlorines,DDE,Dichlorodiphenyldichloroethylene
+Organochlorines,DDT,Dichlorodiphenyltrichloroethane
+Organochlorines,HCB,Hexachlorobenzene
+Organochlorines,bHCH,β-hexachlorocyclohexane
+Organochlorines,PCB118,Polychlorinated biphenyl -118
+Organochlorines,PCB153,Polychlorinated biphenyl -153
+Organochlorines,PCB180,Polychlorinated biphenyl -180
+Organochlorines,PCB138,Polychlorinated biphenyl -138
+PBDEs,BDE17,Polybrominated diphenyl ether -17
+PBDEs,BDE28,Polybrominated diphenyl ether -28
+PBDEs,BDE71,Polybrominated diphenyl ether -71
+PBDEs,BDE47,Polybrominated diphenyl ether -47
+PBDEs,BDE66,Polybrominated diphenyl ether -66
+PBDEs,BDE100,Polybrominated diphenyl ether -100
+PBDEs,BDE99,Polybrominated diphenyl ether -99
+PBDEs,BDE85,Polybrominated diphenyl ether -85
+PBDEs,BDE154,Polybrominated diphenyl ether -154
+PBDEs,BDE153,Polybrominated diphenyl ether -153
+PBDEs,BDE138,Polybrominated diphenyl ether -138
+PBDEs,BDE183,Polybrominated diphenyl ether -183
+PBDEs,BDE190,Polybrominated diphenyl ether -190
+PBDEs,BDE209,Polybrominated diphenyl ether -209
+Metals,Hg,Mercury
+Metals,Co,Cobalt
+Metals,Ni,Nickel
+Metals,As,Asenic
+Metals,Cu,Copper
+Metals,Zn,Zinc
+Metals,Se,Selenium
+Metals,Mo,Molybdenum
+Metals,Cd,Cadmium
+Metals,Sb,Antimony
+Metals,Cs,Cesium
+Metals,Tl,Thallium
+Metals,Pb,Lead

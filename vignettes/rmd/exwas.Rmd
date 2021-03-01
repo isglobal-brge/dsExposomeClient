@@ -5,16 +5,52 @@ exwas_results <- ds.exwas("blood_pre ~ sex", "exposome_object", "gaussian")
 head(exwas_results$exwas_results)
 ```
 
+This previous formula will fit linear models between the exposures and phenotype as follows:
+
+```
+    phenotype ~ exposure_1 + covar1 + ... + covarN
+    phenotype ~ exposure_2 + covar1 + ... + covarN
+    phenotype ~ exposure_3 + covar1 + ... + covarN
+    ...
+    phenotype ~ exposure_M + covar1 + ... + covarN
+```
+
 The model is inputted as a string, where the left side term is the objective phenotype, and the right term are the covariates, in the case of wanting more covariates proceed as: `objective ~ cov1 + cov2 + ... + covN`. It's important noting that if the output family (third argument) does not match the objective family, the ExWAS will fail (Example: The objective family is `binomial` and the user sets it to `gaussian`).
 
 To visualize the results from the ExWAS, the function `ds.plotExwas` takes the output of `ds.exwas` and creates two different visualizations. A Manhattan-like plot with the p-values of the association between each exposure and asthma, coloured by families of exposures:
   
-  ```{r fig.width=10, fig.height=12}
+```{r fig.width=10, fig.height=12}
 ds.plotExwas(exwas_results, "manhattan")
 ```
 
 Also, a plot for the effects of a given model can be obtained with:
   
-  ```{r fig.width=10, fig.height=12}
+```{r fig.width=10, fig.height=12}
 ds.plotExwas(exwas_results, "effect")
 ```
+
+The ExWAS can also be applied as an inverse ExWAS, meaning that the linear models are the following:
+
+```
+    exposure_1 ~ phenotype + covar1 + ... + covarN
+    exposure_2 ~ phenotype + covar1 + ... + covarN
+    exposure_3 ~ phenotype + covar1 + ... + covarN
+    ...
+    exposure_M ~ phenotype + covar1 + ... + covarN
+```
+
+The funcion to perform this analysis is `ds.invExWAS`. The same example of the ExWAS would be written as:
+
+```{r}
+inverse_exwas_results <- ds.invExWAS(" ~ blood_pre + sex", "exposome_object", "gaussian")
+head(inverse_exwas_results$exwas_results)
+```
+
+Note that in this case only right side term need to be supplied on the formula.
+
+The same plotting functions can be used with the object returned by the inverse ExWAS analysis.
+
+```{r}
+ds.plotExwas(inverse_exwas_results, "manhattan")
+```
+

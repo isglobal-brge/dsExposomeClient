@@ -12,7 +12,7 @@
 #' \dontrun{Refer to the package Vignette for examples.}
 #' @export
 
-ds.plotExwas <- function(exwas, type){
+ds.plotExwas <- function(exwas, type = "manhattan"){
   
   exwas$exwas_results$dir <- ifelse(exwas$exwas_results$coefficient >= 0,"+", "-")
   
