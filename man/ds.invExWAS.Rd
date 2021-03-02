@@ -2,22 +2,36 @@
 % Please edit documentation in R/ds.invExWAS.R
 \name{ds.invExWAS}
 \alias{ds.invExWAS}
-\title{Title}
+\title{Performs a non-disclosive Inverse EXposome-Wide Association Study}
 \usage{
-ds.invExWAS(object, formula, tef = TRUE, datasources = NULL)
+ds.invExWAS(
+  object,
+  phenotype,
+  covariables = NULL,
+  tef = TRUE,
+  datasources = NULL
+)
 }
 \arguments{
-\item{object}{}
+\item{object}{\code{character} Name of the Exposome Set object on the server side}
 
-\item{formula}{}
+\item{phenotype}{\code{character} Phenotype objective}
 
-\item{tef}{}
+\item{covariables}{\code{character vector} Adjusting phenotype covariables}
 
-\item{datasources}{}
+\item{tef}{\code{bool} If \code{TRUE} computes the threshold for effective tests.}
+
+\item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
 }
 \value{
-
+\code{list} that contains: \cr
+- exwas_results: \code{data.frame} with exposure name, coefficient and p-value of the association \cr
+- alpha_corrected: \code{numeric} effective tests
 }
 \description{
-Title
+Takes as input an Exposome Set object on the study server and performs an 
+Inverse ExWAS association study with the provided model.
+}
+\examples{
+\dontrun{Refer to the package Vignette for examples.}
 }

@@ -42,7 +42,7 @@ The ExWAS can also be applied as an inverse ExWAS, meaning that the linear model
 The funcion to perform this analysis is `ds.invExWAS`. The same example of the ExWAS would be written as:
 
 ```{r}
-inverse_exwas_results <- ds.invExWAS(" ~ blood_pre + sex", "exposome_object", "gaussian")
+inverse_exwas_results <- ds.invExWAS("exposome_object", phenotype =  "blood_pre", covariables = "sex")
 head(inverse_exwas_results$exwas_results)
 ```
 
@@ -50,7 +50,7 @@ Note that in this case only right side term need to be supplied on the formula.
 
 The same plotting functions can be used with the object returned by the inverse ExWAS analysis.
 
-```{r}
+```{r fig.width=10, fig.height=12}
 ds.plotExwas(inverse_exwas_results, "manhattan")
 ```
 

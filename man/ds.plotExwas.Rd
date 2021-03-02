@@ -4,7 +4,7 @@
 \alias{ds.plotExwas}
 \title{Plot ExWAS results}
 \usage{
-ds.plotExwas(exwas, type)
+ds.plotExwas(exwas, type = "manhattan")
 }
 \arguments{
 \item{exwas}{\code{list} Output of \code{\link{ds.exwas}}}
