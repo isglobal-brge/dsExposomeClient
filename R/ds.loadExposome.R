@@ -40,7 +40,7 @@ ds.loadExposome <- function(exposures, description, phenotypes,
     stop("Input variable 'exposures' must have a value which is a character string")
   }
   
-  if(is.null(description) | class(description) != "character"){
+  if(!is.null(description) & class(description) != "character"){
     stop("Input variable 'description' must have a value which is a character string")
   }
   
@@ -53,7 +53,7 @@ ds.loadExposome <- function(exposures, description, phenotypes,
   }
   
 
-  cally <- paste0("loadExposomeDS(", exposures, ", ", description, ", ", phenotypes, ", '",
+  cally <- paste0("loadExposomeDS(", exposures, ", ", if(is.null(description)){"NULL"}else{description}, ", ", phenotypes, ", '",
                   exposures.idcol, "', '", phenotypes.idcol, "', '", description.expCol, "', '",
                   description.famCol, "', ", exposures.asFactor, ", ", warnings, ")")
 
