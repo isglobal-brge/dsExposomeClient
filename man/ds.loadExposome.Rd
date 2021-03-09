@@ -21,7 +21,8 @@ ds.loadExposome(
 \arguments{
 \item{exposures}{\code{character} Name of the exposures variable on the study server}
 
-\item{description}{\code{character} Name of the description variable on the study server}
+\item{description}{\code{character} Name of the description variable on the study server. If there is no description file 
+input \code{NULL}, each exposure will be assigned the same family name as it's exposure name.}
 
 \item{phenotypes}{\code{character} Name of the phenotypes variable on the study server}
 

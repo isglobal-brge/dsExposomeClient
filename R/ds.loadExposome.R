@@ -4,7 +4,8 @@
 #' on the study server
 #'
 #' @param exposures \code{character} Name of the exposures variable on the study server
-#' @param description \code{character} Name of the description variable on the study server
+#' @param description \code{character} Name of the description variable on the study server. If there is no description file 
+#' input \code{NULL}, each exposure will be assigned the same family name as it's exposure name.
 #' @param phenotypes \code{character} Name of the phenotypes variable on the study server
 #' @param exposures.idcol \code{character} (default \code{"idcol"}) Name of the column in the Exposures file
 #' that contains the individuals ID
@@ -52,7 +53,6 @@ ds.loadExposome <- function(exposures, description, phenotypes,
     datasources <- DSI::datashield.connections_find()
   }
   
-
   cally <- paste0("loadExposomeDS(", exposures, ", ", if(is.null(description)){"NULL"}else{description}, ", ", phenotypes, ", '",
                   exposures.idcol, "', '", phenotypes.idcol, "', '", description.expCol, "', '",
                   description.famCol, "', ", exposures.asFactor, ", ", warnings, ")")

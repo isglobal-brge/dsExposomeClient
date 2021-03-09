@@ -43,3 +43,4 @@ To coerce the three tables to the `ExposomeSet` object, the `dsExposomeClient` l
 ds.loadExposome("exposures", "description", "phenotypes", "idnum", "idnum", "Exposure", "Family", 5, FALSE, "exposome_object")
 ds.class("exposome_object")
 ```
+
