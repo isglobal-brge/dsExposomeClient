@@ -1,5 +1,7 @@
 To coerce the three tables that make the exposome dataset into an `ExposomeSet` R object, the tables have to be loaded inside the same study server. On this example, the tables are on the demo Opal server as resources, which means they have to be loaded on the study server and be coerced as data frames; for more information read the [resourcer](https://cran.r-project.org/web/packages/resourcer/index.html) package documentation. 
 
+There is the option of using only two tables: the exposures and phenotypes. An example is provided at the end of this section.
+
 ```{r}
 library(dsBaseClient)
 library(dsExposomeClient)
@@ -44,3 +46,9 @@ ds.loadExposome("exposures", "description", "phenotypes", "idnum", "idnum", "Exp
 ds.class("exposome_object")
 ```
 
+If the exposome data only consists of the exposures and phenotypes file, just input `NULL` instead of a description table. When no description file is provided, each exposure will be assigned the same family as itself. This can be seen on the following example.
+
+```{r}
+ds.loadExposome("exposures", NULL, "phenotypes", "idnum", "idnum", "Exposure", "Family", 5, FALSE, "exposome_object_no_description")
+ds.familyNames("exposome_object_no_description")
+```
