@@ -51,7 +51,9 @@ ds.plotExwas <- function(exwas, type = "manhattan"){
       ggplot2::xlab("effect")
   }
   else{stop(paste0("Invalid plot type: ", type))}
-  
+  if(identical(exwas$exwas_results$exposure, exwas$exwas_results$family)){
+    plt <- plt + aes(color = NULL)
+  }
   return(plt)
   
 }
