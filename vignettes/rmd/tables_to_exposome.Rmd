@@ -1,6 +1,4 @@
-To coerce the three tables that make the exposome dataset into an `ExposomeSet` R object, the tables have to be loaded inside the same study server. On this example, the tables are on the demo Opal server as resources, which means they have to be loaded on the study server and be coerced as data frames; for more information read the [resourcer](https://cran.r-project.org/web/packages/resourcer/index.html) package documentation. 
-
-There is the option of using only two tables: the exposures and phenotypes. An example is provided at the end of this section.
+We first start by loading both exposome and phenotype data into the study servers. On this example, the tables are on the demo Opal server as resources, which means they have to be loaded on the study server and be coerced as data frames; for more information read the [resourcer](https://cran.r-project.org/web/packages/resourcer/index.html) package documentation. Of course, the user may also have this information in Opal tables that can also be loaded into the servers using [standard DataSHIELD functions](https://isglobal-brge.github.io/resource_bookdown/datashield.html#demo). 
 
 ```{r}
 library(dsBaseClient)
@@ -14,11 +12,6 @@ builder$append(server = "server1", url = "https://opal-demo.obiba.org/",
 logindata <- builder$build()
 conns <- datashield.login(logins = logindata)
 
-datashield.assign.resource(conns, symbol = 'description', resource = list(server1 = 'EXPOSOME.description'))
-ds.class('description')
-datashield.assign.expr(conns, symbol = "description", expr = quote(as.resource.data.frame(description)))
-ds.class('description')
-
 datashield.assign.resource(conns, symbol = 'exposures', resource = list(server1 = 'EXPOSOME.exposures'))
 datashield.assign.expr(conns, symbol = "exposures", expr = quote(as.resource.data.frame(exposures)))
 
@@ -28,27 +21,67 @@ datashield.assign.expr(conns, symbol = "phenotypes", expr = quote(as.resource.da
 ds.ls()
 ```
 
-If the tables are on the Opal server as tables instead of resources, the lines after the `datashield.login` would look like this
-
-```{r eval = FALSE}
-# Don't run this code, the tables are not on the demo Opal server, it's just for demostration purposes
-datashield.assign.table(conns, symbol = 'description', table = list(server1 = 'EXPOSOME.description_table'))
-
-# Repeat for the other two tables
-```
-
-When there are tables on the Opal server they can be directly loaded to the study server as data frames, there is no need to perform the `as.data.frame` assignation.
-
-To coerce the three tables to the `ExposomeSet` object, the `dsExposomeClient` library has the `ds.loadExposome()` function, which takes as input parameters the names of the tables on the study server among some further configuration options, refer to the function documentation for more information.
+As it can be seen, there are two objects in the opal server  (`exposures` and `phenotypes`) that are the required ones for `dsExposomeClient` package. Note that both have a common variable ( `idnum` in our case) that will be used to link the two objects when creating the `ExposomeSet`
 
 ```{r}
-ds.loadExposome("exposures", "description", "phenotypes", "idnum", "idnum", "Exposure", "Family", 5, FALSE, "exposome_object")
+ds.colnames("exposures")
+ds.colnames("phenotypes")
+```
+
+Now, we are ready to create the  `ExposomeSet` object. To this end, the `ds.loadExposome ()` function should be used. It  takes as input parameters the names of the objects on the study server among some further configuration options. Please, refer to the function documentation for more information.
+
+```{r}
+ds.loadExposome(exposures = "exposures", 
+                phenotypes = "phenotypes", 
+                exposures.idcol = "idnum", 
+                phenotypes.idcol = "idnum", 
+                object_name = "exposome_object")
+
 ds.class("exposome_object")
 ```
 
-If the exposome data only consists of the exposures and phenotypes file, just input `NULL` instead of a description table. When no description file is provided, each exposure will be assigned the same family as itself. This can be seen on the following example.
+
+The function also allows to incorporate metadata on the exposures that can be used to improve results visualization. This requires to have another object (in our case called `description`) that can be loaded into the Opal server as
+
+```{r load_description}
+datashield.assign.resource(conns, symbol = 'description', resource = list(server1 = 'EXPOSOME.description'))
+ds.class('description')
+datashield.assign.expr(conns, symbol = "description", expr = quote(as.resource.data.frame(description)))
+ds.class('description')
+```
+
+In our case this is the metadata we have
 
 ```{r}
-ds.loadExposome("exposures", NULL, "phenotypes", "idnum", "idnum", "Exposure", "Family", 5, FALSE, "exposome_object_no_description")
-ds.familyNames("exposome_object_no_description")
+ds.colnames("description")
 ```
+
+
+Then, the `ExposomeSet` is created by adding further information to `dsloadExposome ()` function
+
+
+```{r load_wiht_descr}
+ds.loadExposome(exposures = "exposures",
+                phenotypes = "phenotypes", 
+                exposures.idcol = "idnum", 
+                phenotypes.idcol = "idnum",
+                description = "description",
+                description.expCol = "Exposure",
+                description.famCol = "Family",
+                object_name = "exposome_object")
+
+ds.class("exposome_object")
+```
+
+**NOTE:** In this vignette we are using this object that contains information on family exposures. All the following functions will also work if `description` is not provided since when `description = NULL` the `ExposomeSet` object will have the family name as the exposure one:
+
+```
+Exposure    Family
+PFOA        PFOA
+pm2.5       pm2.5
+pm10        pm10
+smoke       smoke
+...               ....
+```` 
+
+

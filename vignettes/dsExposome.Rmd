@@ -63,23 +63,25 @@ The EXPOSOME project contains 4 resources. One `ExposomeSet` object and three ot
 ![Resources available in the EXPOSOME Opal project](figures/resources_exposome.png)
 
 
-Therefore, we will assume that the user will have either an `ExposomeSet` object or different text/Excel files having exposome data. Next, we illustrate how to perform the main analyses using `ds.Exposome` and `ds.ExposomeClient` packages. 
+Therefore, we will assume that the user will have either an `ExposomeSet` object or different text/Excel files having exposome data. The `ds.Exposome` package should also be installed into the Opal server (see [here](https://isglobal-brge.github.io/resource_bookdown/tips-and-tricks.html#how-to-install-datashield-packages-into-opal-server) to know how to do it). 
 
-## Loading the Exposome Set
+Next, we illustrate how to perform the main analyses using `ds.ExposomeClient` packages that should be installed in the R client side by using
 
+```{r install_dsExposome, eval=FALSE}
+devtools::install_github("isglobal-brge/dsExposomeClient")
+```
+
+## Creating the required  `ExposomeSet` object
 
 
 ```{r child='rmd/loading_data.Rmd', include=TRUE}
 ```
 
-### From tables to `ExposomeSet`
-
-
 
 ```{r child='rmd/tables_to_exposome.Rmd', include=TRUE}
 ```
 
-### From resource to `ExposomeSet`
+### Loading the required `ExposomeSet` object from a *resource*.
 
 
 ```{r child='rmd/resource_to_exposome.Rmd', include=TRUE}

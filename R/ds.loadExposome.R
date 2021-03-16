@@ -4,13 +4,13 @@
 #' on the study server
 #'
 #' @param exposures \code{character} Name of the exposures variable on the study server
-#' @param description \code{character} Name of the description variable on the study server. If there is no description file 
-#' input \code{NULL}, each exposure will be assigned the same family name as it's exposure name.
 #' @param phenotypes \code{character} Name of the phenotypes variable on the study server
 #' @param exposures.idcol \code{character} (default \code{"idcol"}) Name of the column in the Exposures file
 #' that contains the individuals ID
 #' @param phenotypes.idcol \code{character} (default \code{"idcol"}) Name of the column in the Phenotypes file
 #' that contains the individuals ID
+#' @param description \code{character} Name of the description variable on the study server. If there is no description file 
+#' input \code{NULL}, each exposure will be assigned the same family name as it's exposure name (default value).
 #' @param description.expCol \code{character} (default \code{"exposure"}) Name of the column in the Description file
 #' that contains the Exposure names
 #' @param description.famCol \code{character} (default \code{"family"}) Name of column where the family's
@@ -31,8 +31,9 @@
 #' \dontrun{Refer to the package Vignette for examples.}
 #' @export
 
-ds.loadExposome <- function(exposures, description, phenotypes, 
+ds.loadExposome <- function(exposures, phenotypes, 
                             exposures.idcol = "idcol", phenotypes.idcol = "idcol",
+                            description = NULL, 
                             description.expCol = "exposure", description.famCol = "family", 
                             exposures.asFactor = 5, warnings = FALSE, object_name = "exposome_set", 
                             datasources = NULL) {
