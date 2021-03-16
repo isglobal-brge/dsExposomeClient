@@ -39,7 +39,7 @@ ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "
   cally <- paste0("exposome_pca_plotDS(", pca_object, ", set = '", set, "', phenotype = ", 
                   if(is.na(phenotype)){paste0("NA")}else{paste0("'",phenotype,"'")}, ", ", method,
                   ", ", k, ", ", noise, ")")
-  output <- DSI::datashield.aggregate(datasources, as.symbol(cally))[[1]]
+  output <- if(set != "all"){DSI::datashield.aggregate(datasources, as.symbol(cally))[[1]]}
 
   if(set == "exposures"){
     plt <- ggplot2::ggplot(output$data) + 
