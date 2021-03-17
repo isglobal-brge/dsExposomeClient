@@ -1,4 +1,4 @@
-When there's an `ExposomeSet` resource available, it just needs to be loaded into the study server
+The user can also prepare an `ExposomeSet` outside DataSHILED and provide this information in the Opal server as a *resource*. Our Opal demo (EXPOSOME project) has an `ExposomeSet` resource (see Figure \@ref(fig:resourcesExpo)) that can be loaded into the study server as follows:
 
 ```{r}
 datashield.assign.resource(conns, symbol = 'exposome_resource', resource = list(server1 = 'EXPOSOME.exposomeSet'))
@@ -12,4 +12,23 @@ Once on the study server, the resource has to be coerced into an R object
 ```{r}
 datashield.assign.expr(conns, symbol = "exposome_resource", expr = quote(as.resource.object(exposome_resource)))
 ds.class("exposome_resource")
+```
+
+In that case, both `exposome_object` and `exposome_resource` are containing the same information.
+
+
+```{r}
+ds.exposome_variables("exposome_object", "phenotypes")
+ds.exposome_variables("exposome_resource", "phenotypes")
+```
+
+
+```{r}
+ds.exposome_summary("exposome_object", "AbsPM25")
+ds.exposome_summary("exposome_resource", "AbsPM25")
+```
+
+```{r}
+ds.exposome_summary("exposome_object", "blood_pre")
+ds.exposome_summary("exposome_resource", "blood_pre")
 ```

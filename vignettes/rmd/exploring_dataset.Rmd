@@ -1,1 +1,1 @@
-Once the Exposome datasets are loaded on the study servers, some simple functions can be used to have some understanding of what the dataset contains. Those correspond to the name of the exposures, the names of the families of the exposures and the name of the phenotypes.
+Once the `ExposomeSet` is created in the study servers, some simple functions can be used to have some understanding of what the dataset contains. Those correspond to the name of the exposures, the names of the families of the exposures and the name of the phenotypes.

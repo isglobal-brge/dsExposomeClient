@@ -23,7 +23,7 @@ vignette: >
 ```{r setup, include=FALSE}
 BiocStyle::markdown()
 options(width=80)
-knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=FALSE)
+knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=TRUE)
 ```
 
 # Introduction
@@ -50,7 +50,11 @@ For those who are not familiar with Opal servers and do not know how to create t
 
 We have created an  [Opal demo server](https://opal-demo.obiba.org/) that contains different projects, including one called EXPOSOME, as we can see in the next figure
 
-![Opal projects in our Opal demo server](figures/opal_projects.png)
+```{r OpalExpo, fig.cap='Opal projects in our Opal demo server', echo=FALSE}
+knitr::include_graphics("figures/opal_projects.png")
+```
+
+
 
 The Opal server can be accessed with the credentials:
 
@@ -60,8 +64,10 @@ The Opal server can be accessed with the credentials:
 
 The EXPOSOME project contains 4 resources. One `ExposomeSet` object and three other .csv files containing required data for exposome studies: exposome data, exposome annotation and phenotype information. 
 
-![Resources available in the EXPOSOME Opal project](figures/resources_exposome.png)
 
+```{r resourcesExpo, fig.cap='Resources available in the EXPOSOME Opal project', echo=FALSE}
+knitr::include_graphics("figures/resources_exposome.png")
+```
 
 Therefore, we will assume that the user will have either an `ExposomeSet` object or different text/Excel files having exposome data. The `ds.Exposome` package should also be installed into the Opal server (see [here](https://isglobal-brge.github.io/resource_bookdown/tips-and-tricks.html#how-to-install-datashield-packages-into-opal-server) to know how to do it). 
 
@@ -87,7 +93,7 @@ devtools::install_github("isglobal-brge/dsExposomeClient")
 ```{r child='rmd/resource_to_exposome.Rmd', include=TRUE}
 ```
 
-## Exploring the loaded dataset
+## Exploring the `ExposomeSet` 
 
 
 
@@ -142,12 +148,13 @@ devtools::install_github("isglobal-brge/dsExposomeClient")
 ```{r child='rmd/exposures_imputation.Rmd', include=TRUE}
 ```
 
-## Performing an ExWAS
-
-
+## ExWAS
 
 ```{r child='rmd/exwas.Rmd', include=TRUE}
 ```
+
+
+
 
 ## Exposures PCA
 
@@ -160,4 +167,10 @@ devtools::install_github("isglobal-brge/dsExposomeClient")
 
 
 ```{r child='rmd/correlation.Rmd', include=TRUE}
+```
+
+To end, we close the connection
+
+```{r}
+datashield.logout(conns)
 ```

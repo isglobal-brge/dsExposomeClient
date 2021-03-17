@@ -1,6 +1,5 @@
-To get the names of the exposures or phenotypes (or both combined) there's the function `ds.exposome_variables`, it takes as argument `exposures`, `phenotypes` or `all` to retrieve the desired names.
+To get the names of the exposures or phenotypes (or both combined) there's the function `ds.exposome_variables()`. The argument `target` allows to see the names of the `exposures`, `phenotypes` or `all`..
 
 ```{r}
-head(ds.exposome_variables("exposome_object" , "exposures", conns)$server1)
-ds.exposome_variables("exposome_object" , "phenotypes", conns)
+ds.exposome_variables("exposome_object" , target="phenotypes")
 ```

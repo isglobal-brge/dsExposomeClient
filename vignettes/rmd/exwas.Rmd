@@ -1,7 +1,7 @@
-When the `ExposomeSet` object is on the study the server, the function `ds.exwas` is in charge of performing the ExWAS. As an example let's present a situation where each exposition has to be associated to the `blood_pre` phenotype using the phenotype `sex` as a covariate. This study would be done as follows
+When the `ExposomeSet` object is on the study the server, the function `ds.exwas` is in charge of performing the ExWAS. As an example let's present a situation where we are interested in associating each exposure with `blood_pre` phenotype (e.g outcome) using the `sex` as a covariate (e.g. adjusted model). This study would be done as follows
 
 ```{r}
-exwas_results <- ds.exwas("blood_pre ~ sex", "exposome_object", "gaussian")
+exwas_results <- ds.exwas("blood_pre ~ sex", Set = "exposome_object", family = "gaussian")
 head(exwas_results$exwas_results)
 ```
 
@@ -15,21 +15,28 @@ This previous formula will fit linear models between the exposures and phenotype
     phenotype ~ exposure_M + covar1 + ... + covarN
 ```
 
-The model is inputted as a string, where the left side term is the objective phenotype, and the right term are the covariates, in the case of wanting more covariates proceed as: `objective ~ cov1 + cov2 + ... + covN`. It's important noting that if the output family (third argument) does not match the objective family, the ExWAS will fail (Example: The objective family is `binomial` and the user sets it to `gaussian`).
+The model is written as a string, where the left side term is the phenotype, and the right term are the covariates (e.g. variables to be adjusted for). In the case of having more covariates proceed as: `phenotype ~ cov1 + cov2 + ... + covN`. A crude model is fitted using `phenotype ~ 1`. 
 
-To visualize the results from the ExWAS, the function `ds.plotExwas` takes the output of `ds.exwas` and creates two different visualizations. A Manhattan-like plot with the p-values of the association between each exposure and asthma, coloured by families of exposures:
+It's important to note that if the family argument does not match with the nature of the data availalbe in the `phenotype`, the ExWAS will fail (Example: family argument should be `binomial` for binary outcomes and `gaussian` for continuous).
+
+To visualize the results from the ExWAS, the function `ds.plotExwas()` can be used. It takes the output of `ds.exwas` and creates two different visualizations depending on the argument `type`. 
+
+- A Manhattan-like plot with the p-values of the association between each exposure and the outcome colored by families of exposures. The vertical red line stands for the significant level corrected by the effective number of tests.
   
 ```{r fig.width=10, fig.height=12}
-ds.plotExwas(exwas_results, "manhattan")
+ds.plotExwas(exwas_results, type="manhattan")
 ```
 
-Also, a plot for the effects of a given model can be obtained with:
+- A plot showing the effects (beta values) and their confidence intervals of a given model can be obtained with:
   
 ```{r fig.width=10, fig.height=12}
-ds.plotExwas(exwas_results, "effect")
+ds.plotExwas(exwas_results, type="effect")
 ```
 
-The ExWAS can also be applied as an inverse ExWAS, meaning that the linear models are the following:
+
+## Inverse ExWAS
+
+We can also carry out an 'inverse' ExWAS where exposures are regressed on a given phenotype and some adjusting covariates. In other words, we are estimating an inverse/reverse model as in a traditional ExWAS:
 
 ```
     exposure_1 ~ phenotype + covar1 + ... + covarN
@@ -39,14 +46,14 @@ The ExWAS can also be applied as an inverse ExWAS, meaning that the linear model
     exposure_M ~ phenotype + covar1 + ... + covarN
 ```
 
-The funcion to perform this analysis is `ds.invExWAS`. The same example of the ExWAS would be written as:
+The function to perform this analysis is `ds.invExWAS()`. In that case the formula is not used and the models can be fitted by 
 
 ```{r}
 inverse_exwas_results <- ds.invExWAS("exposome_object", phenotype =  "blood_pre", covariables = "sex")
 head(inverse_exwas_results$exwas_results)
 ```
 
-Note that in this case only right side term need to be supplied on the formula.
+Crude models are obtained by removing the `covariables` argument and models adjusted for more than one covariable are fitted by writing `covariables = c("covar1", "covar2", ..., "covarN")`. 
 
 The same plotting functions can be used with the object returned by the inverse ExWAS analysis.
 

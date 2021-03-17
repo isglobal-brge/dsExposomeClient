@@ -1,10 +1,16 @@
-We first start by loading both exposome and phenotype data into the study servers. On this example, the tables are on the demo Opal server as resources, which means they have to be loaded on the study server and be coerced as data frames; for more information read the [resourcer](https://cran.r-project.org/web/packages/resourcer/index.html) package documentation. Of course, the user may also have this information in Opal tables that can also be loaded into the servers using [standard DataSHIELD functions](https://isglobal-brge.github.io/resource_bookdown/datashield.html#demo). 
+We first start by loading the required packages
 
-```{r}
+```{r cache=FALSE}
 library(dsBaseClient)
 library(dsExposomeClient)
 library(DSOpal)
+```
 
+Then, we load both exposome and phenotype data into the study servers. On this example, the tables are on the demo Opal server as resources (see \@ref(fig:resourcesExpo)), which means they have to be loaded on the study server and be coerced as data frames as described [here](https://isglobal-brge.github.io/resource_bookdown/resourcer.html#using-resources-with-datashield).
+
+Of course, the user may also have exposome and phenotypes information in Opal tables that can also be loaded into the servers using [standard DataSHIELD functions](https://isglobal-brge.github.io/resource_bookdown/datashield.html#demo). 
+
+```{r}
 builder <- newDSLoginBuilder()
 builder$append(server = "server1", url = "https://opal-demo.obiba.org/",
                user = "administrator", password = "password",

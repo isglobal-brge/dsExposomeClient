@@ -1,6 +1,13 @@
-We can get a snapshot of the behaviour of the full exposome using the `ds.plotFamily` function. This function draws a mosaic of boxplots with all the numeric families of exposures, it can also plot single families and perform grouping inside of them. This function makes use of the `ggplot2` library to generate the plots. Future plans include displaying non-disclosive plots for non-numeric families.
+We can get a snapshot of the behaviour of the full exposome using the `ds.plotFamily` function. This function draws a panel of boxplots with all the numeric families of exposures
+
+
+```{r fig.height=12}
+ds.plotFamily("exposome_object", family = "all")
+```
+
+
+We can also plot single families and perform grouping inside of them. This function makes use of the `ggplot2` library to generate the plots. Future plans include displaying non-disclosive plots for non-numeric families.
 
 ```{r}
-ds.plotFamily("exposome_object", family = "all")
 ds.plotFamily("exposome_object", family = "Phthalates", group = "sex")
 ```

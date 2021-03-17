@@ -4,7 +4,8 @@ An `ExposomeSet` object is made up from [three different tables](https://www.bio
 - phenotypes: data frame/tibble having the individual ID, outcomes and the covariates. 
 
 It is also possible to incorporate annotated information on exposures in a separate object (although it is not mandatory):
+
 - description: data frame/tibble having the exposure names and metadata such as families of exposure
 
-The objects need to be coerced into a R object of class `ExposomeSet` that can be done using `ds.loadExposome ()` function as follows. 
+The objects need to be coerced into a R object of class `ExposomeSet` that can be done using `ds.loadExposome()` function as follows. 
 
