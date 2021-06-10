@@ -3,6 +3,7 @@
 export(corPlot)
 export(ds.correlation)
 export(ds.exposomeSubset)
+export(ds.exposome_HCPC)
 export(ds.exposome_pca)
 export(ds.exposome_pca_plot)
 export(ds.exposome_summary)

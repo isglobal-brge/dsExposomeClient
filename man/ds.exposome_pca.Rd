@@ -9,6 +9,8 @@ ds.exposome_pca(
   fam = NULL,
   standar = TRUE,
   method = "normal",
+  pca = TRUE,
+  npc = 10,
   datasources = NULL
 )
 }
@@ -26,7 +28,12 @@ and the standard variation as dispersion, \code{"robust"} which uses the median 
 and \code{"interquartile range"} which uses the median as the center and the coeficient between the 
 interquartile range of the exposure and the normal range between the percentile 75 and 25 as variance.}
 
+\item{pca}{\code{bool} (default \code{TRUE}) If TRUE perform PCA (only numerical variables), 
+if FALSE FAMD (numerical and categorical)}
+
 \item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
+
+\item{\code{numeric}}{(default \code{10}) Number of PC to be kept}
 }
 \value{
 This function does not have an output. It creates a object on the study server named \code{ds.exposome_pca.Results},
