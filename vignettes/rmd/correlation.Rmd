@@ -1,8 +1,7 @@
 The correlation between exposures, in terms of intra-family and inter-family exposures, is interesting to take into account. The correlation of the exposome can be computed using `ds.correlation`. The correlation could be disclosive, for that reason there's the argument `fam` to select the families to compute the correlation subsetting the exposome dataset by families, typical complete exposome datasets will fail as the correlation matrix could be disclosive.
 
-```{r}
+```{r error = TRUE}
 ds.correlation("exposome_object")[[1]][[1]]$`Correlation Matrix`[1:5,1:5]
-ds.correlation("exposome_object")[[1]][[1]]$`Error message`
 ```
 
 When subsetting the exposome set by families the correlation succeeds.

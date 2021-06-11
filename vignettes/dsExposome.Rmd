@@ -28,14 +28,7 @@ knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=TRUE)
 
 # Introduction
 
-Sharing data across studies that are subject to confidentiality and must comply with data protection regulations is
-a challenging task. [DataSHIELD](http://www.datashield.ac.uk/) is a software solution for secure biomedicine
-collaboration that allows privacy-protected data analysis of federated databases. It enables the remote and non-disclosive
-analysis of sensitive research data, and has been developed under several EC projects (BioSHaRE-EU,
-InterConnect, LifeCycle, EUCAN-Connect). So far, DataSHIELD includes an extensive set of disclosure-protected
-functions for data manipulation, exploratory data analytics, generalised linear modelling and data visualizations.
-Here, we have extend DataSHIELD tools by incorporating new functionalities to deal with exposome data
-visualization and association analysis. We also illustrate how to integrate omics information with exposome data.
+Sharing data across studies that are subject to confidentiality and must comply with data protection regulations is a challenging task. [DataSHIELD](http://www.datashield.ac.uk/) is a software solution for secure biomedicine collaboration that allows privacy-protected data analysis of federated databases. It enables the remote and non-disclosive analysis of sensitive research data, and has been developed under several EC projects (BioSHaRE-EU, InterConnect, LifeCycle, EUCAN-Connect). So far, DataSHIELD includes an extensive set of disclosure-protected functions for data manipulation, exploratory data analytics, generalised linear modelling and data visualizations. Here, we have extend DataSHIELD tools by incorporating new functionalities to deal with exposome data visualization and association analysis. We also illustrate how to integrate omics information with exposome data.
 
 
 [Opal](http://opaldoc.obiba.org/en/latest/) is [OBiBa](https://www.obiba.org/)’s core database application for epidemiological studies. Participant data, collected by questionnaires, medical instruments, sensors, administrative databases etc. can be integrated and stored in a central data repository under a uniform model. Opal is a web application that can import, process, copy data and has advanced features for cataloging the data (fully described, annotatted and searchable data dictionaries). Opal is typically used in a research center to analyze the data acquired at assessment centres. Its ultimate purpose is to achieve seamless data-sharing among epidemiological studies. Opal is the reference implementation of the DataSHIELD infrastructure.  
@@ -93,7 +86,7 @@ devtools::install_github("isglobal-brge/dsExposomeClient")
 ```{r child='rmd/resource_to_exposome.Rmd', include=TRUE}
 ```
 
-## Exploring the `ExposomeSet` 
+## Exploring the `ExposomeSet`
 
 
 
@@ -161,6 +154,11 @@ devtools::install_github("isglobal-brge/dsExposomeClient")
 
 
 ```{r child='rmd/pca.Rmd', include=TRUE}
+```
+
+## Exposures HCPC
+
+```{r child='rmd/hcpc.Rmd', include=TRUE}
 ```
 
 ## Exposures Correlation

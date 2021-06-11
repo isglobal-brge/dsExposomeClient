@@ -26,3 +26,11 @@ Furthermore, the `ds.exposome_pca_plot` function can plot the correlations betwe
 ds.exposome_pca_plot("ds.exposome_pca.Results", set = "exposures_correlation")
 ds.exposome_pca_plot("ds.exposome_pca.Results", set = "phenotypes_correlation")
 ```
+
+By default, the `ds.exposome_pca` function only uses the numeric exposures, as a principal component analysis is by definition an analysis applied to numeric variables. If our exposures data contains non-numeric variable (categorical) we may be interested on including them on the analysis. A principal components method that contemplates mixed data is the factor analysis of mixed data (FAMD). To use this method instead of a traditional PCA, there is an argument on the `ds.exposome_pca` function called `pca`, set it to `FALSE` to perform a FAMD.
+
+```{r}
+ds.exposome_pca("exposome_object", fam = c("Metals", "Noise"), standar = TRUE, pca = FALSE)
+```
+
+The same functions used to plot the regular PCA can be used to plot the results of the FAMD.

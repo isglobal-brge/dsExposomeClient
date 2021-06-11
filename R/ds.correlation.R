@@ -32,7 +32,7 @@ ds.correlation <- function(set, fam = NULL, datasources = NULL){
   
   ds.exposures_pData(set, "exposures", "ds.correlationExposures", datasources)
   
-  data <- ds.cor(x = "ds.correlationExposures", naAction = "casewise.complete", type = "split" , datasources)
+  data <- ds.cor(x = "ds.correlationExposures", type = "split" , datasources)
   
   names <- ds.familyNames(set, TRUE, conns)
   
