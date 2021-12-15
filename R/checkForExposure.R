@@ -14,7 +14,7 @@ checkForExposure <- function(set, exposure, datasources = NULL){
     datasources <- DSI::datashield.connections_find()
   }
   
-  if(!any(ds.exposome_variables(set , "exposures", conns)[[1]] == exposure)){
+  if(!any(ds.exposome_variables(set , "exposures", datasources)[[1]] == exposure)){
     stop(paste0("Exposure: ", exposure, "; is not inside the ExposomeSet: ", set), call. = FALSE)
   }
   
