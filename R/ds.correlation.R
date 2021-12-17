@@ -34,7 +34,7 @@ ds.correlation <- function(set, fam = NULL, datasources = NULL){
   
   data <- ds.cor(x = "ds.correlationExposures", type = "split" , datasources)
   
-  names <- ds.familyNames(set, TRUE, conns)
+  names <- ds.familyNames(set, TRUE, datasources)
   
   datashield.rm(datasources, "exposomeSetSubsetted")
   datashield.rm(datasources, "ds.correlationExposures")
