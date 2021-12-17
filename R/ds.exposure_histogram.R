@@ -29,9 +29,47 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
   
   if(ds.class(paste0("dta$", exposure), datasources) == "numeric"){
     if(show.trans){
+      # Get number of column that corresponds to [exposures]
+      cols <- ds.colnames("dta", datasources = datasources)[[1]]
+      col_number <- which(exposure == cols)
+      
+      # Create rep of the length of the table to be used on the dataFrameSubset to keep all the rows
+      ds.rep(x1 = 0, length.out = ds.length(paste0("dta$", exposure), datasources = datasources)[[1]],
+             source.x1 = "clientside", source.times = "c", source.length.out = "c",
+             source.each = "c", newobj = "ZEROES", datasources = datasources)
+
+      # Remove 0's to apply log transform
+      ds.dataFrameSubset(df.name = "dta",
+                         V1.name = "ZEROES",
+                         V2.name = paste0("dta$", exposure),
+                         Boolean.operator = "!=",
+                         keep.cols = col_number,
+                         rm.cols = NULL,
+                         keep.NAs = TRUE,
+                         newobj = "dta_no_zeroes",
+                         datasources = datasources,
+                         notify.of.progress = FALSE)
+      warning("[", ds.length(paste0("dta$", exposure))[[1]] - ds.length("dta_no_zeroes")[[1]],
+              "] expositions eliminated for log transformation (0 values)")
+      
+      # Remove negative values for sqrt transformation
+      ds.dataFrameSubset(df.name = "dta",
+                         V1.name = "ZEROES",
+                         V2.name = paste0("dta$", exposure),
+                         Boolean.operator = "<=",
+                         keep.cols = col_number,
+                         rm.cols = NULL,
+                         keep.NAs = TRUE,
+                         newobj = "dta_no_negatives",
+                         datasources = datasources,
+                         notify.of.progress = FALSE)
+      warning("[", ds.length(paste0("dta$", exposure))[[1]] - ds.length("dta_no_negatives")[[1]],
+              "] expositions eliminated for sqrt transformation (negative values)")
+      
+      # Compute transformations
       ds.make(paste0("exp(dta$", exposure, ")"), "dta_exp", datasources)
-      ds.make(paste0("log(dta$", exposure, ")"), "dta_log", datasources)
-      ds.make(paste0("(dta$", exposure, ")^(0.5)"), "dta_sqrt", datasources)
+      ds.make("log(dta_no_zeroes)", "dta_log", datasources)
+      ds.make("(dta_no_negatives)^(0.5)", "dta_sqrt", datasources)
       
       pdf(NULL)
       hist1 <- ds.histogram(x = paste0("dta$", exposure), ...)
