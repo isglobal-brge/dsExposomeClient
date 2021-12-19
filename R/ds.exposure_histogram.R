@@ -39,13 +39,14 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
              source.each = "c", newobj = "ZEROES", datasources = datasources)
 
       # Remove 0's to apply log transform
+      message("Attempting to subset exposure [", exposure, "] by removing 0s")
       ds.dataFrameSubset(df.name = "dta",
                          V1.name = "ZEROES",
                          V2.name = paste0("dta$", exposure),
                          Boolean.operator = "!=",
                          keep.cols = col_number,
                          rm.cols = NULL,
-                         keep.NAs = TRUE,
+                         keep.NAs = FALSE,
                          newobj = "dta_no_zeroes",
                          datasources = datasources,
                          notify.of.progress = FALSE)
@@ -53,13 +54,14 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
               "] expositions eliminated for log transformation (0 values)")
       
       # Remove negative values for sqrt transformation
+      message("Attempting to subset exposure [", exposure, "] by removing NAs and values <= 0")
       ds.dataFrameSubset(df.name = "dta",
                          V1.name = "ZEROES",
                          V2.name = paste0("dta$", exposure),
                          Boolean.operator = "<=",
                          keep.cols = col_number,
                          rm.cols = NULL,
-                         keep.NAs = TRUE,
+                         keep.NAs = FALSE,
                          newobj = "dta_no_negatives",
                          datasources = datasources,
                          notify.of.progress = FALSE)
