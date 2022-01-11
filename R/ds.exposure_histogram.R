@@ -1,6 +1,12 @@
 #' @title Draw histogram for Exposome Set exposure
 #' 
 #' @description Get a non-disclosive histogram plot for a selected exposure of a server side Exposome Set
+#' 
+#' @details When using the \code{show.trans} option, the negative values will be removed for the 
+#' sqrt-transformation and the 0 values will be removed for the log-transformation. Please be aware 
+#' the removal of those values could yield a DataSHIELD disclosive problem when creating the subset. 
+#' For example: If one exposure contains mostly negative values, when removing them to plot the sqrt-transformation 
+#' the subset creation will fail.
 #'
 #' @param exp \code{character} Name of the Exposome Set on the server side
 #' @param exposure \code{character} Name of the exposure of the exposome set to visualize
@@ -33,6 +39,10 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
       cols <- ds.colnames("dta", datasources = datasources)[[1]]
       col_number <- which(exposure == cols)
       
+      # Retrieve number of NAs
+      nas <- ds.mean(paste0("dta$", exposure), datasources = datasources)$Mean.by.Study[1,]["Nmissing"]
+      warning("[", nas, "] expositions eliminated due being NAs")
+      
       # Create rep of the length of the table to be used on the dataFrameSubset to keep all the rows
       ds.rep(x1 = 0, length.out = ds.length(paste0("dta$", exposure), datasources = datasources)[[1]],
              source.x1 = "clientside", source.times = "c", source.length.out = "c",
@@ -50,7 +60,7 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
                          newobj = "dta_no_zeroes",
                          datasources = datasources,
                          notify.of.progress = FALSE)
-      warning("[", ds.length(paste0("dta$", exposure))[[1]] - ds.length("dta_no_zeroes")[[1]],
+      warning("[", ds.length(paste0("dta$", exposure))[[1]] - ds.length("dta_no_zeroes")[[1]] - nas,
               "] expositions eliminated for log transformation (0 values)")
       
       # Remove negative values for sqrt transformation
@@ -65,7 +75,7 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
                          newobj = "dta_no_negatives",
                          datasources = datasources,
                          notify.of.progress = FALSE)
-      warning("[", ds.length(paste0("dta$", exposure))[[1]] - ds.length("dta_no_negatives")[[1]],
+      warning("[", ds.length(paste0("dta$", exposure))[[1]] - ds.length("dta_no_negatives")[[1]] - nas,
               "] expositions eliminated for sqrt transformation (negative values)")
       
       # Compute transformations
