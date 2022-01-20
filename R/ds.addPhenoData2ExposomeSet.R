@@ -24,7 +24,7 @@
 #' @return This function does not have an output. It creates (or overwrites) a data frame on the study server.
 #' @export
 
-ds.addPhenoData2ExposomeSet <- function(x, pheno, identifier = "ID", alternate_eset_id = NULL,
+ds.addPhenoData2ExposomeSet <- function(x, pheno, identifier_ExposomeSet = "ID", identifier_new_phenotypes = NULL,
                             newobj.name = NULL, complete_cases = TRUE, datasources = NULL){
   
   if(is.null(datasources)){
@@ -46,8 +46,8 @@ ds.addPhenoData2ExposomeSet <- function(x, pheno, identifier = "ID", alternate_e
     stop("The 'pheno' is not a 'data.frame'")
   }
   
-  cally <- paste0("addPhenoData2ExposomeSetDS(", x, ", ", pheno, ", '", identifier, "', ", 
-                  if(is.null(alternate_eset_id)){"NULL, "}else{paste0("'",alternate_eset_id,"', ")},
+  cally <- paste0("addPhenoData2ExposomeSetDS(", x, ", ", pheno, ", '", identifier_ExposomeSet, "', ", 
+                  if(is.null(identifier_new_phenotypes)){"NULL, "}else{paste0("'",identifier_new_phenotypes,"', ")},
                   complete_cases, ")")
   DSI::datashield.assign.expr(datasources, newobj.name, as.symbol(cally))
   

@@ -6,7 +6,7 @@
 \usage{
 ds.extractExposomeSetFromImputedSet(
   x,
-  imputation = 1L,
+  rid = 1L,
   newobj.name = NULL,
   datasources = NULL
 )
@@ -14,7 +14,7 @@ ds.extractExposomeSetFromImputedSet(
 \arguments{
 \item{x}{}
 
-\item{imputation}{}
+\item{rid}{}
 
 \item{datasources}{}
 }

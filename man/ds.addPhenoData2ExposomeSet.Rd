@@ -7,8 +7,8 @@
 ds.addPhenoData2ExposomeSet(
   x,
   pheno,
-  identifier = "ID",
-  alternate_eset_id = NULL,
+  identifier_ExposomeSet = "ID",
+  identifier_new_phenotypes = NULL,
   newobj.name = NULL,
   complete_cases = TRUE,
   datasources = NULL
@@ -20,12 +20,6 @@ ds.addPhenoData2ExposomeSet(
 \item{pheno}{\code{character} Name of the data.frame with the new phenotypes on the 
 study server}
 
-\item{identifier}{\code{character} (default \code{"ID"}) Name of the ID column on the phenotypes data.frame}
-
-\item{alternate_eset_id}{\code{character} (default \code{NULL}) Alternate ID of the eSet pheno data, by default the rownames 
-of the eSet pheno data act as ID, use this argument if the ID to merge the individuals is on a column of the pheno data. 
-Input NULL for the standard behaviour of using the rownames of the pheno data as ID.}
-
 \item{newobj.name}{\code{character} (default \code{NULL}) If \code{NULL}, the original ExpressionSet will be overwritten,
 otherwise the new ExpressionSet will be assigned to a variable named after this argument}
 
@@ -34,6 +28,12 @@ between the ExpressionSet and the phenotypes table will be included on the resul
 \code{FALSE} all the individuals on the input ExpressionSet will be on the output ExpressionSet}
 
 \item{datasources}{a list of \code{\link{DSConnection-class}} (default \code{NULL}) objects obtained after login}
+
+\item{identifier}{\code{character} (default \code{"ID"}) Name of the ID column on the phenotypes data.frame}
+
+\item{alternate_eset_id}{\code{character} (default \code{NULL}) Alternate ID of the eSet pheno data, by default the rownames 
+of the eSet pheno data act as ID, use this argument if the ID to merge the individuals is on a column of the pheno data. 
+Input NULL for the standard behaviour of using the rownames of the pheno data as ID.}
 }
 \value{
 This function does not have an output. It creates (or overwrites) a data frame on the study server.
