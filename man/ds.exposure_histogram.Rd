@@ -30,6 +30,13 @@ List with plot parameters
 \description{
 Get a non-disclosive histogram plot for a selected exposure of a server side Exposome Set
 }
+\details{
+When using the \code{show.trans} option, the negative values will be removed for the 
+sqrt-transformation and the 0 values will be removed for the log-transformation. Please be aware 
+the removal of those values could yield a DataSHIELD disclosive problem when creating the subset. 
+For example: If one exposure contains mostly negative values, when removing them to plot the sqrt-transformation 
+the subset creation will fail.
+}
 \examples{
 \dontrun{Refer to the package Vignette for examples.}
 }

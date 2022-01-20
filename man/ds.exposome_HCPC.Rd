@@ -2,20 +2,25 @@
 % Please edit documentation in R/ds.exposome_HCPC.R
 \name{ds.exposome_HCPC}
 \alias{ds.exposome_HCPC}
-\title{Title}
+\title{Hierarchical clustering on principal components}
 \usage{
 ds.exposome_HCPC(object, nb.clust = -1, datasources = NULL)
 }
 \arguments{
-\item{object}{}
+\item{object}{\code{character} Object on the server created by the function \link{ds.exposome_pca}}
 
-\item{nb.clust}{}
+\item{nb.clust}{\code{numeric} (default \code{-1}) Number of clusters to find. If -1, the tree is automatically 
+cut at the suggested level (see details). If a (positive) integer, the tree is cut with nb.cluters clusters.}
 
-\item{datasources}{}
+\item{datasources}{a list of \code{\link{DSConnection-class}} (default \code{NULL}) objects obtained after login}
 }
 \value{
-
+Object created by FactoMineR::HCPC with the original dataset removed.
 }
 \description{
-Title
+Hierarchical clustering on principal components
+}
+\details{
+The suggested partition is the one with the higher relative loss of inertia (i(clusters n+1)/i(cluster n)). 
+Make use of the function FactoMineR::plot.HCPC() to visualize the results.
 }
