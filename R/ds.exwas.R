@@ -17,13 +17,24 @@
 #' \dontrun{Refer to the package Vignette for examples.}
 #' @export
 
-ds.exwas <- function(model, Set, family, tef = TRUE, datasources = NULL) {
+ds.exwas <- function(model, Set, family, type = c("pooled", "split"), exposures_family = NULL, tef = TRUE, datasources = NULL) {
   
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
   }
   
   checkForExposomeSet(Set, datasources)
+  
+  # Subset the exposome set if exposures_family
+  if(!is.null(exposures_family)){
+    # Check that family exists
+    if(!(exposures_family %in% ds.familyNames(Set)[[1]])){
+      stop("[", exposures_family, "] is not a valid family name of the ExposomeSet [", Set, "]. Please check the valid family names using `ds.familyNames(", Set, ")`")
+    }
+    # Subset the ExposomeSet
+    ds.exposomeSubset(Set, fam = exposures_family, name = paste0(Set, "_subsetted4dsEXWAS"))
+    Set <- paste0(Set, "_subsetted4dsEXWAS")
+  }
 
   # Extract table with exposures and phenotypes and save it on the server (assign)
   cally <- paste0("exposures_pData(", Set, ")")
@@ -32,71 +43,69 @@ ds.exwas <- function(model, Set, family, tef = TRUE, datasources = NULL) {
   # Source exposures list
   cally <- paste0("exposureNamesDS(", Set, ")")
   exposure_names <- DSI::datashield.aggregate(datasources, as.symbol(cally))
-
-  # form <- as.character(formula(model))
-  form <- formula(model)
   
-  # Copy 'dta' into 'dta_all', 'dta' will be modified on each loop iteration
-  DSI::datashield.assign.expr(datasources, symbol = "dta_all", quote(dta))
+  # Check that all servers have the same exposures, otherwise the linear models will fail
+  exposure_names <- lapply(exposure_names, function(x){
+    stringr::str_sort(x)
+  })
+  if(!all(Vectorize(identical, 'x')(exposure_names, exposure_names[[1]]))){
+    stop("The different ExposomeSets have different exposures, check it using `ds.exposome_variables('", Set, "')`")
+  }
+  
+  # Make sure wehave the model as a formula element
+  form <- formula(model)
 
   items <- NULL
   for (exposure in exposure_names[[1]]) {# exposure_names) {
     # Build formula: pheno_objective ~ exposure + adjusting phenotypes
     frm <- as.formula(paste0(form[[2]], "~", exposure, "+", form[[3]]))
-    # Get column indexes of pheno_objective, exposure and adjusting phenotypes
-    cols_to_keep <- as.numeric(which(unlist(ds.colnames("dta_all")[1]) %in% all.vars(frm)))
-    # Overwrite 'dta' with only the columns of pheno_objective, exposure and adjusting phenotypes
-    # taken from 'dta_all'
-      # Create rep of the length of the table to be used on the dataFrameSubset to keep all the rows
-      ds.rep(x1 = 0, length.out = ds.dim("dta_all", datasources = datasources)[[1]][1],
-             source.x1 = "clientside", source.times = "c", source.length.out = "c",
-             source.each = "c", newobj = "ZEROES", datasources = datasources)
-      ds.dataFrameSubset(df.name = "dta_all",
-                         V1.name = "ZEROES",
-                         V2.name = "ZEROES",
-                         Boolean.operator = "==",
-                         keep.cols = cols_to_keep,
-                         rm.cols = NULL,
-                         keep.NAs = FALSE,
-                         newobj = "dta",
-                         datasources = datasources,
-                         notify.of.progress = FALSE)
-      
-      # TODO Filter out rows that contain NAs from 'dta'!????!
-
+    
     tryCatch({
-      # Fit GLM using the non-disclosive function
-      # TODO meta/pooled
-      mod <- ds.glm(frm, family = family, data = 'dta', viewIter = FALSE)
-      # mod <- ds.glmerSLMA(frm, family = family, data = 'dta', viewIter = FALSE)
-      items <- rbind(items, cbind(exposure, mod$coefficients[2, 1], mod$coefficients[2, 5], 
-                                  mod$coefficients[2, 6], mod$coefficients[2, 4]))
-      # return(mod$coefficients)
+      if(type == "pooled"){
+        # Fit GLM using the non-disclosive function
+        mod <- ds.glm(frm, family = family, data = 'dta', viewIter = FALSE, datasources = datasources)
+        items <- rbind(items, cbind(exposure, mod$coefficients[2, 1], mod$coefficients[2, 5], 
+                                    mod$coefficients[2, 6], mod$coefficients[2, 4]))
+      } else if (type == "split") {
+        items <- append(items, lapply(datasources, function(x){
+          name_x <- x@name
+          x <- list(x)
+          names(x) <- name_x
+          mod <- ds.glm(frm, family = family, data = 'dta', viewIter = FALSE, datasources = x)$coefficients
+          return(cbind(exposure, mod[2, 1], mod[2, 5], 
+                       mod[2, 6], mod[2, 4]))
+        }))
+      } else {
+        stop("Invalid type argument")
+      }
     }, error = function(e){print(datashield.errors())})
-
   }
-
-  colnames(items) <- c("exposure", "coefficient", "minE", "maxE", "p.value")
   
-  items <- as.data.frame(items)
-  
-  # Add column with family
+  if(type == "split"){
+    items <- tapply(unlist(items, use.names = FALSE), rep(names(items), lengths(items)), FUN = function(x){
+      res <- data.frame(matrix(x, ncol = 5, byrow = T))
+      colnames(res) <- c("exposure", "coefficient", "minE", "maxE", "p.value")
+      return(res)
+    })
+  } else if (type == "pooled") {
+    colnames(items) <- c("exposure", "coefficient", "minE", "maxE", "p.value")
+    items <- as.data.frame(items)
+    # Add column with family
     # Retrive association of family - exposures
-  assoc <- ds.familyNames(Set, TRUE)[[1]]
-  assoc <- data.frame(family = assoc, exposure = names(assoc))
-  
-  items <- merge(assoc, items)
-  
-  items$coefficient <- as.numeric(as.character(items$coefficient))
-  items$p.value <- as.numeric(as.character(items$p.value))
-  items$minE <- as.numeric(as.character(items$minE))
-  items$maxE <- as.numeric(as.character(items$maxE))
-  
-  
+    assoc <- ds.familyNames(Set, TRUE)[[1]]
+    assoc <- data.frame(family = assoc, exposure = names(assoc))
+    
+    items <- merge(assoc, items)
+    
+    items$coefficient <- as.numeric(as.character(items$coefficient))
+    items$p.value <- as.numeric(as.character(items$p.value))
+    items$minE <- as.numeric(as.character(items$minE))
+    items$maxE <- as.numeric(as.character(items$maxE))
+  }
   if(tef){
     # Get threshold for effective tests from the study server
     cally <- paste0("effective.testsDS(", Set, ")")
-    alpha_corrected <- DSI::datashield.aggregate(datasources, as.symbol(cally))[[1]]
+    alpha_corrected <- DSI::datashield.aggregate(datasources, as.symbol(cally))
   }
   else{
     alpha_corrected <- 0
@@ -104,10 +113,12 @@ ds.exwas <- function(model, Set, family, tef = TRUE, datasources = NULL) {
   
   # Remove created variables on the study server
   datashield.rm(datasources, "dta")
-  datashield.rm(datasources, "dta_all")
+  # datashield.rm(datasources, "dta_all")
   datashield.rm(datasources, "dta_exposures")
+  datashield.rm(datasources, Set)
+  datashield.rm(datasources, "ZEROES")
   
-  return(list(exwas_results = items, alpha_corrected = alpha_corrected))
+  return(list(exwas_results = items, alpha_corrected = if(type == "pooled"){alpha_corrected[[1]]}else{alpha_corrected}))
 
 }
 

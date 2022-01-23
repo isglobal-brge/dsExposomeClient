@@ -4,7 +4,15 @@
 \alias{ds.exwas}
 \title{Performs a non-disclosive EXposome-Wide Association Study}
 \usage{
-ds.exwas(model, Set, family, tef = TRUE, datasources = NULL)
+ds.exwas(
+  model,
+  Set,
+  family,
+  type = c("pooled", "split"),
+  exposures_family = NULL,
+  tef = TRUE,
+  datasources = NULL
+)
 }
 \arguments{
 \item{model}{\code{character} Formula, not including exposures, to be tested.}
