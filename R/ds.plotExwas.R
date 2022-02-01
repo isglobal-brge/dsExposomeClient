@@ -14,6 +14,29 @@
 
 ds.plotExwas <- function(exwas, type = "manhattan"){
   
+  if(inherits(exwas, "dsExWAS_pooled")){
+    plot_exwas <- exwasplotF(exwas, type)
+  } else if (inherits(exwas, "dsExWAS_meta")) {
+    plot_exwas <- lapply(exwas, function(x){
+      exwasplotF(x, type)
+    })
+  } else {
+    stop("Object passed is not of class ['dsExWAS_pooled' or 'dsExWAS_meta']. Generate those objects with `ds.exwas()`")
+  }
+  return(plot_exwas)
+}
+
+#' @title ExWAS plotter
+#'
+#' @param exwas \code{dsExWAS_meta} or \code{dsExWAS_pooled} Object produced by the \code{ds.exwas} function
+#' @param type \code{character} Type of plot \code{"manhattan"} for a manhattan plot (p-values),
+#' \code{"effect"} for a plot of the exposures effects.
+#'
+#' @return \code{ggplot} object
+#' 
+
+exwasplotF <- function(exwas, type){
+  
   exwas$exwas_results$dir <- ifelse(exwas$exwas_results$coefficient >= 0,"+", "-")
   
   nm <- unique(as.character(exwas$exwas_results$family))
@@ -49,10 +72,9 @@ ds.plotExwas <- function(exwas, type = "manhattan"){
       ) + 
       ggplot2::ylab("") +
       ggplot2::xlab("effect")
-  }
-  else{stop(paste0("Invalid plot type: ", type))}
-  if(identical(exwas$exwas_results$exposure, exwas$exwas_results$family)){
-    plt <- plt + aes(color = NULL)
+  } else {stop("Invalid plot type: ", type)}
+  if(length(unique(exwas$exwas_results$family)) == 1){
+    plt <- plt + ggplot2::aes(color = NULL)
   }
   return(plt)
   

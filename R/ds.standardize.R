@@ -26,6 +26,8 @@ ds.standardize <- function(set, method = "normal", name = NULL, datasources = NU
     datasources <- DSI::datashield.connections_find()
   }
   
+  checkForExposomeSet(set, datasources)
+  
   if(is.null(name)){
     name <- set
   }

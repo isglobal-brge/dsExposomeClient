@@ -55,12 +55,7 @@ ds.plotFamily <- function(x, family, group = NULL, group2 = NULL, scatter = FALS
       for(jj in 1:nc) {
         if(idx < length(ff) + 1) {
           plt <- ds.plotFamily(x, stringr::str_replace_all(ff[idx], " ", ""), datasources = datasources)
-          
-          # if(plt[[1]] == FALSE){
-          #   idx <- idx + 1
-          #   next
-          #   }
-          
+
           plt <- plt + ggplot2::ggtitle(ff[idx])
           if(jj != 1) {
             plt <- plt + ggplot2::ylab("")
@@ -86,7 +81,6 @@ ds.plotFamily <- function(x, family, group = NULL, group2 = NULL, scatter = FALS
       ggplot2::ggplot() + ggplot2::geom_blank()
     })
       
-    
     return(plt)
   }
 }

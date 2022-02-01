@@ -29,8 +29,8 @@
 #' \dontrun{Refer to the package Vignette for examples.}
 #' @export
 
-ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "all", labels = FALSE, phenotype = NA, 
-                                 method = 1, k = 3, noise = 1, datasources = NULL){
+ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "all", type = c("meta", "pooled"),
+                                 labels = FALSE, phenotype = NA, method = 1, k = 3, noise = 1, datasources = NULL){
   
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
@@ -39,8 +39,17 @@ ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "
   cally <- paste0("exposome_pca_plotDS(", pca_object, ", set = '", set, "', phenotype = ", 
                   if(is.na(phenotype)){paste0("NA")}else{paste0("'",phenotype,"'")}, ", ", method,
                   ", ", k, ", ", noise, ")")
-  output <- if(set != "all"){DSI::datashield.aggregate(datasources, as.symbol(cally))[[1]]}
-
+  
+  if(set != "all"){
+    if(type == "meta"){
+      output <- DSI::datashield.aggregate(datasources, as.symbol(cally))[[1]]
+    } else if(type == "pooled") {
+      output <- DSI::datashield.aggregate(datasources, as.symbol(cally))
+    } else {
+      stop("Invalid 'type' argument. Valid options are ['pooled', 'meta']")
+    }
+    }
+  
   if(set == "exposures"){
     plt <- ggplot2::ggplot(output$data) + 
       ggplot2::geom_point(ggplot2::aes(x = x, y = y, group = group, colour = output$fams), stat = "identity") +
@@ -68,6 +77,11 @@ ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "
     }
   }
   else if(set == "samples"){
+    aux <- Reduce("rbind", lapply(output, function(x){
+      x$data
+    }))
+    output <- output[[1]]
+    output$data <- aux
     plt <- ggplot2::ggplot(output$data) + 
       ggplot2::geom_point(ggplot2::aes(x = x, y = y, group = group, colour = output$pheno), stat = "identity") +
       ggplot2::theme_bw() +
@@ -135,14 +149,14 @@ ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "
       ggplot2::scale_fill_continuous(limits = c(0, max(-log10(output$data$value))), low="White", high="Navy")
   }
   else if(set == "all"){
-    plt1 <- ds.exposome_pca_plot(pca_object, "exposures", FALSE, phenotype, method, k, noise, datasources) +
+    plt1 <- ds.exposome_pca_plot(pca_object, "exposures", type, FALSE, phenotype, method, k, noise, datasources) +
       ggplot2::theme(legend.position = "none") +
       ggplot2::ggtitle("Exposures Space")
-    plt2 <- ds.exposome_pca_plot(pca_object, "samples", labels, NA, method, k, noise, datasources) +
+    plt2 <- ds.exposome_pca_plot(pca_object, "samples", type, labels, NA, method, k, noise, datasources) +
       ggplot2::ggtitle("Samples Space")
-    plt3 <- ds.exposome_pca_plot(pca_object, "variance", labels, phenotype, method, k, noise, datasources) +
+    plt3 <- ds.exposome_pca_plot(pca_object, "variance", type, labels, phenotype, method, k, noise, datasources) +
       ggplot2::ggtitle("Explained Variance")
-    plt4 <- ds.exposome_pca_plot(pca_object, "variance_explained", labels, phenotype, method, k, noise, datasources) +
+    plt4 <- ds.exposome_pca_plot(pca_object, "variance_explained", type, labels, phenotype, method, k, noise, datasources) +
       ggplot2::ggtitle("Accum. Explained Variance")
     plt <- gridExtra::grid.arrange(plt1, plt2, plt3, plt4, ncol = 2)
   }

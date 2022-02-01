@@ -8,7 +8,7 @@ ds.exwas(
   model,
   Set,
   family,
-  type = c("pooled", "split"),
+  type = c("pooled", "meta"),
   exposures_family = NULL,
   tef = TRUE,
   datasources = NULL
@@ -21,14 +21,22 @@ ds.exwas(
 
 \item{family}{\code{character} Nature of the health outcome (\code{gaussian}, \code{binomial} or \code{poisson})}
 
+\item{type}{\code{character} Type of analysis to be performed. \code{"pooled"} to perform a pooled analysis 
+as if all the data was present on the same dataset, \code{"meta"} to perform an ExWAS on every 
+study server to later meta-analyse the results.}
+
+\item{exposures_family}{\code{character} (default \code{NULL}) Family to subset the ExposomeSet, only the exposures of the 
+selected family will be used for the ExWAS analysis.}
+
 \item{tef}{\code{bool} If \code{TRUE} computes the threshold for effective tests.}
 
 \item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
 }
 \value{
-\code{list} that contains: \cr
+For \code{type='pooled'}: \code{list} that contains: \cr
 - exwas_results: \code{data.frame} with exposure name, coefficient and p-value of the association \cr
-- alpha_corrected: \code{numeric} effective tests
+- alpha_corrected: \code{numeric} effective tests \cr
+For \code{type='meta'}: A \code{list} of \code{list} with the elements from \code{type='pooled'}.
 }
 \description{
 Takes as input an Exposome Set object on the study server and performs a 

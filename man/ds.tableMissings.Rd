@@ -4,7 +4,13 @@
 \alias{ds.tableMissings}
 \title{Get table of missings per variable}
 \usage{
-ds.tableMissings(exp, set = "exposures", output = "n", datasources = NULL)
+ds.tableMissings(
+  exp,
+  type = "pooled",
+  set = "exposures",
+  output = "n",
+  datasources = NULL
+)
 }
 \arguments{
 \item{exp}{\code{character} Name of the Exposome Set on the server side}

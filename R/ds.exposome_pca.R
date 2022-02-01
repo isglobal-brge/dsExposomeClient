@@ -7,6 +7,10 @@
 #' @param fam \code{character vector} (default \code{NULL}) Families to subset the exposome set
 #' @param standar \code{bool} Whether the values will be normalized prior the analysis (\code{TRUE}) or not (\code{FALSE})
 #' Default \code{TRUE}
+#' @param type \code{character}  (default \code{"meta"}) Type of analysis, if meta-analysis (\code{"meta"}), a PCA to 
+#' each study server will be performed. If pooled-analysis (\code{"pooled"}) a pooled methodology will be performed, 
+#' this will return to the user the actual principal components, there is no methodology implemented at the moment 
+#' to visualize with plots the results of this type of analysis.
 #' @param method \code{character} (default \code("normal")) Method of standarization, only applies when \code{standar}
 #' is set to \code{TRUE}. Options are \code("normal") which scales the exposures using the mean as the center 
 #' and the standard variation as dispersion, \code{"robust"} which uses the median and median absolute deviation respectively
@@ -24,15 +28,13 @@
 #' \dontrun{Refer to the package Vignette for examples.}
 #' @export
 
-ds.exposome_pca <- function(Set, fam = NULL, standar = TRUE, method = "normal", pca = TRUE, npc = 10, datasources = NULL){
-  
-  if(is.null(Set) | class(Set) != "character"){
-    stop("Input variable 'Set' must have a value which is a character string")
-  }
+ds.exposome_pca <- function(Set, fam = NULL, scale = TRUE, type = c("meta", "pooled"), method = "normal", pca = TRUE, npc = 10, datasources = NULL){
   
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
   }
+  
+  checkForExposomeSet(Set, datasources)
   
   if(!is.null(fam)){
     ds.exposomeSubset(Set, fam, NULL, datasources)
@@ -41,17 +43,27 @@ ds.exposome_pca <- function(Set, fam = NULL, standar = TRUE, method = "normal", 
             unlist(ds.dim(Set)[1])[1], ') valid exposures.')
   }
   
-  if(standar){
-    ds.standardize(Set, name = "pca_std_exposomeSet", method = method, datasources = datasources)
-    Set <- "pca_std_exposomeSet"
+  if(scale){
+    ds.exposome_scale_exposures(Set, new.obj = "pca_scaled_exposomeSet", datasources = datasources)
+    Set <- "pca_scaled_exposomeSet"
   }
   
-  checkForExposomeSet(Set, datasources)
-  
-  cally <- paste0("exposome_pcaDS(", Set, ", npc = ", npc, ", pca = ", pca, ")")
-  DSI::datashield.assign.expr(datasources, "ds.exposome_pca.Results", as.symbol(cally))
-  
-  if(standar){
+  if(type == "meta"){
+    cally <- paste0("exposome_pcaDS(", Set, ", npc = ", npc, ", pca = ", pca, ")")
+    DSI::datashield.assign.expr(datasources, "ds.exposome_pca.Results", as.symbol(cally))
+  } else if (type == "pooled"){
+    cally <- paste0("exposome_pca_pooledDS(", Set, ")")
+    partial_svd <- t(Reduce("cbind", DSI::datashield.aggregate(datasources, as.symbol(cally))))
+    total_svd <- FactoMineR::PCA(partial_svd, graph = FALSE)
+    
+    DSI::datashield.assign.expr(datasources, "ds.exposome_pca.Results", 
+                                paste0("exposome_pca_pooled_addPCDS(", Set, ", '",
+                                       sf::rawToHex(serialize(total_svd, NULL)), "')"))
+  } else {
+    stop("Invalid 'type' argument. Valid options are ['pooled', 'meta']")
+  }
+
+  if(scale){
     datashield.rm(datasources, Set)
   }
 }
