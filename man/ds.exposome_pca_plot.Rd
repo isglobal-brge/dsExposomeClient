@@ -7,6 +7,7 @@
 ds.exposome_pca_plot(
   pca_object = "ds.exposome_pca.Results",
   set = "all",
+  type = "meta",
   labels = FALSE,
   phenotype = NA,
   method = 1,
@@ -29,6 +30,13 @@ to visualize. Created by the \code{\link{ds.exposome_pca}} function.}
 -\code{"variance_explained"}: Plot of the accumulated variance explained by each principal component. \cr
 -\code{"exposures_correlation"}: Correlation between principal components and exposures \cr
 -\code{"phenotypes_correlation"}: Association between principal components and phenotypes \cr}
+
+\item{type}{\code{character} (default \code{"meta"}) If \code{"meta"} the results of all the study servers will be combined, 
+which fundamentally only affects \code{set = "all"} and \code{set = "samples"}. This is to be used when performing 
+\code{ds.exposome_pca(type = "pooled")}, the only plot that is not actually pooled (at the moment) is 
+\code{set = "phenotypes_correlation"}. If \code{"pooled"} the results of the first study server will be plotted, 
+if a different study server is to be plotted, pass the specific one to the \code{datasources} argument 
+(\code{datasources[x]}).}
 
 \item{labels}{\code{bool} (default \code(FALSE)) Show labels of the exposures, only applies to \code{set = "exposures"}.}
 

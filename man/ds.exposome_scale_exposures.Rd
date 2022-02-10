@@ -2,25 +2,34 @@
 % Please edit documentation in R/ds.exposome_scale_exposures.R
 \name{ds.exposome_scale_exposures}
 \alias{ds.exposome_scale_exposures}
-\title{Title}
+\title{Scale ExposomeSet}
 \usage{
 ds.exposome_scale_exposures(
   Set,
-  method = c("combined", "split"),
+  method = "combined",
   new.obj = NULL,
   datasources = NULL
 )
 }
 \arguments{
-\item{Set}{}
+\item{Set}{\code{character} Name of the ExposomeSet to scale.}
 
-\item{new.obj}{}
+\item{method}{\code{character} (default \code{"combined"}) If \code{"combined"} the scaling will be 
+pooled (using the pooled mean and standard deviation), if \code{"split"} the scaling will be performed 
+individually on each study server.}
 
-\item{datasources}{}
+\item{new.obj}{\code{character} (default \code{NULL}) Name that will take the scaled ExposomeSet. 
+If \code{NULL} the name \code{"exposomeSet_scaled"} will be used.}
+
+\item{datasources}{datasources a list of \code{\link{DSConnection-class}} objects obtained after login}
 }
 \value{
-
+This function does not have an output. It creates a object on the study server named.
 }
 \description{
-Title
+Scales the exposures of an ExposomeSet object: centering by 
+mean and scaling dividing by the standard deviation.
+}
+\examples{
+\dontrun{Refer to the package Vignette for examples.}
 }

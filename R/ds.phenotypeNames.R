@@ -1,12 +1,13 @@
-#' Title
+#' @title Exposure Phenotype names
+#' 
+#' @description Extract the phenotypes names from a Expression Set object
 #'
-#' @param x 
-#' @param datasources 
+#' @param x \code{character} ExposomeSet object
+#' @param datasources a list of \code{\link{DSConnection-class}} objects obtained after login
 #'
-#' @return
+#' @return \code{character vector} of the phenotypes names
 #' @export
-#'
-#' @examples
+
 ds.phenotypeNames <- function(x, datasources = NULL){
   
   if(is.null(datasources)){

@@ -74,6 +74,7 @@ ds.exwas <- function(model, Set, family, type = c("pooled", "meta"), exposures_f
       if(type == "pooled"){
         # Fit GLM using the non-disclosive function
         mod <- ds.glm(frm, family = family, data = 'dta', viewIter = FALSE, datasources = datasources)
+        if(any(mod$errorMessage != "No errors")){stop()}
         items <- rbind(items, cbind(exposure, mod$coefficients[2, 1], mod$coefficients[2, 5], 
                                     mod$coefficients[2, 6], mod$coefficients[2, 4]))
       } else if (type == "meta") {
@@ -117,12 +118,18 @@ ds.exwas <- function(model, Set, family, type = c("pooled", "meta"), exposures_f
   if(tef){
     # Get threshold for effective tests from the study server
     cally <- paste0("effective.testsDS(", Set, ")")
-    alpha_corrected <- DSI::datashield.aggregate(datasources, as.symbol(cally))
+    alpha_corrected <- tryCatch({
+      DSI::datashield.aggregate(datasources, as.symbol(cally))
+    }, error = function(w){
+      0L
+    })
+    if(alpha_corrected == 0L){
+      print('The computation of threshold for effective tests was not successful. NAs were generated on the correlation matrix so the calculation was aborted.')
+    }
   }
   else{
     alpha_corrected <- 0
   }
-  
   # Get families/exposures table
   famNames <- ds.familyNames(Set, by.exposure = T, datasources = datasources)
   

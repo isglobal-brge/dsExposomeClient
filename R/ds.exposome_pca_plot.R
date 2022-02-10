@@ -15,6 +15,12 @@
 #' -\code{"exposures_correlation"}: Correlation between principal components and exposures \cr
 #' -\code{"phenotypes_correlation"}: Association between principal components and phenotypes \cr
 #' 
+#' @param type \code{character} (default \code{"meta"}) If \code{"meta"} the results of all the study servers will be combined, 
+#' which fundamentally only affects \code{set = "all"} and \code{set = "samples"}. This is to be used when performing 
+#' \code{ds.exposome_pca(type = "pooled")}, the only plot that is not actually pooled (at the moment) is 
+#' \code{set = "phenotypes_correlation"}. If \code{"pooled"} the results of the first study server will be plotted, 
+#' if a different study server is to be plotted, pass the specific one to the \code{datasources} argument 
+#' (\code{datasources[x]}).
 #' @param labels \code{bool} (default \code(FALSE)) Show labels of the exposures, only applies to \code{set = "exposures"}.
 #' @param phenotype \code{character} (default \code{NA}) Phenotype to color code the \code{"exposures"} plot.
 #' @param method \code{numeric} (default \code{1}) (1) deterministic method to anonimize the scatter plot (uses \code{k}). 
@@ -29,7 +35,7 @@
 #' \dontrun{Refer to the package Vignette for examples.}
 #' @export
 
-ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "all", type = c("meta", "pooled"),
+ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "all", type = "meta",
                                  labels = FALSE, phenotype = NA, method = 1, k = 3, noise = 1, datasources = NULL){
   
   if (is.null(datasources)) {
@@ -40,17 +46,10 @@ ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "
                   if(is.na(phenotype)){paste0("NA")}else{paste0("'",phenotype,"'")}, ", ", method,
                   ", ", k, ", ", noise, ")")
   
-  if(set != "all"){
-    if(type == "meta"){
-      output <- DSI::datashield.aggregate(datasources, as.symbol(cally))[[1]]
-    } else if(type == "pooled") {
-      output <- DSI::datashield.aggregate(datasources, as.symbol(cally))
-    } else {
-      stop("Invalid 'type' argument. Valid options are ['pooled', 'meta']")
-    }
-    }
+  if(set != "all"){output <- DSI::datashield.aggregate(datasources, as.symbol(cally))}
   
   if(set == "exposures"){
+    output <- output[[1]]
     plt <- ggplot2::ggplot(output$data) + 
       ggplot2::geom_point(ggplot2::aes(x = x, y = y, group = group, colour = output$fams), stat = "identity") +
       ggplot2::theme_bw() +
@@ -77,11 +76,20 @@ ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "
     }
   }
   else if(set == "samples"){
-    aux <- Reduce("rbind", lapply(output, function(x){
-      x$data
-    }))
+    aux <- output
     output <- output[[1]]
-    output$data <- aux
+    if(type == "pooled"){
+      datas <- Reduce("rbind", lapply(aux, function(x){
+        x$data
+      }))
+      if(!is.na(phenotype)){pheno <- as.factor(Reduce("c", lapply(aux, function(x){
+        as.character(x$pheno)
+      })))}
+      aux <- aux[[1]]
+      aux$data <- datas
+      if(!is.na(phenotype)){aux$pheno <- pheno}
+      output <- aux
+    }
     plt <- ggplot2::ggplot(output$data) + 
       ggplot2::geom_point(ggplot2::aes(x = x, y = y, group = group, colour = output$pheno), stat = "identity") +
       ggplot2::theme_bw() +
@@ -96,8 +104,8 @@ ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "
       ggplot2::ylab(output$ylabel)
   }
   else if(set == "variance"){
+    output <- output[[1]]
     xticks <- paste0("PC", stringr::str_pad(1:length(output$data$x), pad = "0", width = 2))
-    
     plt <- ggplot2::ggplot(output$data) + 
       ggplot2::geom_bar(ggplot2::aes(x = x, y = y), fill = output$data$fill, stat = "identity") + 
       ggplot2::geom_line(ggplot2::aes(x = x, y = y), colour = "LightSeaGreen", size = 1.3) + 
@@ -110,8 +118,8 @@ ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "
                      axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
   }
   else if(set == "variance_explained"){
+    output <- output[[1]]
     xticks <- paste0("PC", stringr::str_pad(1:length(output$data$x), pad = "0", width = 2))
-    
     plt <- ggplot2::ggplot(output$data) + 
       ggplot2::geom_line(ggplot2::aes(x = x, y = y), colour = "LightSeaGreen", size = 1.3) + 
       ggplot2::geom_point(ggplot2::aes(x = x, y = y), size = 2, colour = "LightSeaGreen") +
@@ -125,6 +133,7 @@ ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "
                      axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
   }
   else if(set == "exposures_correlation"){
+    output <- output[[1]]
     plt <- ggplot2::ggplot(output$data, ggplot2::aes_string(x = "Dim", y = "Exposures")) + 
       ggplot2::geom_tile(ggplot2::aes_string(fill = "value"), color = "white") +
       ggplot2::theme_bw() +
@@ -137,6 +146,7 @@ ds.exposome_pca_plot <- function(pca_object = "ds.exposome_pca.Results", set = "
                                     high="blue", space ="Lab")
   }
   else if(set == "phenotypes_correlation"){
+    output <- output[[1]]
     plt <- ggplot2::ggplot(output$data, ggplot2::aes_string(x = "Dim", y = "variable")) +
       ggplot2::geom_tile(ggplot2::aes_string(fill = "PV"), color = "white") +
       ggplot2::theme_bw() +

@@ -4,7 +4,13 @@
 \alias{ds.exposures_pData}
 \title{Extract exposure or phenotype data and save them to a data frame}
 \usage{
-ds.exposures_pData(set, type = "", name = NULL, datasources = NULL)
+ds.exposures_pData(
+  set,
+  type = "",
+  name = NULL,
+  exposures_type = NULL,
+  datasources = NULL
+)
 }
 \arguments{
 \item{set}{\code{character} Name of the Exposome Set object on the server side}

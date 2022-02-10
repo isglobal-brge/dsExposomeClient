@@ -1,14 +1,23 @@
-#' Title
+#' @title Scale ExposomeSet
+#' 
+#' @description Scales the exposures of an ExposomeSet object: centering by 
+#' mean and scaling dividing by the standard deviation.
 #'
-#' @param Set 
-#' @param new.obj 
-#' @param datasources 
+#' @param Set \code{character} Name of the ExposomeSet to scale.
+#' @param method \code{character} (default \code{"combined"}) If \code{"combined"} the scaling will be 
+#' pooled (using the pooled mean and standard deviation), if \code{"split"} the scaling will be performed 
+#' individually on each study server.
+#' @param new.obj \code{character} (default \code{NULL}) Name that will take the scaled ExposomeSet. 
+#' If \code{NULL} the name \code{"exposomeSet_scaled"} will be used.
+#' @param datasources datasources a list of \code{\link{DSConnection-class}} objects obtained after login
 #'
-#' @return
+#' @return This function does not have an output. It creates a object on the study server named.
 #' @export
 #'
 #' @examples
-ds.exposome_scale_exposures <- function(Set, method = c("combined", "split"), new.obj = NULL, datasources = NULL){
+#' \dontrun{Refer to the package Vignette for examples.}
+
+ds.exposome_scale_exposures <- function(Set, method = "combined", new.obj = NULL, datasources = NULL){
   
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()

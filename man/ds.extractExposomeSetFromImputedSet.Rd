@@ -2,7 +2,7 @@
 % Please edit documentation in R/ds.extractExposomeSetFromImputedSet.R
 \name{ds.extractExposomeSetFromImputedSet}
 \alias{ds.extractExposomeSetFromImputedSet}
-\title{Title}
+\title{Extract ExposomeSet from imExposomeSet}
 \usage{
 ds.extractExposomeSetFromImputedSet(
   x,
@@ -12,15 +12,18 @@ ds.extractExposomeSetFromImputedSet(
 )
 }
 \arguments{
-\item{x}{}
+\item{x}{\code{character} Name of the \code{imExposomeSet}}
 
-\item{rid}{}
+\item{rid}{\code{numeric} (default \code{1}) Number of imputed set to extract.}
 
-\item{datasources}{}
+\item{newobj.name}{\code{character} (default \code{NULL}) Name that will take the ExposomeSet. 
+If \code{NULL} the input imExposomeSet will be overwritten.}
+
+\item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
 }
 \value{
-
+This function does not have an output. It creates a object on the study server named.
 }
 \description{
-Title
+Extract one of the imputed sets of an imputed ExposomeSet (imExposomeSet)
 }

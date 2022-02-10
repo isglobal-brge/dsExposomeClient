@@ -8,38 +8,30 @@ ds.exposome_pca(
   Set,
   fam = NULL,
   scale = TRUE,
-  type = c("meta", "pooled"),
-  method = "normal",
+  type = "meta",
   pca = TRUE,
   npc = 10,
   datasources = NULL
 )
 }
 \arguments{
-\item{Set}{\code{character} Name of the exposome set on the study server}
+\item{Set}{\code{character} Name of the ExposomeSet on the study server}
 
-\item{fam}{\code{character vector} (default \code{NULL}) Families to subset the exposome set}
+\item{fam}{\code{character vector} (default \code{NULL}) Families to subset the ExposomeSet}
+
+\item{scale}{\code{bool} (default \code{TRUE}) If \code{TRUE} the ExposomeSet wil be scaled, if \code{FALSE} 
+it will not be scaled. It is always advisable to scale the data when performing a PCA.}
 
 \item{type}{\code{character}  (default \code{"meta"}) Type of analysis, if meta-analysis (\code{"meta"}), a PCA to 
-each study server will be performed. If pooled-analysis (\code{"pooled"}) a pooled methodology will be performed, 
-this will return to the user the actual principal components, there is no methodology implemented at the moment 
-to visualize with plots the results of this type of analysis.}
-
-\item{method}{\code{character} (default \code("normal")) Method of standarization, only applies when \code{standar}
-is set to \code{TRUE}. Options are \code("normal") which scales the exposures using the mean as the center 
-and the standard variation as dispersion, \code{"robust"} which uses the median and median absolute deviation respectively
-and \code{"interquartile range"} which uses the median as the center and the coeficient between the 
-interquartile range of the exposure and the normal range between the percentile 75 and 25 as variance.}
+each study server will be performed. If pooled-analysis (\code{"pooled"}) a pooled methodology will be performed.}
 
 \item{pca}{\code{bool} (default \code{TRUE}) If TRUE perform PCA (only numerical variables), 
-if FALSE FAMD (numerical and categorical)}
+if FALSE FAMD (numerical and categorical). This argument only affects \code{type = "meta"}, the pooled methodology 
+does not have the option of performing a FAMD analysis.}
 
 \item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
 
-\item{standar}{\code{bool} Whether the values will be normalized prior the analysis (\code{TRUE}) or not (\code{FALSE})
-Default \code{TRUE}}
-
-\item{\code{numeric}}{(default \code{10}) Number of PC to be kept}
+\item{\code{numeric}}{(default \code{10}) Number of principal compoenents to be kept}
 }
 \value{
 This function does not have an output. It creates a object on the study server named \code{ds.exposome_pca.Results},
@@ -48,6 +40,10 @@ this object can be passed to the \code{\link{ds.exposome_pca_plot}} to visualize
 \description{
 Performs a non-disclosive PCA given an Exposome Set on the study server, 
 the Exposome Set can be subsetted by families to perform the PCA
+}
+\details{
+The pooled PCA uses the block method for SVD decomposition. More information can be 
+found on https://arxiv.org/pdf/1907.07410.pdf
 }
 \examples{
 \dontrun{Refer to the package Vignette for examples.}

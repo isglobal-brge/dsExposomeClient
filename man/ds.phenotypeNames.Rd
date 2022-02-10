@@ -2,18 +2,18 @@
 % Please edit documentation in R/ds.phenotypeNames.R
 \name{ds.phenotypeNames}
 \alias{ds.phenotypeNames}
-\title{Title}
+\title{Exposure Phenotype names}
 \usage{
 ds.phenotypeNames(x, datasources = NULL)
 }
 \arguments{
-\item{x}{}
+\item{x}{\code{character} ExposomeSet object}
 
-\item{datasources}{}
+\item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
 }
 \value{
-
+\code{character vector} of the phenotypes names
 }
 \description{
-Title
+Extract the phenotypes names from a Expression Set object
 }
