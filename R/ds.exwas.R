@@ -143,6 +143,7 @@ ds.exwas <- function(model, Set, family, type = c("pooled", "meta"), exposures_f
     results <- list(exwas_results = merge(aux, items), alpha_corrected = alpha_corrected[[1]])
     class(results) <- c(class(results), "dsExWAS_pooled")
   } else {
+    if(length(datasources) != length(alpha_corrected)){alpha_corrected <- rep(0L, length(datasources))}
     results <- lapply(1:length(items), function(x){
       aux <- data.frame(exposure = names(famNames[[x]]), family = famNames[[x]])
       list(exwas_results = merge(aux, items[[x]]), alpha_corrected = alpha_corrected[[x]])
