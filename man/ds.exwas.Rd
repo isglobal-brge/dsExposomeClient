@@ -10,6 +10,7 @@ ds.exwas(
   family,
   type = c("pooled", "meta"),
   exposures_family = NULL,
+  adjust.by.study = FALSE,
   tef = TRUE,
   datasources = NULL
 )
@@ -27,6 +28,11 @@ study server to later meta-analyse the results.}
 
 \item{exposures_family}{\code{character} (default \code{NULL}) Family to subset the ExposomeSet, only the exposures of the 
 selected family will be used for the ExWAS analysis.}
+
+\item{adjust.by.study}{\code{bool} (default \codde{FALSE}) Option to adjust the linear models by cohort, 
+this only applies to \code{type = "pooled"}, there is no need to have a specific variable on the ExposomeSets 
+that has the cohort code. The translation to typical glm syntaxis is \code{objective_variable ~ covariates + cohort} 
+(IMPORTANT to note that there is no need to change your \code{model} argument of the \code{ds.exwas()} function).}
 
 \item{tef}{\code{bool} If \code{TRUE} computes the threshold for effective tests.}
 
