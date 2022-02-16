@@ -18,7 +18,7 @@ the Exposome Set can be subsetted by families to perform the PCA"><!-- mathjax -
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsExposomeClient</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.8</span>
       </span>
     </div>
 
@@ -26,6 +26,16 @@ the Exposome Set can be subsetted by families to perform the PCA"><!-- mathjax -
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/dsExposome.html">Non-disclosive federated exposome data analysis with DataSHIELD and Bioconductor</a>
+    </li>
+  </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -49,9 +59,8 @@ the Exposome Set can be subsetted by families to perform the PCA</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ds.exposome_pca</span><span class="op">(</span>
   <span class="va">Set</span>,
   fam <span class="op">=</span> <span class="cn">NULL</span>,
-  standar <span class="op">=</span> <span class="cn">TRUE</span>,
-  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"meta"</span>, <span class="st">"pooled"</span><span class="op">)</span>,
-  method <span class="op">=</span> <span class="st">"normal"</span>,
+  scale <span class="op">=</span> <span class="cn">TRUE</span>,
+  type <span class="op">=</span> <span class="st">"meta"</span>,
   pca <span class="op">=</span> <span class="cn">TRUE</span>,
   npc <span class="op">=</span> <span class="fl">10</span>,
   datasources <span class="op">=</span> <span class="cn">NULL</span>
@@ -61,36 +70,33 @@ the Exposome Set can be subsetted by families to perform the PCA</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>Set</dt>
-<dd><p><code>character</code> Name of the exposome set on the study server</p></dd>
+<dd><p><code>character</code> Name of the ExposomeSet on the study server</p></dd>
 <dt>fam</dt>
-<dd><p><code>character vector</code> (default <code>NULL</code>) Families to subset the exposome set</p></dd>
-<dt>standar</dt>
-<dd><p><code>bool</code> Whether the values will be normalized prior the analysis (<code>TRUE</code>) or not (<code>FALSE</code>)
-Default <code>TRUE</code></p></dd>
+<dd><p><code>character vector</code> (default <code>NULL</code>) Families to subset the ExposomeSet</p></dd>
+<dt>scale</dt>
+<dd><p><code>bool</code> (default <code>TRUE</code>) If <code>TRUE</code> the ExposomeSet wil be scaled, if <code>FALSE</code> 
+it will not be scaled. It is always advisable to scale the data when performing a PCA.</p></dd>
 <dt>type</dt>
 <dd><p><code>character</code>  (default <code>"meta"</code>) Type of analysis, if meta-analysis (<code>"meta"</code>), a PCA to 
-each study server will be performed. If pooled-analysis (<code>"pooled"</code>) a pooled methodology will be performed, 
-this will return to the user the actual principal components, there is no methodology implemented at the moment 
-to visualize with plots the results of this type of analysis.</p></dd>
-<dt>method</dt>
-<dd><p><code>character</code> (default ("normal")) Method of standarization, only applies when <code>standar</code>
-is set to <code>TRUE</code>. Options are ("normal") which scales the exposures using the mean as the center 
-and the standard variation as dispersion, <code>"robust"</code> which uses the median and median absolute deviation respectively
-and <code>"interquartile range"</code> which uses the median as the center and the coeficient between the 
-interquartile range of the exposure and the normal range between the percentile 75 and 25 as variance.}
-
-{pca}{<code>bool</code> (default <code>TRUE</code>) If TRUE perform PCA (only numerical variables), 
-if FALSE FAMD (numerical and categorical)}
-
-{datasources}{a list of <code>DSConnection-class</code> objects obtained after login}
-
-{<code>numeric</code></p></dd>
-</dl><p>(default <code>10</code>) Number of PC to be kept</p>
-    </div>
+each study server will be performed. If pooled-analysis (<code>"pooled"</code>) a pooled methodology will be performed.</p></dd>
+<dt>pca</dt>
+<dd><p><code>bool</code> (default <code>TRUE</code>) If TRUE perform PCA (only numerical variables), 
+if FALSE FAMD (numerical and categorical). This argument only affects <code>type = "meta"</code>, the pooled methodology 
+does not have the option of performing a FAMD analysis.</p></dd>
+<dt>datasources</dt>
+<dd><p>a list of <code>DSConnection-class</code> objects obtained after login</p></dd>
+<dt><code>numeric</code></dt>
+<dd><p>(default <code>10</code>) Number of principal compoenents to be kept</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>This function does not have an output. It creates a object on the study server named <code>ds.exposome_pca.Results</code>,
 this object can be passed to the <code><a href="ds.exposome_pca_plot.html">ds.exposome_pca_plot</a></code> to visualize the results of the PCA.</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>The pooled PCA uses the block method for SVD decomposition. More information can be 
+found on https://arxiv.org/pdf/1907.07410.pdf</p>
     </div>
 
     <div id="ref-examples">

@@ -10,7 +10,7 @@ author:
   - &isglobal Bioinformatics Research Group in Epidemiolgy (BRGE), Barcelona Insitute for Global Health (ISGlobal)
   email: juanr.gonzalez@isglobal.org
 date: "`r Sys.Date()`"
-package: "`r pkg_ver('dsExposome')`, `r pkg_ver('dsExposomeClient')`"
+package: "`r pkg_ver('dsExposomeClient')`"
 output:
   BiocStyle::html_document
 bibliography: dsExposome_Vignette.bib
@@ -73,77 +73,77 @@ devtools::install_github("isglobal-brge/dsExposomeClient")
 ## Creating the required  `ExposomeSet` object
 
 
-```{r child='rmd/loading_data.Rmd', include=TRUE}
+```{r child='rmd/_loading_data.Rmd', include=TRUE}
 ```
 
 
-```{r child='rmd/tables_to_exposome.Rmd', include=TRUE}
+```{r child='rmd/_tables_to_exposome.Rmd', include=TRUE}
 ```
 
 ### Loading the required `ExposomeSet` object from a *resource*.
 
 
-```{r child='rmd/resource_to_exposome.Rmd', include=TRUE}
+```{r child='rmd/_resource_to_exposome.Rmd', include=TRUE}
 ```
 
 ## Exploring the `ExposomeSet`
 
 
 
-```{r child='rmd/exploring_dataset.Rmd', include=TRUE}
+```{r child='rmd/_exploring_dataset.Rmd', include=TRUE}
 ```
 
 ### Family names
 
 
 
-```{r child='rmd/family_names.Rmd', include=TRUE}
+```{r child='rmd/_family_names.Rmd', include=TRUE}
 ```
 
 ### Exposures and phenotypes names
 
 
 
-```{r child='rmd/exp_pheno_names.Rmd', include=TRUE}
+```{r child='rmd/_exp_pheno_names.Rmd', include=TRUE}
 ```
 
 ### Summary of variables
 
 
 
-```{r child='rmd/summary_variables.Rmd', include=TRUE}
+```{r child='rmd/_summary_variables.Rmd', include=TRUE}
 ```
 
 ### Missing data
 
 
 
-```{r child='rmd/missing_data.Rmd', include=TRUE}
+```{r child='rmd/_missing_data.Rmd', include=TRUE}
 ```
 
 ### Exposures Normality
 
 
-```{r child='rmd/exposures_normality.Rmd', include=TRUE}
+```{r child='rmd/_exposures_normality.Rmd', include=TRUE}
 ```
 
 ### Exposures Behaviour
 
 
 
-```{r child='rmd/exposures_behaviour.Rmd', include=TRUE}
+```{r child='rmd/_exposures_behaviour.Rmd', include=TRUE}
 ```
 
 ## Exposures Imputation
 
 
 
-```{r child='rmd/exposures_imputation.Rmd', include=TRUE}
+```{r child='rmd/_exposures_imputation.Rmd', include=TRUE}
 ```
 
 ## ExWAS
 
-```{r child='rmd/exwas.Rmd', include=TRUE}
+```{r child='rmd/_exwas.Rmd', include=TRUE}
 ```
 
 
@@ -153,18 +153,18 @@ devtools::install_github("isglobal-brge/dsExposomeClient")
 
 
 
-```{r child='rmd/pca.Rmd', include=TRUE}
+```{r child='rmd/_pca.Rmd', include=TRUE}
 ```
 
 ## Exposures HCPC
 
-```{r child='rmd/hcpc.Rmd', include=TRUE}
+```{r child='rmd/_hcpc.Rmd', include=TRUE}
 ```
 
 ## Exposures Correlation
 
 
-```{r child='rmd/correlation.Rmd', include=TRUE}
+```{r child='rmd/_correlation.Rmd', include=TRUE}
 ```
 
 To end, we close the connection

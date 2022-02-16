@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsExposomeClient</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.8</span>
       </span>
     </div>
 
@@ -25,6 +25,16 @@
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/dsExposome.html">Non-disclosive federated exposome data analysis with DataSHIELD and Bioconductor</a>
+    </li>
+  </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -47,6 +57,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ds.exposome_pca_plot</span><span class="op">(</span>
   pca_object <span class="op">=</span> <span class="st">"ds.exposome_pca.Results"</span>,
   set <span class="op">=</span> <span class="st">"all"</span>,
+  type <span class="op">=</span> <span class="st">"meta"</span>,
   labels <span class="op">=</span> <span class="cn">FALSE</span>,
   phenotype <span class="op">=</span> <span class="cn">NA</span>,
   method <span class="op">=</span> <span class="fl">1</span>,
@@ -71,6 +82,13 @@ to visualize. Created by the <code><a href="ds.exposome_pca.html">ds.exposome_pc
 -<code>"variance_explained"</code>: Plot of the accumulated variance explained by each principal component. <br>
 -<code>"exposures_correlation"</code>: Correlation between principal components and exposures <br>
 -<code>"phenotypes_correlation"</code>: Association between principal components and phenotypes <br></p></dd>
+<dt>type</dt>
+<dd><p><code>character</code> (default <code>"meta"</code>) If <code>"meta"</code> the results of all the study servers will be combined, 
+which fundamentally only affects <code>set = "all"</code> and <code>set = "samples"</code>. This is to be used when performing 
+<code>ds.exposome_pca(type = "pooled")</code>, the only plot that is not actually pooled (at the moment) is 
+<code>set = "phenotypes_correlation"</code>. If <code>"pooled"</code> the results of the first study server will be plotted, 
+if a different study server is to be plotted, pass the specific one to the <code>datasources</code> argument 
+(<code>datasources[x]</code>).</p></dd>
 <dt>labels</dt>
 <dd><p><code>bool</code> (default (FALSE)) Show labels of the exposures, only applies to <code>set = "exposures"</code>.}
 
