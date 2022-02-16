@@ -22,7 +22,7 @@ ds.invExWAS <- function(object, phenotype, covariables = NULL, tef = TRUE, datas
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
   }
-
+  browser()
   cally <- paste0("invExWASDS(", object, ", '", phenotype, "', ", tef, if(is.null(covariables)){")"}else{
     paste0(", '", paste(covariables, collapse = "','"), "')")
   })
@@ -39,6 +39,9 @@ ds.invExWAS <- function(object, phenotype, covariables = NULL, tef = TRUE, datas
   
   alpha_corrected <- res@effective
   
-  return(list(exwas_results = inv_exwas_results, alpha_corrected = alpha_corrected))
+  results <- list(exwas_results = inv_exwas_results, alpha_corrected = alpha_corrected)
+  class(results) <- c(class(results), "dsExWAS_pooled")
+  
+  return(results)
   
 }

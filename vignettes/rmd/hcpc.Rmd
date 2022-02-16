@@ -1,7 +1,7 @@
 A HCPC (hierarchical classification on principle components) can be performed on the exposures of the exposome dataset. To do so, there's the `ds.exposome_HCPC`. By default, the number of clusters discovered is the one with the higher relative loss of inertia `(i(clusters n+1)/i(cluster n))`, the user can also specify the number of clusters with the argument `nb.clust`. This function has to be passed the server object that holds the results of a PCA.
 
 ```{r}
-ds.exposome_pca("exposome_object", fam = c("Metals", "Noise"), standar = TRUE)
+ds.exposome_pca("exposome_object", fam = c("Metals", "Noise"))
 hcpc=ds.exposome_HCPC("ds.exposome_pca.Results")[[1]]
 ```
 

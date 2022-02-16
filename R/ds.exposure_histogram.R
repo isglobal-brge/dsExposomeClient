@@ -31,7 +31,7 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
   
   checkForExposure(exp, exposure, datasources)
   
-  ds.exposures_pData(exp, "exposures", "dta", datasources)
+  ds.exposures_pData(set = exp, type = "exposures", name = "dta", datasources = datasources)
   
   if(ds.class(paste0("dta$", exposure), datasources) == "numeric"){
     if(show.trans){

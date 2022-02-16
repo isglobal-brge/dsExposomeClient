@@ -1,19 +1,19 @@
 The correlation between exposures, in terms of intra-family and inter-family exposures, is interesting to take into account. The correlation of the exposome can be computed using `ds.correlation`. The correlation could be disclosive, for that reason there's the argument `fam` to select the families to compute the correlation subsetting the exposome dataset by families, typical complete exposome datasets will fail as the correlation matrix could be disclosive.
 
 ```{r error = TRUE}
-ds.correlation("exposome_object")[[1]][[1]]$`Correlation Matrix`[1:5,1:5]
+ds.exposome_correlation("exposome_object")[[1]][[1]]$`Correlation Matrix`[1:5,1:5]
 ```
 
 When subsetting the exposome set by families the correlation succeeds.
 
 ```{r}
-ds.correlation("exposome_object", c("Metals", "Noise"))[[1]][[1]]$`Correlation Matrix`[1:5,1:5]
+ds.exposome_correlation("exposome_object", c("Metals", "Noise"))[[1]][[1]]$`Correlation Matrix`[1:5,1:5]
 ```
 
 The output from the `ds.correlation` consists of the correlation matrix and a vector that contains the names of exposures and families on the correlation table, this second item is used by the `corPlot` function to display the results of the correlation study.
 
 ```{r}
-corr_data <- ds.correlation("exposome_object", c("Metals", "Noise"))
+corr_data <- ds.exposome_correlation("exposome_object", c("Metals", "Noise"))
 corPlot(corr_data)
 ```
 

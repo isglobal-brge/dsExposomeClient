@@ -17,7 +17,7 @@
 #' \dontrun{Refer to the package Vignette for examples.}
 #' @export
 
-ds.correlation <- function(set, fam = NULL, datasources = NULL){
+ds.exposome_correlation <- function(set, fam = NULL, datasources = NULL){
   
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
@@ -30,7 +30,7 @@ ds.correlation <- function(set, fam = NULL, datasources = NULL){
   
   checkForExposomeSet(set, datasources)
   
-  ds.exposures_pData(set, "exposures", "ds.correlationExposures", datasources)
+  ds.exposures_pData(set = set, type = "exposures", name = "ds.correlationExposures", datasources = datasources)
   
   data <- ds.cor(x = "ds.correlationExposures", type = "split" , datasources)
   

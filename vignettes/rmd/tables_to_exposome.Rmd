@@ -13,8 +13,8 @@ Of course, the user may also have exposome and phenotypes information in Opal ta
 ```{r}
 builder <- newDSLoginBuilder()
 builder$append(server = "server1", url = "https://opal-demo.obiba.org/",
-               user = "administrator", password = "password",
-               driver = "OpalDriver")
+               user = "dsuser", password = "P@ssw0rd",
+               driver = "OpalDriver", profile = "exposome")
 logindata <- builder$build()
 conns <- datashield.login(logins = logindata)
 

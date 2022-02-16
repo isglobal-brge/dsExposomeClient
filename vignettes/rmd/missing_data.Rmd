@@ -1,14 +1,15 @@
 The number of missing data on each exposure and on each phenotype can be found by using the function `ds.tableMissings`. This function returns a vector with the amount of missing data in each exposure or phenotype. The argument `set` indicates if the number of missing values is counted on exposures or phenotypes. The argument `output` indicates if it is shown as counts (`output="n"`) or as percentage (`output="p"`).
 
 ```{r}
-ds.tableMissings("exposome_object", set = "exposures")
-ds.tableMissings("exposome_object", set = "phenotypes")
+expos <- ds.tableMissings("exposome_object", set = "exposures")
+phenos <- ds.tableMissings("exposome_object", set = "phenotypes")
 ```
 
 Optionally, there's also the `ds.plotMissings` function which returns a `ggplot` object with a barplot of missings for exposures or phenotypes, there's the option of displaying the percentage of missings as well as total counts, check the function documentation for further information.
 
 ```{r}
-ds.plotMissings("exposome_object", "exposures", "p")
+ds.plotMissings(expos)
+ds.plotMissings(phenos)
 ```
 
 Please note that since this function call returns a `ggplot` object, it can be plotted properly to avoid squished Y axis when there are lots of exposures, read the [official documentation](https://ggplot2.tidyverse.org/reference/ggsave.html) for information on how to do that.

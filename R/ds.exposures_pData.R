@@ -9,6 +9,7 @@
 #' \code{exposures} to include only the exposures and \code{phenotypes} to include only the phenotypes. Default \code{all}
 #' @param name \code{character} (default \code{NULL}) Name of the new Exposome Set, if null the name 
 #' will be \code{"set_table"} where \code{"set"} is the inputted argument
+#' @param exposures_type
 #' @param datasources a list of \code{\link{DSConnection-class}} (default \code{NULL}) objects obtained after login
 #'
 #' @return This function does not have an output. It creates an data frame object on the study server.
