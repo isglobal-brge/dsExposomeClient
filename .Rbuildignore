@@ -13,3 +13,6 @@
 ^vignettes/.*rprof$
 ^vignettes/.*html$
 ^vignettes/.*png$
+## Azure
+^azure-pipelines.yml
+^.azure
