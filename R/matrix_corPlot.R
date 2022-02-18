@@ -1,6 +1,11 @@
 #' @title Draws correlation matrix plot
 #' 
 #' @description This is a internal function, the code itself is taken from rexposome::.correlation_matrix_plot
+#' 
+#' @param corr Correlation
+#' @param desc Fams
+#' @param cex.exposures Alpha
+#' @param cex.family Alpha
 #'
 
 matrix_corPlotEXP <- function(corr, desc, cex.exposures = 0.50, cex.family = 0.55){
@@ -18,7 +23,7 @@ matrix_corPlotEXP <- function(corr, desc, cex.exposures = 0.50, cex.family = 0.5
   desc$Exposure <- rownames(desc)
   graphics::par(xpd = TRUE)
   for(ii in 1:nrow(desc)) {
-    text(y = ii, x = 0, labels = desc$Exposure[nrow(desc) - ii + 1], adj = 1,  cex = cex.exposures)
+    graphics::text(y = ii, x = 0, labels = desc$Exposure[nrow(desc) - ii + 1], adj = 1,  cex = cex.exposures)
   }
   rm(ii)
   graphics::par(xpd = FALSE)

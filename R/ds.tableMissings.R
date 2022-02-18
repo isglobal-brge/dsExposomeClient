@@ -3,6 +3,7 @@
 #' @description Obtain the number (or percentage) of missings of for the exposures or phenotypes of an ExposomeSet object
 #'
 #' @param exp \code{character} Name of the Exposome Set on the server side
+#' @param type \code{character} (default \code{"pooled"}). Type of results \code{"pooled"/"meta"}.
 #' @param set \code{character} (default \code{"exposures"}) Set to get the missings: \code{"exposures"} or \code{"phenotypes"}
 #' @param output \code{character} (default \code{"n"}) Get missing number (\code{"n"}) or percentage (\code{"p"})
 #' @param datasources a list of \code{\link{DSConnection-class}} (default \code{NULL}) objects obtained after login
@@ -28,7 +29,7 @@ ds.tableMissings <- function(exp, type = "pooled", set = "exposures", output = "
   if(type == "pooled"){
     if(output == "p"){
       ds.exposures_pData(set = exp, type = "all", name = "ds.tableMissings_aux", datasources = datasources)
-      dimensions <- ds.dim(x = "ds.tableMissings_aux", type = "split", datasources = datasources)
+      dimensions <- dsBaseClient::ds.dim(x = "ds.tableMissings_aux", type = "split", datasources = datasources)
       pooled_dimensions <- sum(unlist(lapply(dimensions, function(x){x[1]})))
       dimensionsPerMissings <- lapply(1:length(dimensions), function(x){
         dimensions[[x]][1] * missings[[x]]

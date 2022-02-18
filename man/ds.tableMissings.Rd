@@ -15,6 +15,8 @@ ds.tableMissings(
 \arguments{
 \item{exp}{\code{character} Name of the Exposome Set on the server side}
 
+\item{type}{\code{character} (default \code{"pooled"}). Type of results \code{"pooled"/"meta"}.}
+
 \item{set}{\code{character} (default \code{"exposures"}) Set to get the missings: \code{"exposures"} or \code{"phenotypes"}}
 
 \item{output}{\code{character} (default \code{"n"}) Get missing number (\code{"n"}) or percentage (\code{"p"})}

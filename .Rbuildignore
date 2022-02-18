@@ -1,2 +1,15 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^docs$
+## Temporary files
+^R/.+~$
+^vignettes/.+~$
+^vignettes/cache
+^vignettes/rsconnect
+^vignettes/.*cache
+^vignettes/.*files
+^vignettes/figure
+^vignettes/mnist
+^vignettes/.*rprof$
+^vignettes/.*html$
+^vignettes/.*png$

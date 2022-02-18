@@ -10,10 +10,8 @@
 #' @param x \code{character} Name of the ExpressionSet on the study server
 #' @param pheno \code{character} Name of the data.frame with the new phenotypes on the 
 #' study server
-#' @param identifier \code{character} (default \code{"ID"}) Name of the ID column on the phenotypes data.frame
-#' @param alternate_eset_id \code{character} (default \code{NULL}) Alternate ID of the eSet pheno data, by default the rownames 
-#' of the eSet pheno data act as ID, use this argument if the ID to merge the individuals is on a column of the pheno data. 
-#' Input NULL for the standard behaviour of using the rownames of the pheno data as ID.
+#' @param identifier_ExposomeSet \code{character} (default \code{"ID"}) Name of the ID column on the ExposomeSet
+#' @param identifier_new_phenotypes \code{character} (default \code{"ID"}) Name of the ID column on the phenotypes data.frame
 #' @param newobj.name \code{character} (default \code{NULL}) If \code{NULL}, the original ExpressionSet will be overwritten,
 #' otherwise the new ExpressionSet will be assigned to a variable named after this argument
 #' @param complete_cases \code{bool} (default \code{TRUE}) If \code{TRUE} only the matching individuals 
@@ -28,22 +26,17 @@ ds.addPhenoData2ExposomeSet <- function(x, pheno, identifier_ExposomeSet = "ID",
                             newobj.name = NULL, complete_cases = TRUE, datasources = NULL){
   
   if(is.null(datasources)){
-    datasources <- datashield.connections_find()
+    datasources <- DSI::datashield.connections_find()
   }
   
   if(is.null(newobj.name)){
     newobj.name <- x
   }
   
-  dsBaseClient:::isDefined(datasources, x)
-  dsBaseClient:::isDefined(datasources, pheno)
-  cls <- dsBaseClient:::checkClass(datasources, x)
-  cls2 <- dsBaseClient:::checkClass(datasources, pheno)
-  if(!any((cls %in% c("ExposomeSet")))){
-    stop("'x' is not an 'ExposomeSet'")
-  }
+  checkForExposomeSet(set = x, datasources = datasources)
+  cls2 <- dsBaseClient::ds.class(x = pheno, datasources = datasources)
   if(!any((cls2 %in% c("data.frame")))){
-    stop("The 'pheno' is not a 'data.frame'")
+    stop("'", pheno, "' is not a 'data.frame'")
   }
   
   cally <- paste0("addPhenoData2ExposomeSetDS(", x, ", ", pheno, ", '", identifier_ExposomeSet, "', ", 

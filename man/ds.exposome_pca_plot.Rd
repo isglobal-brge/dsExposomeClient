@@ -20,16 +20,16 @@ ds.exposome_pca_plot(
 \item{pca_object}{\code{character} (default \code{"ds.exposome_pca"}) Name of the PCA ExposomeSet on the study server 
 to visualize. Created by the \code{\link{ds.exposome_pca}} function.}
 
-\item{set}{\code{character} (default \code{"all"}) Argument to specify the type of plot to visualize. Options: \cr
+\item{set}{\code{character} (default \code{"all"}) Argument to specify the type of plot to visualize. Options: `\\n`
 
--\code{"all"}: Mosaic plot with the samples, exposures and variance plots. \cr
--\code{"exposures"}: Plot of the exposures space on the first two principal components, color coded by family. \cr
+-\code{"all"}: Mosaic plot with the samples, exposures and variance plots. `\\n`
+-\code{"exposures"}: Plot of the exposures space on the first two principal components, color coded by family. `\\n`
 -\code{"samples"}: Plot of the individuals space on the first two principal components, this plot can take the
- `phenotype` argument to color code the individuals by phenotypes. \cr
--\code{"variance"}: Plot of the variance explained by each principal component. \cr
--\code{"variance_explained"}: Plot of the accumulated variance explained by each principal component. \cr
--\code{"exposures_correlation"}: Correlation between principal components and exposures \cr
--\code{"phenotypes_correlation"}: Association between principal components and phenotypes \cr}
+ `phenotype` argument to color code the individuals by phenotypes. `\\n`
+-\code{"variance"}: Plot of the variance explained by each principal component. `\\n`
+-\code{"variance_explained"}: Plot of the accumulated variance explained by each principal component. `\\n`
+-\code{"exposures_correlation"}: Correlation between principal components and exposures `\\n`
+-\code{"phenotypes_correlation"}: Association between principal components and phenotypes `\\n`}
 
 \item{type}{\code{character} (default \code{"meta"}) If \code{"meta"} the results of all the study servers will be combined, 
 which fundamentally only affects \code{set = "all"} and \code{set = "samples"}. This is to be used when performing 
@@ -38,7 +38,7 @@ which fundamentally only affects \code{set = "all"} and \code{set = "samples"}. 
 if a different study server is to be plotted, pass the specific one to the \code{datasources} argument 
 (\code{datasources[x]}).}
 
-\item{labels}{\code{bool} (default \code(FALSE)) Show labels of the exposures, only applies to \code{set = "exposures"}.}
+\item{labels}{\code{bool} (default \code{FALSE}) Show labels of the exposures, only applies to \code{set = "exposures"}.}
 
 \item{phenotype}{\code{character} (default \code{NA}) Phenotype to color code the \code{"exposures"} plot.}
 

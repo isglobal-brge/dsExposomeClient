@@ -11,7 +11,7 @@
 #' study server to later meta-analyse the results.
 #' @param exposures_family \code{character} (default \code{NULL}) Family to subset the ExposomeSet, only the exposures of the 
 #' selected family will be used for the ExWAS analysis.
-#' @param adjust.by.study \code{bool} (default \codde{FALSE}) Option to adjust the linear models by cohort, 
+#' @param adjust.by.study \code{bool} (default \code{FALSE}) Option to adjust the linear models by cohort, 
 #' this only applies to \code{type = "pooled"}, there is no need to have a specific variable on the ExposomeSets 
 #' that has the cohort code. The translation to typical glm syntaxis is \code{objective_variable ~ covariates + cohort} 
 #' (IMPORTANT to note that there is no need to change your \code{model} argument of the \code{ds.exwas()} function).
@@ -68,7 +68,7 @@ ds.exwas <- function(model, Set, family, type = c("pooled", "meta"), exposures_f
   }
   
   # Make sure wehave the model as a formula element
-  form <- formula(model)
+  form <- stats::formula(model)
   
   # If adjust.by.study == TRUE
   if(adjust.by.study && type == "pooled"){
@@ -77,35 +77,35 @@ ds.exwas <- function(model, Set, family, type = c("pooled", "meta"), exposures_f
       x <- list(x)
       names(x) <- name_x
       # Create new variable at each study with its name repeated
-      nrows <- ds.dim("dta", datasources = x)[[1]][1]
-      ds.rep(x1 = name_x, times = nrows, 
+      nrows <- dsBaseClient::ds.dim("dta", datasources = x)[[1]][1]
+      dsBaseClient::ds.rep(x1 = name_x, times = nrows, 
              source.x1 = "c", source.times = "c",
              source.each = "c", x1.includes.characters = TRUE,
              newobj = "aux_column_cohort", datasources = x)
       
     })
     # Make dummies out of new variables
-    ds.asFactor(input.var.name = "aux_column_cohort", newobj.name = "aux_column_cohort", 
+    dsBaseClient::ds.asFactor(input.var.name = "aux_column_cohort", newobj.name = "aux_column_cohort", 
                 fixed.dummy.vars = TRUE, datasources = datasources)
     
     # Get column names of dummies
-    dummies_colnames <- ds.colnames(x = "aux_column_cohort", datasources = datasources)[[1]]
+    dummies_colnames <- dsBaseClient::ds.colnames(x = "aux_column_cohort", datasources = datasources)[[1]]
     
     # Merge new variable dummies with exposures+phenotypes table
-    ds.cbind(x = c("dta", "aux_column_cohort"), newobj = "dta", datasources = datasources)
+    dsBaseClient::ds.cbind(x = c("dta", "aux_column_cohort"), newobj = "dta", datasources = datasources)
     
     # Add new dummies to the formula to adjust by cohort
-    form <- update(form, formula(paste("~ . +", paste(dummies_colnames, collapse = " + "))))
+    form <- stats::update(form, stats::formula(paste("~ . +", paste(dummies_colnames, collapse = " + "))))
   }
   
   items <- NULL
   for (exposure in exposure_names[[1]]) {# exposure_names) {
     # Build formula: pheno_objective ~ exposure + adjusting phenotypes
-    frm <- update(form, formula(paste("~ +", exposure, "+ .")))
+    frm <- stats::update(form, stats::formula(paste("~ +", exposure, "+ .")))
     tryCatch({
       if(type == "pooled"){
         # Fit GLM using the non-disclosive function
-        mod <- ds.glm(frm, family = family, data = 'dta', viewIter = FALSE, datasources = datasources)
+        mod <- dsBaseClient::ds.glm(frm, family = family, data = 'dta', viewIter = FALSE, datasources = datasources)
         if(any(mod$errorMessage != "No errors")){stop()}
         items <- rbind(items, cbind(exposure, mod$coefficients[2, 1], mod$coefficients[2, 5], 
                                     mod$coefficients[2, 6], mod$coefficients[2, 4]))
@@ -114,12 +114,12 @@ ds.exwas <- function(model, Set, family, type = c("pooled", "meta"), exposures_f
           name_x <- x@name
           x <- list(x)
           names(x) <- name_x
-          mod <- ds.glm(frm, family = family, data = 'dta', viewIter = FALSE, datasources = x)$coefficients
+          mod <- dsBaseClient::ds.glm(frm, family = family, data = 'dta', viewIter = FALSE, datasources = x)$coefficients
           return(cbind(exposure, mod[2, 1], mod[2, 5], 
                        mod[2, 6], mod[2, 4]))
         }))
       }
-    }, error = function(e){print(datashield.errors())})
+    }, error = function(e){print(DSI::datashield.errors())})
   }
   
   if(type == "meta"){
@@ -166,9 +166,9 @@ ds.exwas <- function(model, Set, family, type = c("pooled", "meta"), exposures_f
   famNames <- ds.familyNames(Set, by.exposure = T, datasources = datasources)
   
   # Remove created variables on the study server
-  datashield.rm(datasources, "dta")
-  if(adjust.by.study && type == "pooled"){datashield.rm(datasources, "aux_column_cohort")}
-  if(!is.null(exposures_family)){datashield.rm(datasources, Set)}
+  DSI::datashield.rm(datasources, "dta")
+  if(adjust.by.study && type == "pooled"){DSI::datashield.rm(datasources, "aux_column_cohort")}
+  if(!is.null(exposures_family)){DSI::datashield.rm(datasources, Set)}
   
   if(type == "pooled"){
     aux <- data.frame(exposure = names(famNames[[1]]), family = famNames[[1]])

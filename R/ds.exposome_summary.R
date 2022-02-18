@@ -34,15 +34,15 @@ ds.exposome_summary <- function(Set, variable, datasources = NULL){
   DSI::datashield.assign.expr(datasources, "dta_all", as.symbol(cally))
   
   # Check if the input variable is on the exposome dataset
-  if(!(variable %in% unlist(ds.colnames("dta_all")))){
+  if(!(variable %in% unlist(dsBaseClient::ds.colnames("dta_all")))){
     stop(paste0("Variable ('", variable, "') not found on the exposome set ('", Set, "')"))
   }
   
   # Get summary
-  summ <- ds.summary(paste0("dta_all$", variable), datasources)
+  summ <- dsBaseClient::ds.summary(paste0("dta_all$", variable), datasources)
   
   # Remove created variables on the study server
-  datashield.rm(datasources, "dta_all")
+  DSI::datashield.rm(datasources, "dta_all")
   
   return(summ)
   

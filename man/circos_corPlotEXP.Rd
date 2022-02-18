@@ -16,6 +16,21 @@ circos_corPlotEXP(
   colors
 )
 }
+\arguments{
+\item{corr}{Correlation}
+
+\item{desc}{Fams}
+
+\item{correlation.limits}{Limits}
+
+\item{show.legend}{Bool}
+
+\item{cex.exposures}{Alpha}
+
+\item{cex.family}{Alpha}
+
+\item{colors}{Cols}
+}
 \description{
 This is a internal function, the code itself is taken from rexposome::.correlation_circos_plot
 }

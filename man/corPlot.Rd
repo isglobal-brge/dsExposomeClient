@@ -7,7 +7,7 @@
 corPlot(corr_list, type = "matrix")
 }
 \arguments{
-\item{corr_list}{\code{list} Output of \code{\link{ds.correlation}}}
+\item{corr_list}{\code{list} Output of \code{\link{ds.exposome_correlation}}}
 
 \item{type}{\code{character} Type of the plot, \code{"matrix"} for a matrix plot or \code{"circos"} for a circos
 plot}
@@ -16,7 +16,7 @@ plot}
 Renders the selected plot on the default graphical device
 }
 \description{
-Takes the output of the \code{\link{ds.correlation}} function and draws a plot (circos or matrix)
+Takes the output of the \code{\link{ds.exposome_correlation}} function and draws a plot (circos or matrix)
 }
 \examples{
 \dontrun{Refer to the package Vignette for examples.}

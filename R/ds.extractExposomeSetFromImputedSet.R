@@ -14,17 +14,16 @@
 ds.extractExposomeSetFromImputedSet <- function(x, rid = 1L, newobj.name = NULL, datasources = NULL){
   
   if(is.null(datasources)){
-    datasources <- datashield.connections_find()
+    datasources <- DSI::datashield.connections_find()
   }
   
   if(is.null(newobj.name)){
     newobj.name <- x
   }
   
-  dsBaseClient:::isDefined(datasources, x)
-  cls <- dsBaseClient:::checkClass(datasources, x)
+  cls <- dsBaseClient::ds.class(x = x, datasources = datasources)
   if(!any((cls %in% c("imExposomeSet")))){
-    stop("'x' is not an 'imExposomeSet'")
+    stop("'", x ,"' is not an 'imExposomeSet'")
   }
   
   cally <- paste0("extractExposomeSetFromImputedSetDS(", x, ", ", rid, ")")

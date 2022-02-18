@@ -10,7 +10,7 @@ ds.exposome_pca(
   scale = TRUE,
   type = "meta",
   pca = TRUE,
-  npc = 10,
+  npc = 10L,
   datasources = NULL
 )
 }
@@ -29,9 +29,9 @@ each study server will be performed. If pooled-analysis (\code{"pooled"}) a pool
 if FALSE FAMD (numerical and categorical). This argument only affects \code{type = "meta"}, the pooled methodology 
 does not have the option of performing a FAMD analysis.}
 
-\item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
+\item{npc}{\code{integer} (default \code{10L}) Number of principal components to compute.}
 
-\item{\code{numeric}}{(default \code{10}) Number of principal compoenents to be kept}
+\item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
 }
 \value{
 This function does not have an output. It creates a object on the study server named \code{ds.exposome_pca.Results},

@@ -15,7 +15,7 @@
 #' @param pca \code{bool} (default \code{TRUE}) If TRUE perform PCA (only numerical variables), 
 #' if FALSE FAMD (numerical and categorical). This argument only affects \code{type = "meta"}, the pooled methodology 
 #' does not have the option of performing a FAMD analysis.
-#' @param \code{numeric} (default \code{10}) Number of principal compoenents to be kept
+#' @param npc \code{integer} (default \code{10L}) Number of principal components to compute.
 #' @param datasources a list of \code{\link{DSConnection-class}} objects obtained after login
 #'
 #' @return This function does not have an output. It creates a object on the study server named \code{ds.exposome_pca.Results},
@@ -26,7 +26,7 @@
 #' @export
 
 ds.exposome_pca <- function(Set, fam = NULL, scale = TRUE, type = "meta", 
-                            pca = TRUE, npc = 10, datasources = NULL){
+                            pca = TRUE, npc = 10L, datasources = NULL){
   
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
@@ -38,7 +38,7 @@ ds.exposome_pca <- function(Set, fam = NULL, scale = TRUE, type = "meta",
     ds.exposomeSubset(Set, fam, NULL, datasources)
     Set <- paste0(Set, "_subsetted")
     warning('The family subset of [', paste0(fam, collapse = ", "), '] yielded (', 
-            unlist(ds.dim(Set)[1])[1], ') valid exposures.')
+            unlist(dsBaseClient::ds.dim(Set)[1])[1], ') valid exposures.')
   }
   
   if(scale){
@@ -62,6 +62,6 @@ ds.exposome_pca <- function(Set, fam = NULL, scale = TRUE, type = "meta",
   }
 
   if(scale){
-    datashield.rm(datasources, Set)
+    DSI::datashield.rm(datasources, Set)
   }
 }

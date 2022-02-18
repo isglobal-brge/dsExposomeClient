@@ -49,9 +49,9 @@ ds.exposome_scale_exposures <- function(Set, method = "combined", new.obj = NULL
 
     # Get pooled SDs
     ds.exposures_pData(Set, "exposures", "aux_exposures", "numeric", datasources)
-    cols <- ds.colnames("aux_exposures")[[1]]
+    cols <- dsBaseClient::ds.colnames("aux_exposures")[[1]]
     variance <- unlist(lapply(cols, function(x){
-      ds.var(paste0("aux_exposures$", x), type = "combined", datasources = datasources)$Global.Variance[, 1]
+      dsBaseClient::ds.var(paste0("aux_exposures$", x), type = "combined", datasources = datasources)$Global.Variance[, 1]
     }))
     pooled_sds <- sqrt(variance)
     
@@ -69,7 +69,7 @@ ds.exposome_scale_exposures <- function(Set, method = "combined", new.obj = NULL
   }
   
   if(method == "combined"){
-    datashield.rm(datasources, "aux_exposures")
+    DSI::datashield.rm(datasources, "aux_exposures")
   }
   
 }

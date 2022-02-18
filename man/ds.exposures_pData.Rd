@@ -21,6 +21,9 @@ ds.exposures_pData(
 \item{name}{\code{character} (default \code{NULL}) Name of the new Exposome Set, if null the name 
 will be \code{"set_table"} where \code{"set"} is the inputted argument}
 
+\item{exposures_type}{\code{character} (default \code{NULL}) Type of the exposures to be kept, usually 
+\code{"numeric"} or \code{"character"/"factor"}. If \code{NULL} all the exposures will be kept.}
+
 \item{datasources}{a list of \code{\link{DSConnection-class}} (default \code{NULL}) objects obtained after login}
 }
 \value{

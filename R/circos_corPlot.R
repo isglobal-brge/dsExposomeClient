@@ -1,6 +1,15 @@
 #' @title Draws correlation circos plot
 #' 
 #' @description This is a internal function, the code itself is taken from rexposome::.correlation_circos_plot
+#' 
+#' @param corr Correlation
+#' @param desc Fams
+#' @param correlation.limits Limits
+#' @param show.legend Bool
+#' @param cex.exposures Alpha
+#' @param cex.family Alpha
+#' @param colors Cols
+#'
 #'
 
 circos_corPlotEXP <- function(corr, desc, correlation.limits = list(
@@ -26,7 +35,7 @@ circos_corPlotEXP <- function(corr, desc, correlation.limits = list(
     nf <- graphics::layout(matrix(c(1,2,3,0), ncol = 2, nrow = 2, byrow = TRUE), c(3, 1), c(3, 1), TRUE)
   }
   
-  par(mar = c(1,1,1,1))
+  graphics::par(mar = c(1,1,1,1))
   circlize::circos.initialize(factors = factors, xlim = c(0,1))
   circlize::circos.trackPlotRegion(factors = factors, ylim = c(0,1),
                                    bg.col = NA, bg.border = NA, track.height = 0.3)

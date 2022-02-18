@@ -14,11 +14,11 @@ checkForExposomeSet <- function(set, datasources = NULL){
     datasources <- DSI::datashield.connections_find()
   }
   
-  if(ds.exists(set, datasources)[[1]] == FALSE){
+  if(dsBaseClient::ds.exists(set, datasources)[[1]] == FALSE){
     stop(paste0("Object: ", set, "; does not exist on the study server"), call. = FALSE)
   }
   
-  if(!any(ds.class(set, datasources)[[1]] == "ExposomeSet")){
+  if(!any(dsBaseClient::ds.class(set, datasources)[[1]] == "ExposomeSet")){
     stop(paste0("Object: ", set, "; is not an ExposomeSet"), call. = FALSE)
   }
   

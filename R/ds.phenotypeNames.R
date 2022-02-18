@@ -11,14 +11,10 @@
 ds.phenotypeNames <- function(x, datasources = NULL){
   
   if(is.null(datasources)){
-    datasources <- datashield.connections_find()
+    datasources <- DSI::datashield.connections_find()
   }
   
-  dsBaseClient:::isDefined(datasources, x)
-  cls <- dsBaseClient:::checkClass(datasources, x)
-  if(!any((cls %in% c("ExposomeSet")))){
-    stop("'x' is not an 'ExposomeSet'")
-  }
+  checkForExposomeSet(set = x, datasources = datasources)
   
   cally <- paste0("phenotypeNamesDS(", x, ")")
   return(DSI::datashield.aggregate(datasources, as.symbol(cally)))

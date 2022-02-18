@@ -6,6 +6,15 @@
 \usage{
 matrix_corPlotEXP(corr, desc, cex.exposures = 0.5, cex.family = 0.55)
 }
+\arguments{
+\item{corr}{Correlation}
+
+\item{desc}{Fams}
+
+\item{cex.exposures}{Alpha}
+
+\item{cex.family}{Alpha}
+}
 \description{
 This is a internal function, the code itself is taken from rexposome::.correlation_matrix_plot
 }

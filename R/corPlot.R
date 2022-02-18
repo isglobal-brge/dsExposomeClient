@@ -1,8 +1,8 @@
 #' @title Draws correlation plot
 #' 
-#' @description Takes the output of the \code{\link{ds.correlation}} function and draws a plot (circos or matrix)
+#' @description Takes the output of the \code{\link{ds.exposome_correlation}} function and draws a plot (circos or matrix)
 #'
-#' @param corr_list \code{list} Output of \code{\link{ds.correlation}}
+#' @param corr_list \code{list} Output of \code{\link{ds.exposome_correlation}}
 #' @param type \code{character} Type of the plot, \code{"matrix"} for a matrix plot or \code{"circos"} for a circos
 #' plot
 #'
