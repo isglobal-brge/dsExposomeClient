@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsExposomeClient</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -35,6 +35,9 @@
       <a href="../articles/dsExposome.html">Non-disclosive federated exposome data analysis with DataSHIELD and Bioconductor</a>
     </li>
   </ul></li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -73,15 +76,15 @@
 <dd><p><code>character</code> (default <code>"ds.exposome_pca"</code>) Name of the PCA ExposomeSet on the study server 
 to visualize. Created by the <code><a href="ds.exposome_pca.html">ds.exposome_pca</a></code> function.</p></dd>
 <dt>set</dt>
-<dd><p><code>character</code> (default <code>"all"</code>) Argument to specify the type of plot to visualize. Options: <br></p>
-<p>-<code>"all"</code>: Mosaic plot with the samples, exposures and variance plots. <br>
--<code>"exposures"</code>: Plot of the exposures space on the first two principal components, color coded by family. <br>
+<dd><p><code>character</code> (default <code>"all"</code>) Argument to specify the type of plot to visualize. Options: `\n`</p>
+<p>-<code>"all"</code>: Mosaic plot with the samples, exposures and variance plots. `\n`
+-<code>"exposures"</code>: Plot of the exposures space on the first two principal components, color coded by family. `\n`
 -<code>"samples"</code>: Plot of the individuals space on the first two principal components, this plot can take the
- `phenotype` argument to color code the individuals by phenotypes. <br>
--<code>"variance"</code>: Plot of the variance explained by each principal component. <br>
--<code>"variance_explained"</code>: Plot of the accumulated variance explained by each principal component. <br>
--<code>"exposures_correlation"</code>: Correlation between principal components and exposures <br>
--<code>"phenotypes_correlation"</code>: Association between principal components and phenotypes <br></p></dd>
+ `phenotype` argument to color code the individuals by phenotypes. `\n`
+-<code>"variance"</code>: Plot of the variance explained by each principal component. `\n`
+-<code>"variance_explained"</code>: Plot of the accumulated variance explained by each principal component. `\n`
+-<code>"exposures_correlation"</code>: Correlation between principal components and exposures `\n`
+-<code>"phenotypes_correlation"</code>: Association between principal components and phenotypes `\n`</p></dd>
 <dt>type</dt>
 <dd><p><code>character</code> (default <code>"meta"</code>) If <code>"meta"</code> the results of all the study servers will be combined, 
 which fundamentally only affects <code>set = "all"</code> and <code>set = "samples"</code>. This is to be used when performing 
@@ -90,14 +93,14 @@ which fundamentally only affects <code>set = "all"</code> and <code>set = "sampl
 if a different study server is to be plotted, pass the specific one to the <code>datasources</code> argument 
 (<code>datasources[x]</code>).</p></dd>
 <dt>labels</dt>
-<dd><p><code>bool</code> (default (FALSE)) Show labels of the exposures, only applies to <code>set = "exposures"</code>.}
-
-{phenotype}{<code>character</code> (default <code>NA</code>) Phenotype to color code the <code>"exposures"</code> plot.}
-
-{method}{<code>numeric</code> (default <code>1</code>) (1) deterministic method to anonimize the scatter plot (uses <code>k</code>). 
-(2) probabilistic method to anonimize the scatter plot (uses <code>noise</code>).}
-
-{k}{<code>numeric</code> (default <code>3</code>) The number of the nearest neighbors for which their centroid is calculated,
+<dd><p><code>bool</code> (default <code>FALSE</code>) Show labels of the exposures, only applies to <code>set = "exposures"</code>.</p></dd>
+<dt>phenotype</dt>
+<dd><p><code>character</code> (default <code>NA</code>) Phenotype to color code the <code>"exposures"</code> plot.</p></dd>
+<dt>method</dt>
+<dd><p><code>numeric</code> (default <code>1</code>) (1) deterministic method to anonimize the scatter plot (uses <code>k</code>). 
+(2) probabilistic method to anonimize the scatter plot (uses <code>noise</code>).</p></dd>
+<dt>k</dt>
+<dd><p><code>numeric</code> (default <code>3</code>) The number of the nearest neighbors for which their centroid is calculated,
 applied for <code>method = 1</code></p></dd>
 <dt>noise</dt>
 <dd><p><code>numeric</code> (default <code>1</code>) The percentage of the initial variance that is used as the variance
