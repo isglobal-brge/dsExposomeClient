@@ -11,7 +11,6 @@ jobs:
     container:
       image: 'rocker/verse:4.1.1'
     steps:
-    - bash: sudo apt-get -qq -y install libudunits2-dev
     - task: Bash@3
       displayName: Prepare R-package
       inputs:
