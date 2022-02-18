@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsExposomeClient</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -35,6 +35,9 @@
       <a href="../articles/dsExposome.html">Non-disclosive federated exposome data analysis with DataSHIELD and Bioconductor</a>
     </li>
   </ul></li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -70,7 +73,7 @@
     <dl><dt>x</dt>
 <dd><p><code>character</code> Name of the Exposome Set on the server side</p></dd>
 <dt>family</dt>
-<dd><p><code>character</code> Name of the familty that will be drawn.  "all" is to plot all the families
+<dd><p><code>character</code> Name of the familty that will be drawn.  <code>"all"</code> is to plot all the families
 on a single mosaic (no grouping is used for the mosaic plot).</p></dd>
 <dt>group</dt>
 <dd><p><code>character</code> If set it displays the family grouped by the given phenotype</p></dd>
@@ -82,13 +85,6 @@ on a single mosaic (no grouping is used for the mosaic plot).</p></dd>
 <dd><p><code>bool</code> (default <code>TRUE</code>) Do not show NA values</p></dd>
 <dt>datasources</dt>
 <dd><p>a list of <code>DSConnection-class</code> (default <code>NULL</code>) objects obtained after login</p></dd>
-<dt>method</dt>
-<dd><p><code>numeric</code> either 1 or 2. If the user selects the deterministic method in the 
-client side function the method.inticator is set to 1 while if the user selects the probabilistic method this argument is set to 2.</p></dd>
-<dt>k</dt>
-<dd><p><code>numeric</code> the number of the nearest neghbours for which their centroid is calculated</p></dd>
-<dt>noise</dt>
-<dd><p><code>numeric</code> the percentage of the initial variance that is used as the variance of</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

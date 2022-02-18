@@ -22,7 +22,7 @@ ExpressionSet"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/li
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsExposomeClient</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -40,6 +40,9 @@ ExpressionSet"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/li
       <a href="../articles/dsExposome.html">Non-disclosive federated exposome data analysis with DataSHIELD and Bioconductor</a>
     </li>
   </ul></li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -82,6 +85,10 @@ ExpressionSet</p>
 <dt>pheno</dt>
 <dd><p><code>character</code> Name of the data.frame with the new phenotypes on the 
 study server</p></dd>
+<dt>identifier_ExposomeSet</dt>
+<dd><p><code>character</code> (default <code>"ID"</code>) Name of the ID column on the ExposomeSet</p></dd>
+<dt>identifier_new_phenotypes</dt>
+<dd><p><code>character</code> (default <code>"ID"</code>) Name of the ID column on the phenotypes data.frame</p></dd>
 <dt>newobj.name</dt>
 <dd><p><code>character</code> (default <code>NULL</code>) If <code>NULL</code>, the original ExpressionSet will be overwritten,
 otherwise the new ExpressionSet will be assigned to a variable named after this argument</p></dd>
@@ -91,12 +98,6 @@ between the ExpressionSet and the phenotypes table will be included on the resul
 <code>FALSE</code> all the individuals on the input ExpressionSet will be on the output ExpressionSet</p></dd>
 <dt>datasources</dt>
 <dd><p>a list of <code>DSConnection-class</code> (default <code>NULL</code>) objects obtained after login</p></dd>
-<dt>identifier</dt>
-<dd><p><code>character</code> (default <code>"ID"</code>) Name of the ID column on the phenotypes data.frame</p></dd>
-<dt>alternate_eset_id</dt>
-<dd><p><code>character</code> (default <code>NULL</code>) Alternate ID of the eSet pheno data, by default the rownames 
-of the eSet pheno data act as ID, use this argument if the ID to merge the individuals is on a column of the pheno data. 
-Input NULL for the standard behaviour of using the rownames of the pheno data as ID.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

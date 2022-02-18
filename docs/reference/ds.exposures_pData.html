@@ -19,7 +19,7 @@ if no name argument is provided, the new Exposome Set object will be named
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsExposomeClient</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -37,6 +37,9 @@ if no name argument is provided, the new Exposome Set object will be named
       <a href="../articles/dsExposome.html">Non-disclosive federated exposome data analysis with DataSHIELD and Bioconductor</a>
     </li>
   </ul></li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -77,6 +80,9 @@ if no <code>name</code> argument is provided, the new Exposome Set object will b
 <dt>name</dt>
 <dd><p><code>character</code> (default <code>NULL</code>) Name of the new Exposome Set, if null the name 
 will be <code>"set_table"</code> where <code>"set"</code> is the inputted argument</p></dd>
+<dt>exposures_type</dt>
+<dd><p><code>character</code> (default <code>NULL</code>) Type of the exposures to be kept, usually 
+<code>"numeric"</code> or <code>"character"/"factor"</code>. If <code>NULL</code> all the exposures will be kept.</p></dd>
 <dt>datasources</dt>
 <dd><p>a list of <code>DSConnection-class</code> (default <code>NULL</code>) objects obtained after login</p></dd>
 </dl></div>

@@ -18,7 +18,7 @@ ExWAS association study with the provided model."><!-- mathjax --><script src="h
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsExposomeClient</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -36,6 +36,9 @@ ExWAS association study with the provided model."><!-- mathjax --><script src="h
       <a href="../articles/dsExposome.html">Non-disclosive federated exposome data analysis with DataSHIELD and Bioconductor</a>
     </li>
   </ul></li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -84,7 +87,7 @@ study server to later meta-analyse the results.</p></dd>
 <dd><p><code>character</code> (default <code>NULL</code>) Family to subset the ExposomeSet, only the exposures of the 
 selected family will be used for the ExWAS analysis.</p></dd>
 <dt>adjust.by.study</dt>
-<dd><p><code>bool</code> (default FALSE) Option to adjust the linear models by cohort, 
+<dd><p><code>bool</code> (default <code>FALSE</code>) Option to adjust the linear models by cohort, 
 this only applies to <code>type = "pooled"</code>, there is no need to have a specific variable on the ExposomeSets 
 that has the cohort code. The translation to typical glm syntaxis is <code>objective_variable ~ covariates + cohort</code> 
 (IMPORTANT to note that there is no need to change your <code>model</code> argument of the <code>ds.exwas()</code> function).</p></dd>
