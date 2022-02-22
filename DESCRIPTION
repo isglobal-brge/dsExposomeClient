@@ -1,7 +1,7 @@
 Package: dsExposomeClient
 Type: Package
 Title: DataSHIELD client site Exposome functions
-Version: 1.1.0
+Version: 1.1.1
 Date: 2021-06-07
 Authors@R: c(person("Xavier", "Escriba-Montagut", , "xavier.escriba@isglobal.org", role = c("aut", "cre")))
 Description: Collection of functions to perform non-disclosive Exposome data analysis with DataSHIELD and Bioconductor.
@@ -24,4 +24,4 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
