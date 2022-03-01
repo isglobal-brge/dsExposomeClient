@@ -4,6 +4,9 @@
     <loc>/404.html</loc>
   </url>
   <url>
+    <loc>/LICENSE-text.html</loc>
+  </url>
+  <url>
     <loc>/articles/dsExposome.html</loc>
   </url>
   <url>
@@ -17,9 +20,6 @@
   </url>
   <url>
     <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
   </url>
   <url>
     <loc>/news/index.html</loc>
@@ -49,10 +49,10 @@
     <loc>/reference/ds.exposomeSubset.html</loc>
   </url>
   <url>
-    <loc>/reference/ds.exposome_correlation.html</loc>
+    <loc>/reference/ds.exposome_HCPC.html</loc>
   </url>
   <url>
-    <loc>/reference/ds.exposome_HCPC.html</loc>
+    <loc>/reference/ds.exposome_correlation.html</loc>
   </url>
   <url>
     <loc>/reference/ds.exposome_pca.html</loc>
@@ -70,10 +70,10 @@
     <loc>/reference/ds.exposome_variables.html</loc>
   </url>
   <url>
-    <loc>/reference/ds.exposures_pData.html</loc>
+    <loc>/reference/ds.exposure_histogram.html</loc>
   </url>
   <url>
-    <loc>/reference/ds.exposure_histogram.html</loc>
+    <loc>/reference/ds.exposures_pData.html</loc>
   </url>
   <url>
     <loc>/reference/ds.extractExposomeSetFromImputedSet.html</loc>
