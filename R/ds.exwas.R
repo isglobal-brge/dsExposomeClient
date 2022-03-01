@@ -78,7 +78,7 @@ ds.exwas <- function(model, Set, family, type = c("pooled", "meta"), exposures_f
       names(x) <- name_x
       # Create new variable at each study with its name repeated
       nrows <- dsBaseClient::ds.dim("dta", datasources = x)[[1]][1]
-      dsBaseClient::ds.rep(x1 = name_x, times = nrows, 
+      dsBaseClient::ds.rep(x1 = make.names(name_x), times = nrows, 
              source.x1 = "c", source.times = "c",
              source.each = "c", x1.includes.characters = TRUE,
              newobj = "aux_column_cohort", datasources = x)
