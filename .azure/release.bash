@@ -32,7 +32,7 @@ git checkout dev
 git rebase master
 # Use dev-versioning number (-9000)
 Rscript -e "withr::with_libpaths(new = '${R_LIBS_USER}', usethis::use_version('dev'))"
-git commit -a -m '[ci skip]: Increment dev-version number'
+git commit -a -m 'Increment dev-version number'
 # Push `dev`/`master`
 git push --tags origin master
 git push --tags origin dev
