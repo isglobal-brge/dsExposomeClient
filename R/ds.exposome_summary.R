@@ -27,6 +27,10 @@ ds.exposome_summary <- function(Set, variable, datasources = NULL){
     datasources <- DSI::datashield.connections_find()
   }
   
+  if(is.null(variable)){
+    stop("Please provide the argument [variable]")
+  }
+  
   checkForExposomeSet(Set, datasources)
   
   # Extract table with exposures and phenotypes and save it on the server (assign)

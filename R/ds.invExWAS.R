@@ -17,18 +17,18 @@
 #' \dontrun{Refer to the package Vignette for examples.}
 #' @export
 
-ds.invExWAS <- function(object, phenotype, covariables = NULL, tef = TRUE, datasources = NULL){
+ds.invExWAS <- function(object, phenotype, covariables = NULL, tef = FALSE, datasources = NULL){
   
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
   }
-  browser()
+  
   cally <- paste0("invExWASDS(", object, ", '", phenotype, "', ", tef, if(is.null(covariables)){")"}else{
     paste0(", '", paste(covariables, collapse = "','"), "')")
   })
   res <- DSI::datashield.aggregate(datasources, as.symbol(cally))[[1]]
   
-  inv_exwas_results <- res@comparison
+  inv_exwas_results <- res$comparison
   inv_exwas_results <- tibble::rownames_to_column(as.data.frame(inv_exwas_results), "exposure")
   
   assoc <- ds.familyNames(object, TRUE)[[1]]
@@ -37,7 +37,7 @@ ds.invExWAS <- function(object, phenotype, covariables = NULL, tef = TRUE, datas
   inv_exwas_results <- merge(assoc, inv_exwas_results)
   colnames(inv_exwas_results) <- c("exposure", "family", "coefficient", "minE", "maxE", "p.value")
   
-  alpha_corrected <- res@effective
+  alpha_corrected <- res$effective
   
   results <- list(exwas_results = inv_exwas_results, alpha_corrected = alpha_corrected)
   class(results) <- c(class(results), "dsExWAS_pooled")
