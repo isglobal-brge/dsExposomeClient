@@ -8,7 +8,7 @@ ds.invExWAS(
   object,
   phenotype,
   covariables = NULL,
-  tef = TRUE,
+  tef = FALSE,
   datasources = NULL
 )
 }
