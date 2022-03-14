@@ -33,7 +33,7 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
   
   ds.exposures_pData(set = exp, type = "exposures", name = "dta", datasources = datasources)
   
-  if(dsBaseClient::ds.class(paste0("dta$", exposure), datasources) == "numeric"){
+  if(dsBaseClient::ds.class(paste0("dta$", exposure), datasources = datasources) == "numeric"){
     if(show.trans){
       # Get number of column that corresponds to [exposures]
       cols <- dsBaseClient::ds.colnames("dta", datasources = datasources)[[1]]
@@ -60,7 +60,7 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
                          newobj = "dta_no_zeroes",
                          datasources = datasources,
                          notify.of.progress = FALSE)
-      warning("[", dsBaseClient::ds.length(paste0("dta$", exposure))[[1]] - dsBaseClient::ds.length("dta_no_zeroes")[[1]] - nas,
+      warning("[", dsBaseClient::ds.length(paste0("dta$", exposure), datasources = datasources)[[1]] - dsBaseClient::ds.length("dta_no_zeroes", datasources = datasources)[[1]] - nas,
               "] expositions eliminated for log transformation (0 values)")
       
       # Remove negative values for sqrt transformation
@@ -75,7 +75,7 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
                          newobj = "dta_no_negatives",
                          datasources = datasources,
                          notify.of.progress = FALSE)
-      warning("[", dsBaseClient::ds.length(paste0("dta$", exposure))[[1]] - dsBaseClient::ds.length("dta_no_negatives")[[1]] - nas,
+      warning("[", dsBaseClient::ds.length(paste0("dta$", exposure), datasources = datasources)[[1]] - dsBaseClient::ds.length("dta_no_negatives", datasources = datasources)[[1]] - nas,
               "] expositions eliminated for sqrt transformation (negative values)")
       
       # Compute transformations
@@ -84,22 +84,22 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
       dsBaseClient::ds.make("(dta_no_negatives)^(0.5)", "dta_sqrt", datasources)
       
       grDevices::pdf(NULL)
-      hist1 <- dsBaseClient::ds.histogram(x = paste0("dta$", exposure), ...)
+      hist1 <- dsBaseClient::ds.histogram(x = paste0("dta$", exposure), datasources = datasources, ...)
       grDevices::dev.off()
       grDevices::pdf(NULL)
-      hist2 <- dsBaseClient::ds.histogram(x = "dta_exp", ...)
+      hist2 <- dsBaseClient::ds.histogram(x = "dta_exp", datasources = datasources, ...)
       grDevices::dev.off()
       grDevices::pdf(NULL)
-      hist3 <- dsBaseClient::ds.histogram(x = "dta_log", ...)
+      hist3 <- dsBaseClient::ds.histogram(x = "dta_log", datasources = datasources, ...)
       grDevices::dev.off()
       grDevices::pdf(NULL)
-      hist4 <- dsBaseClient::ds.histogram(x = "dta_sqrt", ...)
+      hist4 <- dsBaseClient::ds.histogram(x = "dta_sqrt", datasources = datasources, ...)
       grDevices::dev.off()
       
-      hist1_pval <- ds.shapiro.test(paste0("dta$", exposure))[[1]]$p.value
-      hist2_pval <- ds.shapiro.test("dta_exp")[[1]]$p.value
-      hist3_pval <- ds.shapiro.test("dta_log")[[1]]$p.value
-      hist4_pval <- ds.shapiro.test("dta_sqrt")[[1]]$p.value
+      hist1_pval <- ds.shapiro.test(paste0("dta$", exposure), datasources = datasources)[[1]]$p.value
+      hist2_pval <- ds.shapiro.test("dta_exp", datasources = datasources)[[1]]$p.value
+      hist3_pval <- ds.shapiro.test("dta_log", datasources = datasources)[[1]]$p.value
+      hist4_pval <- ds.shapiro.test("dta_sqrt", datasources = datasources)[[1]]$p.value
       
       graphics::par(mfrow=c(2,2))
       plot(hist1, main = paste0(exposure, ", raw (pval: ", format(hist1_pval, scientific=TRUE, digits=5), ")"), xlab = "")
@@ -115,9 +115,9 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
     }
     else{
       grDevices::pdf(NULL)
-      hist <- dsBaseClient::ds.histogram(x = paste0("dta$", exposure), ...)
+      hist <- dsBaseClient::ds.histogram(x = paste0("dta$", exposure), datasources = datasources, ...)
       grDevices::dev.off()
-      hist_pval <- ds.shapiro.test(paste0("dta$", exposure))[[1]]$p.value
+      hist_pval <- ds.shapiro.test(paste0("dta$", exposure), datasources = datasources)[[1]]$p.value
       graphics::par(mfrow=c(1,1))
       plot(hist, main = paste0(exposure, " (pval: ", format(hist_pval, scientific=TRUE, digits=5), ")"), xlab = "")
       
