@@ -30,7 +30,7 @@ List with plot parameters
 \description{
 Get a non-disclosive histogram plot for a selected exposure of a server side Exposome Set. 
 The normality results are calculated using a Shapiro-Wilks test for small samples (n < 5000) and with 
-Kolmogorov-Smirnov test for big samples (n >= 5000).
+Anderson-Darling test for big samples (n >= 5000).
 }
 \details{
 When using the \code{show.trans} option, the negative values will be removed for the 
