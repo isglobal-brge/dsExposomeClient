@@ -1,6 +1,8 @@
 #' @title Draw histogram for Exposome Set exposure
 #' 
-#' @description Get a non-disclosive histogram plot for a selected exposure of a server side Exposome Set
+#' @description Get a non-disclosive histogram plot for a selected exposure of a server side Exposome Set. 
+#' The normality results are calculated using a Shapiro-Wilks test for small samples (n < 5000) and with 
+#' Anderson-Darling test for big samples (n >= 5000).
 #' 
 #' @details When using the \code{show.trans} option, the negative values will be removed for the 
 #' sqrt-transformation and the 0 values will be removed for the log-transformation. Please be aware 
@@ -25,6 +27,11 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
   
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
+  }
+  
+  if(length(datasources) > 1){
+    message("[warning] only the first Datasource will be used! Multiplot to be implemented")
+    datasources <- datasources[1]
   }
   
   checkForExposomeSet(exp, datasources)
@@ -96,10 +103,19 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
       hist4 <- dsBaseClient::ds.histogram(x = "dta_sqrt", datasources = datasources, ...)
       grDevices::dev.off()
       
-      hist1_pval <- ds.shapiro.test(paste0("dta$", exposure), datasources = datasources)[[1]]$p.value
-      hist2_pval <- ds.shapiro.test("dta_exp", datasources = datasources)[[1]]$p.value
-      hist3_pval <- ds.shapiro.test("dta_log", datasources = datasources)[[1]]$p.value
-      hist4_pval <- ds.shapiro.test("dta_sqrt", datasources = datasources)[[1]]$p.value
+      individuals <- dsBaseClient::ds.dim("dta", datasources = datasources)[[1]][1]
+      if(individuals > 5000){
+        hist1_pval <- ds.anderson.darling.test(paste0("dta$", exposure), datasources = datasources)[[1]]$p.value
+        hist2_pval <- ds.anderson.darling.test("dta_exp", datasources = datasources)[[1]]$p.value
+        hist3_pval <- ds.anderson.darling.test("dta_log", datasources = datasources)[[1]]$p.value
+        hist4_pval <- ds.anderson.darling.test("dta_sqrt", datasources = datasources)[[1]]$p.value
+      } else {
+        hist1_pval <- ds.shapiro.test(paste0("dta$", exposure), datasources = datasources)[[1]]$p.value
+        hist2_pval <- ds.shapiro.test("dta_exp", datasources = datasources)[[1]]$p.value
+        hist3_pval <- ds.shapiro.test("dta_log", datasources = datasources)[[1]]$p.value
+        hist4_pval <- ds.shapiro.test("dta_sqrt", datasources = datasources)[[1]]$p.value
+      }
+      
       
       graphics::par(mfrow=c(2,2))
       plot(hist1, main = paste0(exposure, ", raw (pval: ", format(hist1_pval, scientific=TRUE, digits=5), ")"), xlab = "")
@@ -117,7 +133,12 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
       grDevices::pdf(NULL)
       hist <- dsBaseClient::ds.histogram(x = paste0("dta$", exposure), datasources = datasources, ...)
       grDevices::dev.off()
-      hist_pval <- ds.shapiro.test(paste0("dta$", exposure), datasources = datasources)[[1]]$p.value
+      individuals <- dsBaseClient::ds.dim("dta", datasources = datasources)[[1]][1]
+      if(individuals > 5000){
+        hist_pval <- ds.anderson.darling.test(paste0("dta$", exposure), datasources = datasources)[[1]]$p.value
+      } else {
+        hist_pval <- ds.shapiro.test(paste0("dta$", exposure), datasources = datasources)[[1]]$p.value
+      }
       graphics::par(mfrow=c(1,1))
       plot(hist, main = paste0(exposure, " (pval: ", format(hist_pval, scientific=TRUE, digits=5), ")"), xlab = "")
       
