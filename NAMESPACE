@@ -2,6 +2,7 @@
 
 export(corPlot)
 export(ds.addPhenoData2ExposomeSet)
+export(ds.anderson.darling.test)
 export(ds.exposomeSubset)
 export(ds.exposome_HCPC)
 export(ds.exposome_correlation)

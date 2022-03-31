@@ -1,4 +1,5 @@
-# dsExposomeClient (development version)
++ Added Anderson-Darling test `ds.anderson.darling.test`.
++ `ds.exposure_histogram` now checks the number of samples and if over 5000 uses `ds.anderson.darling.test` instead of `ds.shapiro.test`.
 
 # dsExposomeClient 2.0.2
 
