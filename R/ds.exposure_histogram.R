@@ -103,7 +103,7 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
       hist4 <- dsBaseClient::ds.histogram(x = "dta_sqrt", datasources = datasources, ...)
       grDevices::dev.off()
       
-      individuals <- ds.dim("dta", datasources = datasources)[[1]][1]
+      individuals <- dsBaseClient::ds.dim("dta", datasources = datasources)[[1]][1]
       if(individuals > 5000){
         hist1_pval <- ds.anderson.darling.test(paste0("dta$", exposure), datasources = datasources)[[1]]$p.value
         hist2_pval <- ds.anderson.darling.test("dta_exp", datasources = datasources)[[1]]$p.value
@@ -133,7 +133,7 @@ ds.exposure_histogram <- function(exp, exposure, show.trans = FALSE, ..., dataso
       grDevices::pdf(NULL)
       hist <- dsBaseClient::ds.histogram(x = paste0("dta$", exposure), datasources = datasources, ...)
       grDevices::dev.off()
-      individuals <- ds.dim("dta", datasources = datasources)[[1]][1]
+      individuals <- dsBaseClient::ds.dim("dta", datasources = datasources)[[1]][1]
       if(individuals > 5000){
         hist_pval <- ds.anderson.darling.test(paste0("dta$", exposure), datasources = datasources)[[1]]$p.value
       } else {
