@@ -72,7 +72,7 @@ ds.plotFamily <- function(x, family, group = NULL, group2 = NULL, scatter = FALS
     DSI::datashield.assign.expr(datasources, "exposomeFamilyPlotData", as.symbol(cally))
     
     plt <- tryCatch({
-      ds.boxPlotGG("exposomeFamilyPlotData", group, group2, xlabel = "Exposure", ylabel = "Measure", type = "pooled", datasources)
+      dsBaseClient:::ds.boxPlotGG("exposomeFamilyPlotData", group, group2, xlabel = "Exposure", ylabel = "Measure", type = "pooled", datasources)
     }, error = function(w){
       ggplot2::ggplot() + ggplot2::geom_blank()
     })

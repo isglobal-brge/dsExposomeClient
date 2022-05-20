@@ -32,13 +32,14 @@ ds.exposome_correlation <- function(set, fam = NULL, datasources = NULL){
   
   ds.exposures_pData(set = set, type = "exposures", name = "ds.correlationExposures", datasources = datasources)
   
-  data <- dsBaseClient::ds.cor(x = "ds.correlationExposures", type = "split" , datasources)
+  data <- dsBaseClient::ds.cor(x = "ds.correlationExposures", type = "split" , datasources = datasources)
+  data2 <- dsBaseClient::ds.cor(x = "ds.correlationExposures", type = "combine" , datasources = datasources)
   
   names <- ds.familyNames(set, TRUE, datasources)
   
   DSI::datashield.rm(datasources, "exposomeSetSubsetted")
   DSI::datashield.rm(datasources, "ds.correlationExposures")
   
-  return(list(data, names))
+  return(list(data, data2, names))
   
 }

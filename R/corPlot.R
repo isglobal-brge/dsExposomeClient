@@ -14,13 +14,13 @@
  
 corPlot <- function(corr_list, type = "matrix"){
   # ONLY USING ONE STUDY SERVER!
-  corr <- corr_list[[1]][[1]]$`Correlation Matrix`
-  colnames(corr) <- names(corr_list[[2]][[1]])
-  corr <- corr[order(corr_list[[2]][[1]]), order(corr_list[[2]][[1]])]
-  names <- names(corr_list[[2]][[1]])
-  names <- names[order(corr_list[[2]][[1]])]
-  fam <- corr_list[[2]][[1]]
-  fam <- fam[order(corr_list[[2]][[1]])]
+  corr <- corr_list[[2]]$`Correlation Matrix`
+  colnames(corr) <- names(corr_list[[3]][[1]])
+  corr <- corr[order(corr_list[[3]][[1]]), order(corr_list[[3]][[1]])]
+  names <- names(corr_list[[3]][[1]])
+  names <- names[order(corr_list[[3]][[1]])]
+  fam <- corr_list[[3]][[1]]
+  fam <- fam[order(corr_list[[3]][[1]])]
   desc <- data.frame(Family = fam)
   rownames(desc) <- names
   
