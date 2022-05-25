@@ -1,4 +1,6 @@
-# dsExposomeClient (development version)
+`ds.exposome_correlation`: Changed output. Now outputs split and combine results.
+`corPlot`: Now plots the combined results instead of only just the first study server.
+Passed the `datasources` value to internal call functions, solves problems when more than one connection is performed on a single R session.
 
 # dsExposomeClient 2.0.3
 
