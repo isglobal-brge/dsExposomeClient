@@ -43,11 +43,11 @@ ds.exwas <- function(model, Set, family, type = c("pooled", "meta"), exposures_f
   # Subset the exposome set if exposures_family
   if(!is.null(exposures_family)){
     # Check that family exists
-    if(!(exposures_family %in% ds.familyNames(Set)[[1]])){
+    if(!all((exposures_family %in% ds.familyNames(Set, datasources = datasources)[[1]]))){
       stop("[", exposures_family, "] is not a valid family name of the ExposomeSet [", Set, "]. Please check the valid family names using `ds.familyNames(", Set, ")`")
     }
     # Subset the ExposomeSet
-    ds.exposomeSubset(Set, fam = exposures_family, name = paste0(Set, "_subsetted4dsEXWAS"))
+    ds.exposomeSubset(Set, fam = exposures_family, name = paste0(Set, "_subsetted4dsEXWAS"), datasources = datasources)
     Set <- paste0(Set, "_subsetted4dsEXWAS")
   }
 
@@ -137,7 +137,7 @@ ds.exwas <- function(model, Set, family, type = c("pooled", "meta"), exposures_f
     items <- as.data.frame(items)
     # Add column with family
     # Retrive association of family - exposures
-    assoc <- ds.familyNames(Set, TRUE)[[1]]
+    assoc <- ds.familyNames(Set, TRUE, datasources = datasources)[[1]]
     assoc <- data.frame(family = assoc, exposure = names(assoc))
     
     items <- merge(assoc, items)
