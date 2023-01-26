@@ -7,9 +7,9 @@
 circos_corPlotEXP(
   corr,
   desc,
-  correlation.limits = list(list(d = "+", t = 0.5, c = "#191970"), list(d = "+", t =
-    0.3, c = "#4169E1"), list(d = "-", t = -0.3, c = "#DC143C"), list(d = "-", t = -0.5,
-    c = "#8B0000")),
+  correlation.limits = list(list(d = "+", t = 0.5, c = "#191970"), list(d = "+", t = 0.3,
+    c = "#4169E1"), list(d = "-", t = -0.3, c = "#DC143C"), list(d = "-", t = -0.5, c =
+    "#8B0000")),
   show.legend = TRUE,
   cex.exposures = 0.5,
   cex.family = 0.55,
