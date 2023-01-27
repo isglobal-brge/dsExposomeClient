@@ -1,14 +1,31 @@
-#' Title
+#' @title Associate `NetCDF` data and individual location
+#' 
+#' @description Merge the exposure data contained in a `NetCDF` object
+#' with the location data of the individuals present on a `clinical` `data.frame`
 #'
-#' @param nc 
-#' @param varid 
-#' @param new.obj 
-#' @param datasources 
+#' @param lat `character` (Object server name of: ) 
+#' Latitude extracted from a `NetCDF` resource using `ncvar_getDS`
+#' @param lon `character` (Object server name of: ) 
+#'  Longitutde extracted from a `NetCDF` resource using `ncvar_getDS`
+#' @param exposure `character` (Object server name of: ) 
+#'  Exposure extracted from a `NetCDF` resource using `ncvar_getDS`
+#' @param exposure_name `character` Name to assign to the `exposure`
+#' @param clinical `character` (Object server name of: ) 
+#'  Clinical data data of the individuals, which contain among
+#' other variables, the longitude and latitude of the individuals to be associated with the 
+#' `NetCDF` data.
+#' @param clinical_lat_var `character` Name of the latitude variable on the `clinical` data
+#' @param clinical_lon_var `character` Name of the longitude variable on the `clinical` data
+#' @param clinical_id_var `character` Name of the IDs variable on the `clinical` data
+#' @param exposures (default `NULL`) (Object server name of: ) 
+#'  If provided, existing `data.frame` with exposure data.
+#' The new exposure calculated from the `NetCDF` data will be added to this table by ID
+#' @param exposures_id_var (default `NULL`) Required if `exposures` is provided. Name of the
+#' IDs variable on the `exposures` data.
 #'
-#' @return
+#' @return Creates object on the server
 #' @export
 #'
-#' @examples
 ds.get_exposure_from_geo <- function(lat, lon, exposure, exposure_name,
                                      clinical, clinical_lat_var,
                                      clinical_lon_var, clinical_id_var,

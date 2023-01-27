@@ -2,19 +2,20 @@
 % Please edit documentation in R/ds.ncvar_get.R
 \name{ds.ncvar_get}
 \alias{ds.ncvar_get}
-\title{Title}
+\title{Read data from netCDF file}
 \usage{
 ds.ncvar_get(nc, varid, new.obj = "ncvar", datasources = NULL)
 }
 \arguments{
-\item{nc}{}
+\item{nc}{(Object server name of: )`character`
+An object of class ncdf4 (loaded from a NetCDF resource), 
+indicating what file to read from.}
 
-\item{varid}{}
-
-\item{new.obj}{}
-
-\item{datasources}{}
+\item{varid}{`character` What variable to read the data from.}
+}
+\value{
+Creates object on the server
 }
 \description{
-Title
+Reads data from an existing netCDF file.
 }

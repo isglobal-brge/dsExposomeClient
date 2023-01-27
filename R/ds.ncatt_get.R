@@ -1,14 +1,16 @@
-#' Title
+#' @title Get attribute from netCDF file
+#' 
+#' @description Reads an attribute from a netCDF file.
 #'
-#' @param nc 
-#' @param varid 
-#' @param new.obj 
-#' @param datasources 
+#' @param nc (Object server name of: ) `character`
+#' An object of class ncdf4 (loaded from a NetCDF resource), 
+#' indicating what file to read from.
+#' @param varid `character` The variable whose attribute is to be read.
+#' @param attname `character` Name of the attribute to read
 #'
-#' @return
+#' @return Creates object on the server
 #' @export
 #'
-#' @examples
 ds.ncatt_get <- function(nc, varid, attname, new.obj = "ncatt", datasources = NULL){
   
   if (is.null(datasources)) {

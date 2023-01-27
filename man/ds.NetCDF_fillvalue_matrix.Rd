@@ -2,19 +2,19 @@
 % Please edit documentation in R/ds.NetCDF_fillvalue_matrix.R
 \name{ds.NetCDF_fillvalue_matrix}
 \alias{ds.NetCDF_fillvalue_matrix}
-\title{Title}
+\title{Set NAs to matrix fillvalues}
 \usage{
 ds.NetCDF_fillvalue_matrix(mat, fillvalue, new.obj = "mat", datasources = NULL)
 }
 \arguments{
-\item{new.obj}{}
+\item{mat}{(Object server name of: ) `matrix` Extracted from a `NetCDF` resource using `nc_dataDS`}
 
-\item{datasources}{}
-
-\item{nc}{}
-
-\item{varid}{}
+\item{fillvalue}{(Object server name of: ) `list` Extracted from the `_FillValue` slot of a `NetCDF`
+resource using `ncatt_getDS`}
+}
+\value{
+Creates object on the server
 }
 \description{
-Title
+Use a fillvalue extracted using `ncatt_get` and place NAs
 }
