@@ -1,3 +1,14 @@
+# dsExposomeClient (development version)
+
+Added new functions to 
+
++ extract the exposure and spatial information from `NetCDF` data
++ relate this information with clinical location of individuals
+
+This allows us to create new exposure data to be analyzed as an ExposomeSet object with the already present `dsExposome` functions.
+
+`ds.NetCDF_fillvalue_matrix`, `ds.ncvar_get`, `ds.ncatt_get` and `ds.get_exposure_from_geo`
+
 # dsExposomeClient 2.0.4
 
 `ds.exposome_correlation`: Changed output. Now outputs split and combine results.
