@@ -16,7 +16,7 @@
 #' @return This function does not have an output. It creates an data frame object on the study server.
 #' @export
 
-ds.exposures_pData <- function(set, type = "", name = NULL, exposures_type = NULL, datasources = NULL){
+ds.exposures_pData <- function(set, type = "", name = NULL, exposures_type = NULL, rownames2col = FALSE, datasources = NULL){
   
   if (is.null(datasources)) {
     datasources <- DSI::datashield.connections_find()
@@ -28,8 +28,8 @@ ds.exposures_pData <- function(set, type = "", name = NULL, exposures_type = NUL
   
   checkForExposomeSet(set, datasources)
   
-  cally <- paste0("exposures_pData(", set, ", '", type, 
-                  if(is.null(exposures_type)){"')"}else{paste0("','", exposures_type, "')")})
+  cally <- paste0("exposures_pData(", set, ", '", type, "', ", rownames2col, 
+                  if(is.null(exposures_type)){")"}else{paste0(",'", exposures_type, "')")})
   DSI::datashield.assign.expr(datasources, name, as.symbol(cally))
   
 }

@@ -1,5 +1,9 @@
 # dsExposomeClient (development version)
 
++ added argument `rownames2col` to the function `exposures_pData` to be able to retrieve the ids and later merge
+
+# dsExposomeClient 2.0.5
+
 Added new functions to 
 
 + extract the exposure and spatial information from `NetCDF` data
