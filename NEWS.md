@@ -1,5 +1,9 @@
 # dsExposomeClient (development version)
 
++ added function `ds.netcdf_vars` to retrieve the variables of a netcdf object
+
+# dsExposomeClient 2.0.6
+
 + added argument `rownames2col` to the function `exposures_pData` to be able to retrieve the ids and later merge
 
 # dsExposomeClient 2.0.5
