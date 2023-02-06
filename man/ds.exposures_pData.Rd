@@ -9,6 +9,7 @@ ds.exposures_pData(
   type = "",
   name = NULL,
   exposures_type = NULL,
+  rownames2col = FALSE,
   datasources = NULL
 )
 }
