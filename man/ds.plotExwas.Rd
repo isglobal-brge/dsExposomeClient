@@ -4,13 +4,16 @@
 \alias{ds.plotExwas}
 \title{Plot ExWAS results}
 \usage{
-ds.plotExwas(exwas, type = "manhattan")
+ds.plotExwas(exwas, type = "manhattan", thld_pvalue = NULL)
 }
 \arguments{
 \item{exwas}{\code{list} Output of \code{\link{ds.exwas}}}
 
 \item{type}{\code{character} Type of plot \code{"manhattan"} for a manhattan plot (p-values),
 \code{"effect"} for a plot of the exposures effects.}
+
+\item{thld_pvalue}{\code{numeric} (default \code{NULL}) Significance P.value threshold to visualize. 
+If \code{NULL}, the exwas alpha corrected will be used}
 }
 \value{
 \code{ggplot} object
