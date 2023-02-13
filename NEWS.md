@@ -1,5 +1,10 @@
 # dsExposomeClient (development version)
 
++ renewed exwas plot
++ added `ds.transform`
+
+# dsExposomeClient 2.0.7
+
 + added function `ds.netcdf_vars` to retrieve the variables of a netcdf object
 
 # dsExposomeClient 2.0.6
