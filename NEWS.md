@@ -1,4 +1,4 @@
-# dsExposomeClient (development version)
+# dsExposomeClient 2.0.8
 
 + renewed exwas plot
 + added `ds.transform`
