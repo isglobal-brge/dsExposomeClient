@@ -27,7 +27,7 @@
 #' \dontrun{Refer to the package Vignette for examples.}
 #' @export
 
-ds.exwas <- function(model, Set, family, type = c("pooled", "meta"), exposures_family = NULL, 
+ds.exwas <- function(model, Set, family, type = "pooled", exposures_family = NULL, 
                      adjust.by.study = FALSE, tef = TRUE, datasources = NULL) {
   
   if (is.null(datasources)) {
@@ -39,7 +39,7 @@ ds.exwas <- function(model, Set, family, type = c("pooled", "meta"), exposures_f
   if(!(type %in% c("pooled", "meta"))){
     stop("Invalid 'type' argument. Valid options are ['pooled', 'meta']")
   }
-  
+
   # Subset the exposome set if exposures_family
   if(!is.null(exposures_family)){
     # Check that family exists

@@ -44,7 +44,7 @@ exwasplotF <- function(exwas, type, thld_pvalue = NULL){
   exwas$exwas_results$dir <- ifelse(exwas$exwas_results$coefficient >= 0,"+", "-")
   
   nm <- unique(as.character(exwas$exwas_results$family))
-  colorPlte <- RColorBrewer::brewer.pal(length(nm), "Set2")
+  colorPlte <- viridis::viridis(length(nm), option = "H")
   names(colorPlte) <- nm
   if(length(colorPlte) > length(nm)){
     colorPlte <- colorPlte[1:length(nm)]

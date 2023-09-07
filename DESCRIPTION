@@ -18,7 +18,8 @@ Imports:
      gridExtra,
      sf,
      stringr,
-     tibble
+     tibble,
+     viridis
 Suggests: knitr
 License: MIT + file LICENSE
 Encoding: UTF-8
