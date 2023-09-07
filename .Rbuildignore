@@ -16,3 +16,5 @@
 ## Azure
 ^azure-pipelines.yml
 ^.azure
+^doc$
+^Meta$

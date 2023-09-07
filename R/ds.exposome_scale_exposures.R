@@ -48,7 +48,8 @@ ds.exposome_scale_exposures <- function(Set, method = "combined", new.obj = NULL
     pooled_means <- means_x_ns_total / ns_totals
 
     # Get pooled SDs
-    ds.exposures_pData(Set, "exposures", "aux_exposures", "numeric", datasources)
+    ds.exposures_pData(set = Set, type = "exposures", name = "aux_exposures", 
+                       exposures_type = "numeric", datasources = datasources)
     cols <- dsBaseClient::ds.colnames("aux_exposures")[[1]]
     variance <- unlist(lapply(cols, function(x){
       dsBaseClient::ds.var(paste0("aux_exposures$", x), type = "combined", datasources = datasources)$Global.Variance[, 1]

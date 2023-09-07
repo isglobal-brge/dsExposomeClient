@@ -1,7 +1,7 @@
 A PCA can be performed on the exposures of the exposome dataset. To do so, there's the `ds.exposome_pca`. The exposures should be standardized in order to perform the PCA properly, to do so, there's the arguments `standar` and `method`, which standardize the Exposome Set before performing the PCA following the specified `method`. The available methods are `normal` (default method), which scales the exposures using the mean as the center and the standard variation as dispersion; the `robust` method, which uses the median and median absolute deviation respectively; and, `interquartile range`, which uses the median as the center and the coeficient between the interquartile range of the exposure and the normal range between the percentile 75 and 25 as variance. It is important noting that this function is sensitive to be disclosive, specially for very rectangular data frames (similar number of variables as individuals). To illustrate this problem, let's try to perform a PCA on the whole exposures test data.
 
 ```{r error = TRUE}
-ds.exposome_pca("exposome_object")
+ds.exposome_pca("exposome_object", datasources = conns)
 ```
 
 If that is the case, one option is to reduce the families of exposures of the Exposome Set. The `ds.exposome_pca` function has the argument `fam` to select the families to subset the Exposome Set to perform the PCA.
