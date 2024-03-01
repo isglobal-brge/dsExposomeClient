@@ -6,6 +6,7 @@ Date: 2023-09-07
 Authors@R: c(person("Xavier", "Escriba-Montagut", , "xavier.escriba@isglobal.org", role = c("aut", "cre")))
 Description: Collection of functions to perform non-disclosive Exposome data analysis with DataSHIELD and Bioconductor.
 Depends: R (>= 4.0.0),
+biocViews:
 Imports:
      dsBaseClient (>= 6.1.1),
      DSI,
@@ -19,7 +20,8 @@ Imports:
      sf,
      stringr,
      tibble,
-     viridis
+     viridis,
+     S4Vectors
 Suggests: knitr
 License: MIT + file LICENSE
 Encoding: UTF-8
